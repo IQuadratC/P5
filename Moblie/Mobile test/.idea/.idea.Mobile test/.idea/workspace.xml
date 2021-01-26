@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17AD9609-AE06-4F2C-9315-931FF97ADCF1/f4/de7a97b1/Component.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Gravity/GravityObject.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/GravityScource.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/GravityArea.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityScource.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityMaster.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityObject.cs" />
+        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityArea.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/BoolVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/FloatVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/IntVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/GameEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/GameEventListener.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Vec3Variable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Events/GameEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Events/GameEventListener.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Variables/BoolVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Variables/FloatVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Variables/IntVariable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Variables/Vec3Variable.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.29885057" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30890805" />
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.6038647" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="" />
+      <created>1610719906639</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610719906639</updated>
+      <workItem from="1610719908857" duration="657000" />
+      <workItem from="1610720590408" duration="3802000" />
+      <workItem from="1611338064934" duration="1005000" />
+      <workItem from="1611342376947" duration="799000" />
+      <workItem from="1611396818888" duration="3528000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="727" height="939" key="GridCell.Tab.0.bottom" timestamp="1610724428815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428815" />
+    <state width="727" height="939" key="GridCell.Tab.0.center" timestamp="1610724428815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428815" />
+    <state width="727" height="939" key="GridCell.Tab.0.left" timestamp="1610724428815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428815" />
+    <state width="727" height="939" key="GridCell.Tab.0.right" timestamp="1610724428815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428815" />
+    <state width="727" height="939" key="GridCell.Tab.1.bottom" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.1.center" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.1.left" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.1.right" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.2.bottom" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.2.center" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.2.left" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.2.right" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.3.bottom" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.3.center" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.3.left" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state width="727" height="939" key="GridCell.Tab.3.right" timestamp="1610724428816">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="727" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610724428816" />
+    <state x="794" y="220" key="RiderGenerateDialog" timestamp="1611338203323">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="794" y="220" key="RiderGenerateDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611338203323" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1611399643987">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611399643987" />
+    <state x="623" y="225" key="search.everywhere.popup" timestamp="1610721469230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1610721469230" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Gravity/Scrips/GravityArea.cs</url>
+          <line>37</line>
+          <properties documentPath="D:\dev\Mobile test\Assets\Gravity\Scrips\GravityArea.cs" initialLine="37" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Gravity/Scrips/GravityArea.cs</url>
+          <line>30</line>
+          <properties documentPath="D:\dev\Mobile test\Assets\Gravity\Scrips\GravityArea.cs" initialLine="30" />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

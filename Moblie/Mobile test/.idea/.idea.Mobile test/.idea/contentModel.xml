@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\maart\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\maart\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Mobile test.1007835537.00" t="ExcludeRecursive" />
+    <e p="D:\dev\Mobile test" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Utility" t="Include">
+          <e p="Events" t="Include">
+            <e p="GameEvent.cs" t="Include" />
+            <e p="GameEventListener.cs" t="Include" />
+          </e>
+          <e p="Variables" t="Include">
+            <e p="BoolVariable.cs" t="Include" />
+            <e p="FloatVariable.cs" t="Include" />
+            <e p="IntVariable.cs" t="Include" />
+            <e p="Vec3Variable.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Mobile test.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
