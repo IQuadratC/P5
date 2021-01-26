@@ -7,3 +7,6 @@ auf einen punkt klicken und diesen als Ziel markieren.
 Um Ziel rotieren
 
 Zum Ziel Fahren
+
+## Grafik
+Handgezeichnet
