@@ -13,20 +13,16 @@ s.bind(('', port))
 # allow maximum 1 connection to the socket
 s.listen(1)
 
-# wait till a client accept connection
-c, addr = s.accept()
+while True:
+    # wait till a client accept connection
+    c, addr = s.accept()
 
-# display client address
-print("CONNECTION FROM:", str(addr))
+    # display client address
+    print("CONNECTION FROM:", str(addr))
 
-# receive message string from server, at a time 1024 B
-msg = c.recv(1024)
-
-# repeat as long as message
-# string are not empty
-while msg:
-    print('Recived:' + msg.decode())
+    # receive message string from server, at a time 1024 B
     msg = c.recv(1024)
+    print(msg.decode("utf-8").split(" ", 2)[1])
 
-# disconnect the server
-c.close()
+    # disconnect the server
+    c.close()

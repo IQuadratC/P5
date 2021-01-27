@@ -441,6 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5554d4c9caf3f9b4595f708d49d5abff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  message: ButtonUp
 --- !u!1 &562670645
 GameObject:
   m_ObjectHideFlags: 0

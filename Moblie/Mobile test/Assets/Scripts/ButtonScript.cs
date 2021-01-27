@@ -5,20 +5,18 @@ using UnityEngine.Networking;
 
 public class ButtonScript : MonoBehaviour
 {
+    public string message;
         int n;
         public void OnButtonPress()
         {
             n++;
             Debug.Log("Button clicked " + n + " times.");
-            StartCoroutine(Upload());
+            StartCoroutine(Upload(message));
         }
         
-        IEnumerator Upload()
+        IEnumerator Upload(string msg)
         {
-            List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-            formData.Add(new MultipartFormDataSection("field1=foo&field2=bar"));
-
-            UnityWebRequest www = UnityWebRequest.Post("http://127.0.0.1:5000/", formData);
+            UnityWebRequest www = UnityWebRequest.Post("http://127.0.0.1:5000/" + msg, "");
             yield return www.SendWebRequest();
 
             if (www.isNetworkError || www.isHttpError)
