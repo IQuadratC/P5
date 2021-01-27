@@ -1,41 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="" />
+    <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/InGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17AD9609-AE06-4F2C-9315-931FF97ADCF1/f4/de7a97b1/Component.cs" root0="SKIP_HIGHLIGHTING" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/Assets/Gravity/GravityObject.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/GravityScource.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/GravityArea.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityScource.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityMaster.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityObject.cs" />
-        <option value="$PROJECT_DIR$/Assets/Gravity/Scrips/GravityArea.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/BoolVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/FloatVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/IntVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/GameEvent.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/GameEventListener.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Vec3Variable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Events/GameEvent.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Events/GameEventListener.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Variables/BoolVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Variables/FloatVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Variables/IntVariable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Utility/Variables/Vec3Variable.cs" />
-      </list>
-    </option>
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ButtonScript.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -62,7 +41,7 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <set />
+        <list />
       </option>
       <method v="2" />
     </configuration>
@@ -71,7 +50,7 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <set />
+        <list />
       </option>
       <method v="2" />
     </configuration>
@@ -97,6 +76,9 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
