@@ -7,8 +7,8 @@ namespace Utility.Variables
     public class IntVariable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public float Value;
-        public float InitialValue;
+        public int Value;
+        public int InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()

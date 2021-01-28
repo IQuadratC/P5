@@ -7,7 +7,8 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
-          <e p="ButtonScript.cs" t="Include" />
+          <e p="ButtonListener.cs" t="Include" />
+          <e p="TCPTestClient.cs" t="Include" />
         </e>
         <e p="Utility" t="Include">
           <e p="Events" t="Include">
@@ -18,6 +19,7 @@
             <e p="BoolVariable.cs" t="Include" />
             <e p="FloatVariable.cs" t="Include" />
             <e p="IntVariable.cs" t="Include" />
+            <e p="StringVariable.cs" t="Include" />
             <e p="Vec3Variable.cs" t="Include" />
           </e>
         </e>

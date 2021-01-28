@@ -22,7 +22,9 @@ while True:
 
     # receive message string from server, at a time 1024 B
     msg = c.recv(1024)
-    print(msg.decode("utf-8").split(" ", 2)[1])
+    while msg:
+        print(msg.decode("utf-8"))#.split(" ", 2)[1])
+        msg = c.recv(1024)
 
     # disconnect the server
     c.close()
