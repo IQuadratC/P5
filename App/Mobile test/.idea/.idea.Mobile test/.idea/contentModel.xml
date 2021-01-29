@@ -9,6 +9,9 @@
         <e p="Scripts" t="Include">
           <e p="ButtonListener.cs" t="Include" />
           <e p="ButtonScript.cs" t="Include" />
+          <e p="Lidar" t="Include">
+            <e p="ProcessLidarData.cs" t="Include" />
+          </e>
           <e p="TCPTestClient.cs" t="Include" />
         </e>
         <e p="Utility" t="Include">
@@ -17,7 +20,6 @@
             <e p="GameEvent.cs" t="Include" />
             <e p="GameEventListener.cs" t="Include" />
           </e>
-          <e p="FileHelper.cs" t="Include" />
           <e p="Variables" t="Include">
             <e p="BoolVariable.cs" t="Include" />
             <e p="FloatVariable.cs" t="Include" />

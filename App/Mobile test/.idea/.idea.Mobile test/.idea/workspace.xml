@@ -20,17 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Utility/CSV.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Utility/FileHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Utility/FileHelper.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Sphere.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Sphere.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Utility/CSV.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/lidartestdata.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/lidartestdata.csv.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TCPTestClient.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TCPTestClient.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Utility/CSV.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Utility/Csv.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Utility/FileHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Utility/FileHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,28 +48,38 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ButtonScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ButtonListener.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/School/Q1/P5/App/Mobile test/Assets/Scripts/TCPTestClient.cs.meta" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/2a/0d72e35c/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/School/Q1/P5/App/Mobile test/Assets/Utility/CSV.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/School/Q1/P5/App/Mobile test/Assets/Utility/CSV.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Utility/CSV.cs" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/Assets/Utility/CSV.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/Csv.cs" />
+        <option value="$PROJECT_DIR$/Assets/lidartestdata.csv" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" />
       </list>
     </option>
   </component>
   <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.29885057" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30890805" />
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.14468086" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.08085106" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="XThreadsFramesViewSplitterKey" value="0.6038647" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.28712872" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -84,10 +99,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="9900">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="9900" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -124,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611776337145</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="CSV Parser">
+      <created>1611921989564</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1611921989564</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,20 +167,94 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="created button which sends http post request" />
     <MESSAGE value="sending data from unity to python now works" />
-    <option name="LAST_COMMIT_MESSAGE" value="sending data from unity to python now works" />
+    <MESSAGE value="CSV Parser" />
+    <option name="LAST_COMMIT_MESSAGE" value="CSV Parser" />
   </component>
   <component name="WindowStateProjectService">
+    <state width="491" height="438" key="DebuggerActiveHint" timestamp="1611929461808">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="491" height="438" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929461808" />
+    <state width="736" height="939" key="GridCell.Tab.0.bottom" timestamp="1611929369932">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369932" />
+    <state width="736" height="939" key="GridCell.Tab.0.center" timestamp="1611929369932">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369932" />
+    <state width="736" height="939" key="GridCell.Tab.0.left" timestamp="1611929369932">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369932" />
+    <state width="736" height="939" key="GridCell.Tab.0.right" timestamp="1611929369932">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369932" />
+    <state width="736" height="939" key="GridCell.Tab.1.bottom" timestamp="1611929374195">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929374195" />
+    <state width="736" height="939" key="GridCell.Tab.1.center" timestamp="1611929374195">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929374195" />
+    <state width="736" height="939" key="GridCell.Tab.1.left" timestamp="1611929374195">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929374195" />
+    <state width="736" height="939" key="GridCell.Tab.1.right" timestamp="1611929374195">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929374195" />
+    <state width="736" height="939" key="GridCell.Tab.2.bottom" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.2.center" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.2.left" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.2.right" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.3.bottom" timestamp="1611929369775">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369775" />
+    <state width="736" height="939" key="GridCell.Tab.3.center" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.3.left" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
+    <state width="736" height="939" key="GridCell.Tab.3.right" timestamp="1611929369774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="736" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929369774" />
     <state x="184" y="86" key="MergeDialog" timestamp="1611921689122">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="86" key="MergeDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611921689122" />
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1611921672346">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1611925177920">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611921672346" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611925177920" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1611925157215">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611925157215" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
