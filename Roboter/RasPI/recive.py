@@ -4,27 +4,27 @@ from math import sqrt
 
 
 sidewaysMultiplier = 1
-steepPerMeter = 1
-millisecondsPerMeter = 30000
+steepPerMeter = 1000
+millisecondsPerMeter = 20000
 stepsPerDegree = 1
-millisecondsPerDegree = 500
+rotationMillisecondPerSteep = 20
 
-ser = serial.Serial(
-    port='\\\\.\\COM4',
-    baudrate=115200,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS
-)
-if ser.isOpen():
-    ser.close()
-ser.open()
-ser.isOpen()
+# ser = serial.Serial(
+#     port='\\\\.\\COM4',
+#     baudrate=115200,
+#     parity=serial.PARITY_ODD,
+#     stopbits=serial.STOPBITS_ONE,
+#     bytesize=serial.EIGHTBITS
+# )
+# if ser.isOpen():
+#     ser.close()
+# ser.open()
+# ser.isOpen()
 
 
 def send(msg):
-    ser.write(msg)
-    print(msg)
+    # ser.write(msg)
+    print(' '.join(format(x, '02x') for x in msg))
 
 
 def read(msg):
@@ -45,20 +45,24 @@ def read(msg):
 
 
 def move(x, y): # x, y in meters
-    m1, m2, m3, m4 = steepPerMeter * x
+    m1 = steepPerMeter * x
+    m2 = steepPerMeter * x
+    m3 = steepPerMeter * x
+    m4 = steepPerMeter * x
     m1 -= y * steepPerMeter * sidewaysMultiplier
     m2 += y * steepPerMeter * sidewaysMultiplier
     m3 += y * steepPerMeter * sidewaysMultiplier
     m4 -= y * steepPerMeter * sidewaysMultiplier
     time = millisecondsPerMeter * sqrt(x*x+y*y)
+    directions = 0b0
     if m1 < 0:
-        directions = 8
+        directions = 0b1000
     if m2 < 0:
-        directions += 4
+        directions += 0b0100
     if m3 < 0:
-        directions += 2
+        directions += 0b0010
     if m4 < 0:
-        directions += 1
+        directions += 0b0001
 
     send(
         int(abs(m1)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
@@ -74,31 +78,22 @@ def move(x, y): # x, y in meters
 
 
 def rotate(a):  # a in degrees
-    while a > 180:
-        a -= 360
-    while a < -180:
-        a += 360
     if a < 0:
         directions = 0b0101
     else:
-        directions = 0b0101
+        directions = 0b1010
         
     send(
         int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
         int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
         int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
         int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
+        int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
+        int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
+        int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
+        int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
         (directions * 16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
     )
-
-
-rotate(-0xffff / stepsPerDegree)
-move(0xffff / steepPerMeter, 0)
-
 
 # take the server name and port name
 host = 'local host'
