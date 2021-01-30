@@ -1,8 +1,13 @@
 import socket
 import serial
+from math import sqrt
 
-speed = 20
+
 sidewaysMultiplier = 1
+steepPerMeter = 1
+millisecondsPerMeter = 30000
+stepsPerDegree = 1
+millisecondsPerDegree = 500
 
 ser = serial.Serial(
     port='\\\\.\\COM4',
@@ -24,79 +29,75 @@ def send(msg):
 
 def read(msg):
     if msg == "forward":
-        send(
-            (0b1111111111111111).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0b1111111111111111).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0b1111111111111111).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0b1111111111111111).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b00000000).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        move(0xffff / steepPerMeter, 0)
     elif msg == "backward":
-        send(
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b1111*16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        move(-0xffff / steepPerMeter, 0)
     elif msg == "right":
-        send(
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b1001*16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        move(0, 0xffff/(steepPerMeter*sidewaysMultiplier))
     elif msg == "left":
-        send(
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            (speed*sidewaysMultiplier).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b0110*16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        move(0, -0xffff/(steepPerMeter*sidewaysMultiplier))
     elif msg == "rotateLeft":
-        send(
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b0101*16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        rotate(0xffff / stepsPerDegree)
     elif msg == "rotateRight":
-        send(
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
-            (0xffff).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
-            speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-            (0b1010*16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
-        )
+        rotate(-0xffff / stepsPerDegree)
     elif msg == "stop":
         send((0).to_bytes(13, "big"))
+
+
+def move(x, y): # x, y in meters
+    m1, m2, m3, m4 = steepPerMeter * x
+    m1 -= y * steepPerMeter * sidewaysMultiplier
+    m2 += y * steepPerMeter * sidewaysMultiplier
+    m3 += y * steepPerMeter * sidewaysMultiplier
+    m4 -= y * steepPerMeter * sidewaysMultiplier
+    time = millisecondsPerMeter * sqrt(x*x+y*y)
+    if m1 < 0:
+        directions = 8
+    if m2 < 0:
+        directions += 4
+    if m3 < 0:
+        directions += 2
+    if m4 < 0:
+        directions += 1
+
+    send(
+        int(abs(m1)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
+        int(abs(m2)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
+        int(abs(m3)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
+        int(abs(m4)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
+        int(time/abs(m1)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
+        int(time/abs(m2)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
+        int(time/abs(m3)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
+        int(time/abs(m4)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
+        (directions * 16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
+    )
+
+
+def rotate(a):  # a in degrees
+    while a > 180:
+        a -= 360
+    while a < -180:
+        a += 360
+    if a < 0:
+        directions = 0b0101
+    else:
+        directions = 0b0101
+        
+    send(
+        int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 1 Steps
+        int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 2 Steps
+        int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 3 Steps
+        int(abs(stepsPerDegree * a)).to_bytes(2, "big", signed=False) +  # 2 Bytes Motor 4 Steps
+        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 1 Speed
+        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
+        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
+        int(millisecondsPerDegree * abs(a)).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
+        (directions * 16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
+    )
+
+
+rotate(-0xffff / stepsPerDegree)
+move(0xffff / steepPerMeter, 0)
 
 
 # take the server name and port name
