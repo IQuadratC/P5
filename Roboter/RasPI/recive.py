@@ -9,6 +9,7 @@ steepPerMeter = 1000
 millisecondsPerMeter = 20000
 stepsPerDegree = 1
 rotationMillisecondPerSteep = 20
+stopMultiThread = 0
 
 ser = serial.Serial(
     port='\\\\.\\COM7',
@@ -29,6 +30,7 @@ def send(msg):
 
 
 def read(msg):
+    global stopMultiThread
     if msg == "forward":
         move(0xffff / steepPerMeter, 0)
     elif msg == "backward":
@@ -48,6 +50,7 @@ def read(msg):
     elif msg.split(" ", 1)[0] == "rotate":
         rotate(float(msg.split(" ", 1)[1]))
     elif msg.split(",", 1)[0] == "multi":
+        stopMultiThread = 0
         thread = threading.Thread(target=multi, args=(msg.split(",", 1)[1],))
         thread.start()
 
@@ -127,7 +130,9 @@ def rotate(a):  # a in degrees
 def multi(msg):
     for i in msg.split(","):
         read(i)
-        print(ser.read(size=1))  # wait until movement is done
+        ser.read(size=1)  # wait until movement is done
+        if stopMultiThread == 1:
+            return
 
 
 # take the server name and port name
@@ -153,6 +158,7 @@ while True:
     # receive message string from server, at a time 1024 B
     msg = c.recv(1024)
     while msg:
+        stopMultiThread = 1
         read(msg.decode("utf-8"))
         print(msg.decode("utf-8"))
         msg = c.recv(1024)
