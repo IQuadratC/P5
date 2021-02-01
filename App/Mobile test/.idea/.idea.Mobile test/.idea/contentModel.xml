@@ -8,7 +8,6 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="ButtonListener.cs" t="Include" />
-          <e p="ButtonScript.cs" t="Include" />
           <e p="Lidar" t="Include">
             <e p="ProcessLidarData.cs" t="Include" />
           </e>
