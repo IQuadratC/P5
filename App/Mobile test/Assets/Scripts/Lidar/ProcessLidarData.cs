@@ -51,9 +51,28 @@ namespace Lidar
                 foreach (Vector2 point in line)
                 {
                     GameObject o = Instantiate(lightbluespherePreFab, point / 100, Quaternion.identity);
-                    o.transform.SetParent(lightbluePartent.transform, true);
+                    o.transform.SetParent(redPartent.transform, true);
                 }
             }
+            
+            foreach (List<Vector2> line in lidarPoint1.lines)
+            {
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point / 100, Quaternion.identity);
+                    o.transform.SetParent(bluePartent.transform, true);
+                }
+            }
+            
+            foreach (List<Vector2> line in lidarPoint2.lines)
+            {
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point / 100, Quaternion.identity);
+                    o.transform.SetParent(greenPartent.transform, true);
+                }
+            }
+            
             
             
         }

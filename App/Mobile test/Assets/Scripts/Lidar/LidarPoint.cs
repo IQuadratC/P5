@@ -85,8 +85,8 @@ namespace Lidar
             return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
         }
 
-        private const float maxDistance = 20;
-        private const int minLineLength = 5;
+        private const float maxDistance = 30;
+        private const int minLineLength = 10;
         private void UpdateLines()
         {
             int lineStart = 0;
