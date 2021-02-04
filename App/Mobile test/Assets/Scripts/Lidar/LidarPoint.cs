@@ -6,20 +6,25 @@ using Utility;
 
 namespace Lidar
 {
+    
     public class LidarPoint
     {
+        private List<int>[] distances;
         public Dictionary<int, Vector2> positions;
+        public List<List<Vector2>> lines;
         
         public LidarPoint()
         {
-            positions = new Dictionary<int, Vector2>();
             distances = new List<int>[360];
+            positions = new Dictionary<int, Vector2>();
+            lines = new List<List<Vector2>>();
         }
-        private List<int>[] distances;
+        
         
         public void LoadCSVData(string name)
         {
             List<List<string>> csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + name));
+            csvData.RemoveAt(csvData.Count - 1);
             
             for (int i = 0; i < distances.Length; i++)
             {
@@ -37,6 +42,7 @@ namespace Lidar
             }
             
             UpdatePositions();
+            UpdateLines();
         }
         public void AddData(int[,] data)
         {
@@ -46,6 +52,7 @@ namespace Lidar
             }
             
             UpdatePositions();
+            UpdateLines();
         }
 
         private void UpdatePositions()
@@ -69,6 +76,61 @@ namespace Lidar
                 float x = (float)(Math.Sin(i * Math.PI / 180) * sum);
                 float y = (float)(Math.Cos(i * Math.PI / 180) * sum);
                 positions[i] = new Vector2(x,y);
+            }
+        }
+        
+        private float GetDistancetoLine(Vector2 line0Pos, Vector2 line1Pos, Vector2 testPos)
+        {
+            Vector2 b = line0Pos - line1Pos;
+            return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
+        }
+
+        private const float maxDistance = 20;
+        private const int minLineLength = 5;
+        private void UpdateLines()
+        {
+            int lineStart = 0;
+            int linePos0 = 0;
+            int linePos1 = 0;
+            bool lineAktive = false;
+            List<Vector2> line = new List<Vector2>();
+            
+            Vector2[] positionsArray = new Vector2[positions.Count];
+            positions.Values.CopyTo(positionsArray, 0);
+            
+            for (int i = 0; i < positionsArray.Length; i++)
+            {
+                if (!lineAktive && i >= linePos0 + line.Count + 2)
+                {
+                    if (line.Count > minLineLength)
+                    {
+                        lines.Add(line);
+                    }
+
+                    linePos0 = i - 2;
+                    linePos1 = i - 1;
+                    
+                    line = new List<Vector2>();
+                    line.Add(positionsArray[linePos0]);
+                    line.Add(positionsArray[linePos1]);
+
+                    lineAktive = true;
+                }
+
+                if (lineAktive)
+                {
+                    float distance = GetDistancetoLine(
+                        positionsArray[linePos0],
+                        positionsArray[linePos1],
+                        positionsArray[i]);
+                    
+                    lineAktive = distance < maxDistance;
+
+                    if (lineAktive)
+                    {
+                        line.Add(positionsArray[i]);
+                    }
+                }
             }
         }
     }

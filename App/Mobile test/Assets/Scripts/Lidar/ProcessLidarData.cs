@@ -13,9 +13,11 @@ namespace Lidar
         public GameObject redspherePreFab;
         public GameObject bluespherePreFab;
         public GameObject greenspherePreFab;
+        public GameObject lightbluespherePreFab;
         public GameObject redPartent;
         public GameObject bluePartent;
         public GameObject greenPartent;
+        public GameObject lightbluePartent;
         
         private void Start()
         {
@@ -23,16 +25,10 @@ namespace Lidar
             lidarPoint.LoadCSVData("Testdata_notMove.csv");
             
             LidarPoint lidarPoint1 = new LidarPoint();
-            lidarPoint1.LoadCSVData("Testdata_Move_40cm.csv");
-
-            Vector2[] averagePositions = new Vector2[360];
-            Vector2 offset = Vector2.zero;
-            for (int i = 0; i < 360; i++)
-            {
-                averagePositions[i] = lidarPoint.positions[i] - lidarPoint1.positions[i];
-                offset += averagePositions[i];
-            }
-            offset /= 360;
+            lidarPoint1.LoadCSVData("Testdata_Move_20cm.csv");
+            
+            LidarPoint lidarPoint2 = new LidarPoint();
+            lidarPoint2.LoadCSVData("Testdata_Move_40cm.csv");
 
             foreach (Vector2 lidarPointPosition in lidarPoint.positions.Values)
             {
@@ -44,14 +40,22 @@ namespace Lidar
                 GameObject o = Instantiate(bluespherePreFab, lidarPointPosition / 100, Quaternion.identity);
                 o.transform.SetParent(bluePartent.transform, true);
             }
-            foreach (Vector2 lidarPointPosition in averagePositions)
+            foreach (Vector2 lidarPointPosition in lidarPoint2.positions.Values)
             {
                 GameObject o = Instantiate(greenspherePreFab, lidarPointPosition / 100, Quaternion.identity);
                 o.transform.SetParent(greenPartent.transform, true);
             }
-            Instantiate(whitespherePreFab, offset / 100, Quaternion.identity);
-
-            bluePartent.transform.position += new Vector3(offset.x / 100, offset.y / 100, 0);
+            
+            foreach (List<Vector2> line in lidarPoint.lines)
+            {
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point / 100, Quaternion.identity);
+                    o.transform.SetParent(lightbluePartent.transform, true);
+                }
+            }
+            
+            
         }
     }
 }
