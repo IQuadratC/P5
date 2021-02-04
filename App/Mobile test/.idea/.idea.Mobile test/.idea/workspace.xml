@@ -20,24 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Blue Variant.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Blue Variant.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Green Variant.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Green Variant.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Red.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Red.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/White Variant.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/White Variant.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Testdata_Move_40cm.csv.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Testdata_notMove.csv.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/Sphere.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/Sphere.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Testdata_Move_40cm.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Testdata_Move_40cm.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Testdata_notMove.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Testdata_notMove.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Utility/Csv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Utility/Csv.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +38,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ButtonListener.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/2a/0d72e35c/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -61,6 +50,7 @@
         <option value="$PROJECT_DIR$/Assets/Testdata_notMove.csv" />
         <option value="$PROJECT_DIR$/Assets/Testdata_Move_40cm.csv" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" />
       </list>
     </option>
   </component>
@@ -99,10 +89,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="16808">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="16808" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -125,7 +115,7 @@
       <workItem from="1611774425156" duration="1824000" />
       <workItem from="1611832670409" duration="4132000" />
       <workItem from="1612181264377" duration="2940000" />
-      <workItem from="1612437864437" duration="2589000" />
+      <workItem from="1612437864437" duration="5858000" />
     </task>
     <task id="LOCAL-00001" summary="created button which sends http post request">
       <created>1611761954943</created>
@@ -162,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612187121486</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fist try on Linear Movement">
+      <created>1612440777985</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1612440777985</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,89 +187,90 @@
     <MESSAGE value="CSV Parser" />
     <MESSAGE value="Get Map of Lidar Data" />
     <MESSAGE value="Map System" />
-    <option name="LAST_COMMIT_MESSAGE" value="Map System" />
+    <MESSAGE value="Fist try on Linear Movement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fist try on Linear Movement" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="491" height="438" key="DebuggerActiveHint" timestamp="1611929461808">
+    <state width="491" height="438" key="DebuggerActiveHint" timestamp="1612442762041">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="491" height="438" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611929461808" />
-    <state width="736" height="939" key="GridCell.Tab.0.bottom" timestamp="1611930660768">
+    <state width="491" height="438" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612442762041" />
+    <state width="736" height="939" key="GridCell.Tab.0.bottom" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.0.center" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.0.center" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.0.left" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.0.left" timestamp="1612443036098">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.0.right" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036098" />
+    <state width="736" height="939" key="GridCell.Tab.0.right" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.1.bottom" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.1.bottom" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.1.center" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.1.center" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.1.left" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.1.left" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.1.right" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.1.right" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.2.bottom" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.2.bottom" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.2.center" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.2.center" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.2.left" timestamp="1611930660768">
+    <state width="736" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.2.left" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660768" />
-    <state width="736" height="939" key="GridCell.Tab.2.right" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.2.right" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.3.bottom" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.3.bottom" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.3.center" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.3.center" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.3.left" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.3.left" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
-    <state width="736" height="939" key="GridCell.Tab.3.right" timestamp="1611930660769">
+    <state width="736" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
+    <state width="736" height="939" key="GridCell.Tab.3.right" timestamp="1612443036099">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="736" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611930660769" />
+    <state width="736" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612443036099" />
     <state x="184" y="86" key="MergeDialog" timestamp="1611921689122">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="86" key="MergeDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1611921689122" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612187125967">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612440779134">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612187125967" />
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612438027992">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612440779134" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612444187844">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612438027992" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612444187844" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
