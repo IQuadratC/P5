@@ -10,17 +10,19 @@ namespace Lidar
     
     public class LidarPoint
     {
-        private List<int>[] distances;
+        private List<float>[] distances;
         public Dictionary<int, Vector2> positions;
         public List<List<Vector2>> lines;
+        public List<Vector4> finallines;
         
         public LidarPoint()
         {
-            distances = new List<int>[360];
+            distances = new List<float>[360];
             positions = new Dictionary<int, Vector2>();
             lines = new List<List<Vector2>>();
+            finallines = new List<Vector4>();
         }
-        
+
         
         public void LoadCSVData(string name)
         {
@@ -29,7 +31,7 @@ namespace Lidar
             
             for (int i = 0; i < distances.Length; i++)
             {
-                distances[i] = new List<int>();
+                distances[i] = new List<float>();
             }
             
             foreach (var line in csvData)
@@ -38,7 +40,7 @@ namespace Lidar
                 int data = int.Parse(line[1]);
                 if (data != 0)
                 {
-                    distances[index].Add(data);
+                    distances[index].Add((float)data / 10);
                 }
             }
             
@@ -49,7 +51,7 @@ namespace Lidar
         {
             for (int i = 0; i < data.GetLength(0); i++)
             {
-                distances[data[i,0]].Add(data[i,1]);
+                distances[data[i,0]].Add((float)data[i,1] / 10);
             }
             
             UpdatePositions();
@@ -60,7 +62,7 @@ namespace Lidar
         {
             for (int i = 0; i < distances.Length; i++)
             {
-                int sum = 0;
+                float sum = 0;
                 foreach (var distance in distances[i])
                 {
                     sum += distance;
@@ -80,13 +82,8 @@ namespace Lidar
             }
         }
         
-        private float GetDistancetoLine(Vector2 line0Pos, Vector2 line1Pos, Vector2 testPos)
-        {
-            Vector2 b = line0Pos - line1Pos;
-            return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
-        }
-        
-        private const float maxDistance = 5;
+
+        private const float maxDistance = 1;
         private const int minLineLength = 5;
         private void UpdateLines()
         {
@@ -155,10 +152,9 @@ namespace Lidar
                 
                 linelist.Add(line);
             }
-
-            int safty = 0;
+            
             int index = 0;
-            while (true)
+            for (int k = 0; k < 100000; k++)
             {
                 List<Vector2> line = linelist[index];
                 lines.Add(line);
@@ -192,17 +188,21 @@ namespace Lidar
                 {
                     break;
                 }
+            }
 
-                if (safty > 100000)
-                {
-                    break;
-                }
-                safty++;
+            
+            for (int i = 0; i < lines.Count; i++)
+            {
+                finallines.Add(FindLinearLeastSquaresFit(lines[i]));
             }
             
-            int k = 0;
+            int t = 0;
         }
-
+        private float GetDistancetoLine(Vector2 line0Pos, Vector2 line1Pos, Vector2 testPos)
+        {
+            Vector2 b = line0Pos - line1Pos;
+            return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
+        }
         private static int SortListByLenght<T>(List<T> x, List<T> y)
         {
             int xLenght = x.Count;
@@ -214,5 +214,30 @@ namespace Lidar
             }
             return xLenght < yLenght ? 1 : 0;
         }
+        private static Vector4 FindLinearLeastSquaresFit(List<Vector2> points)
+        {
+            // Perform the calculation.
+            // Find the values S1, Sx, Sy, Sxx, and Sxy.
+            double S1 = points.Count;
+            double Sx = 0;
+            double Sy = 0;
+            double Sxx = 0;
+            double Sxy = 0;
+            foreach (Vector2 pt in points)
+            {
+                Sx += pt.x;
+                Sy += pt.y;
+                Sxx += pt.x * pt.x;
+                Sxy += pt.x * pt.y;
+            }
+
+            // Solve for m and b.
+            double m = (Sxy * S1 - Sx * Sy) / (Sxx * S1 - Sx * Sx);
+            double b = (Sxy * Sx - Sy * Sxx) / (Sx * Sx - S1 * Sxx);
+            
+            return new Vector4(0, (float)b,1,(float)m);
+        }
+
+        
     }
 }
