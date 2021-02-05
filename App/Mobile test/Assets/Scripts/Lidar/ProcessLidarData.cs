@@ -84,12 +84,18 @@ namespace Lidar
             
             foreach (var line in lidarPoint1.finallines)
             {
-                DrawLine(line, Color.blue, 10000);
+                DrawLine(line + new Vector4(-20,0,0,0), Color.blue, 10000);
             }
             
             foreach (var line in lidarPoint2.finallines)
             {
-                DrawLine(line, Color.green, 10000);
+                DrawLine(line + new Vector4(-40,0,0,0), Color.green, 10000);
+            }
+
+            foreach (Vector2 intersectionPoint in lidarPoint.intersectionPoints)
+            {
+                GameObject o = Instantiate(whitespherePreFab, intersectionPoint, Quaternion.identity);
+                o.transform.SetParent(lightbluePartent.transform, true);
             }
         }
         
@@ -98,6 +104,11 @@ namespace Lidar
             Vector3 pos = new Vector3(line.x - line.z * bounds, line.y - line.w * bounds, 0);
             Vector3 dir = new Vector3(line.z, line.w) * bounds * 2;
             Debug.DrawRay(pos, dir, color, 10000000000, false);
+        }
+
+        private void OverlapIntersectionPoints()
+        {
+            
         }
     }
 }

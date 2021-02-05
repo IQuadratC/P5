@@ -14,6 +14,7 @@ namespace Lidar
         public Dictionary<int, Vector2> positions;
         public List<List<Vector2>> lines;
         public List<Vector4> finallines;
+        public List<Vector2> intersectionPoints;
         
         public LidarPoint()
         {
@@ -21,8 +22,8 @@ namespace Lidar
             positions = new Dictionary<int, Vector2>();
             lines = new List<List<Vector2>>();
             finallines = new List<Vector4>();
+            intersectionPoints = new List<Vector2>();
         }
-
         
         public void LoadCSVData(string name)
         {
@@ -46,6 +47,7 @@ namespace Lidar
             
             UpdatePositions();
             UpdateLines();
+            UpdateIntersectionPoints();
         }
         public void AddData(int[,] data)
         {
@@ -56,6 +58,7 @@ namespace Lidar
             
             UpdatePositions();
             UpdateLines();
+            UpdateIntersectionPoints();
         }
 
         private void UpdatePositions()
@@ -83,7 +86,7 @@ namespace Lidar
         }
         
 
-        private const float maxDistance = 1;
+        private const float maxDistance = 1f;
         private const int minLineLength = 5;
         private void UpdateLines()
         {
@@ -238,6 +241,44 @@ namespace Lidar
             return new Vector4(0, (float)b,1,(float)m);
         }
 
+        
+        private const int bounds = 1000;
+        private void UpdateIntersectionPoints()
+        {
+            foreach (Vector4 finalline in finallines)
+            {
+                foreach (Vector4 testFinalline in finallines)
+                {
+                    Vector2 intersection = FindIntersection(
+                        new Vector2(finalline.x, finalline.y), 
+                        new Vector2(finalline.x + finalline.z, finalline.y + finalline.w), 
+                        new Vector2(testFinalline.x, testFinalline.y), 
+                        new Vector2(testFinalline.x + testFinalline.z, testFinalline.y + testFinalline.w));
+
+                    if (!intersectionPoints.Contains(intersection) && intersection.magnitude < bounds)
+                    {
+                        intersectionPoints.Add(intersection);
+                    }
+                }
+            }
+        }
+        private Vector2 FindIntersection(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+        {
+            float dx12 = p2.x - p1.x;
+            float dy12 = p2.y - p1.y;
+            float dx34 = p4.x - p3.x;
+            float dy34 = p4.y - p3.y;
+            
+            float denominator = (dy12 * dx34 - dx12 * dy34);
+            float t1 = ((p1.x - p3.x) * dy34 + (p3.y - p1.y) * dx34) / denominator;
+            
+            if (float.IsInfinity(t1))
+            {
+                return  new Vector2(float.NaN, float.NaN);
+            }
+            
+            return new Vector2(p1.x + dx12 * t1, p1.y + dy12 * t1);
+        }
         
     }
 }
