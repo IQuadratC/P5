@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Utility;
 
@@ -84,54 +85,134 @@ namespace Lidar
             Vector2 b = line0Pos - line1Pos;
             return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
         }
-
-        private const float maxDistance = 30;
-        private const int minLineLength = 10;
+        
+        private const float maxDistance = 5;
+        private const int minLineLength = 5;
         private void UpdateLines()
         {
-            int lineStart = 0;
             int linePos0 = 0;
             int linePos1 = 0;
-            bool lineAktive = false;
-            List<Vector2> line = new List<Vector2>();
             
             Vector2[] positionsArray = new Vector2[positions.Count];
             positions.Values.CopyTo(positionsArray, 0);
-            
+            List<List<Vector2>> linelist = new List<List<Vector2>>();
+
             for (int i = 0; i < positionsArray.Length; i++)
             {
-                if (!lineAktive && i >= linePos0 + line.Count + 2)
+                linePos0 = i;
+                linePos1 = i - 1;
+                if (linePos1 < 0)
                 {
-                    if (line.Count > minLineLength)
-                    {
-                        lines.Add(line);
-                    }
-
-                    linePos0 = i - 2;
-                    linePos1 = i - 1;
-                    
-                    line = new List<Vector2>();
-                    line.Add(positionsArray[linePos0]);
-                    line.Add(positionsArray[linePos1]);
-
-                    lineAktive = true;
+                    linePos1 = positionsArray.Length - 1;
                 }
 
-                if (lineAktive)
+                List<Vector2> line = new List<Vector2>();
+                for (int j = 0; j < positionsArray.Length; j++)
                 {
+                    int testPos = i + j;
+                    if (testPos >= positionsArray.Length)
+                    {
+                        testPos -= positionsArray.Length;
+                    }
+                    
                     float distance = GetDistancetoLine(
                         positionsArray[linePos0],
                         positionsArray[linePos1],
-                        positionsArray[i]);
-                    
-                    lineAktive = distance < maxDistance;
+                        positionsArray[testPos]);
 
-                    if (lineAktive)
+                    if (distance < maxDistance)
                     {
-                        line.Add(positionsArray[i]);
+                        line.Add(positionsArray[testPos]);
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
+
+                for (int j = 1; j < positionsArray.Length; j++)
+                {
+                    int testPos = i - j;
+                    if (testPos < 0)
+                    {
+                        testPos += positionsArray.Length;
+                    }
+                    
+                    float distance = GetDistancetoLine(
+                        positionsArray[linePos0],
+                        positionsArray[linePos1],
+                        positionsArray[testPos]);
+
+                    if (distance < maxDistance)
+                    {
+                        line.Add(positionsArray[testPos]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                
+                linelist.Add(line);
             }
+
+            int safty = 0;
+            int index = 0;
+            while (true)
+            {
+                List<Vector2> line = linelist[index];
+                lines.Add(line);
+                linelist.RemoveAt(0);
+
+                foreach (List<Vector2> testline in linelist)
+                {
+                    foreach (Vector2 point in line)
+                    {
+                        for (int j = testline.Count - 1; j >= 0; j--)
+                        {
+                            if (testline[j] == point)
+                            {
+                                testline.RemoveAt(j);
+                            }
+                        }
+                    }
+                }
+                
+                linelist.Sort(SortListByLenght);
+
+                for (int i = 0; i < linelist.Count; i++)
+                {
+                    if (linelist[i].Count > minLineLength) continue;
+                
+                    linelist.RemoveRange(i, linelist.Count - i);
+                    break;
+                }
+
+                if (linelist.Count <= 0)
+                {
+                    break;
+                }
+
+                if (safty > 100000)
+                {
+                    break;
+                }
+                safty++;
+            }
+            
+            int k = 0;
+        }
+
+        private static int SortListByLenght<T>(List<T> x, List<T> y)
+        {
+            int xLenght = x.Count;
+            int yLenght = y.Count;
+            
+            if (xLenght > yLenght)
+            {
+                return -1;
+            }
+            return xLenght < yLenght ? 1 : 0;
         }
     }
 }

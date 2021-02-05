@@ -248,6 +248,8 @@ MonoBehaviour:
   bluePartent: {fileID: 1134393156}
   greenPartent: {fileID: 1198209431}
   lightbluePartent: {fileID: 1968843706}
+  linePreFab: {fileID: 6062348807764476965, guid: 4940f65cb6846d64184f44b1efa75ffe,
+    type: 3}
 --- !u!4 &762871143
 Transform:
   m_ObjectHideFlags: 0
