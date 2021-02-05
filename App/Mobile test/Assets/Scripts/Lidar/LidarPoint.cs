@@ -86,7 +86,7 @@ namespace Lidar
         }
         
 
-        private const float maxDistance = 1f;
+        private const float maxDistance = 0.5f;
         private const int minLineLength = 5;
         private void UpdateLines()
         {
@@ -219,8 +219,6 @@ namespace Lidar
         }
         private static Vector4 FindLinearLeastSquaresFit(List<Vector2> points)
         {
-            // Perform the calculation.
-            // Find the values S1, Sx, Sy, Sxx, and Sxy.
             double S1 = points.Count;
             double Sx = 0;
             double Sy = 0;
@@ -233,8 +231,7 @@ namespace Lidar
                 Sxx += pt.x * pt.x;
                 Sxy += pt.x * pt.y;
             }
-
-            // Solve for m and b.
+            
             double m = (Sxy * S1 - Sx * Sy) / (Sxx * S1 - Sx * Sx);
             double b = (Sxy * Sx - Sy * Sxx) / (Sx * Sx - S1 * Sxx);
             
@@ -242,7 +239,7 @@ namespace Lidar
         }
 
         
-        private const int bounds = 1000;
+        private const int bounds = 500;
         private void UpdateIntersectionPoints()
         {
             foreach (Vector4 finalline in finallines)
