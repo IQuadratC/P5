@@ -11,6 +11,7 @@ namespace Lidar
     {
         public float accuracy;
         public Vector2 pos;
+        public float rotation;
     }
     
     public class ProcessLidarData : MonoBehaviour
@@ -29,13 +30,13 @@ namespace Lidar
         private void Start()
         {
             LidarPoint lidarPoint = new LidarPoint();
-            lidarPoint.LoadCSVData("Testdata_notMove.csv");
+            lidarPoint.LoadCSVData("Testdata_gedreht_0.csv");
             
             LidarPoint lidarPoint1 = new LidarPoint();
-            lidarPoint1.LoadCSVData("Testdata_Move_20cm.csv");
+            lidarPoint1.LoadCSVData("Testdata_gedreht_1.csv");
             
             LidarPoint lidarPoint2 = new LidarPoint();
-            lidarPoint2.LoadCSVData("Testdata_Move_40cm.csv");
+            lidarPoint2.LoadCSVData("Testdata_gedreht_2.csv");
             
             foreach (Vector2 lidarPointPosition in lidarPoint.positions.Values)
             {
@@ -53,13 +54,6 @@ namespace Lidar
                 o.transform.SetParent(greenPartent.transform, true);
             }
             
-            Vector2 pos1 = OverlapIntersectionPoints(lidarPoint, lidarPoint1);
-            bluePartent.transform.position = pos1;
-            
-            Vector2 pos2 = OverlapIntersectionPoints(lidarPoint, lidarPoint2);
-            greenPartent.transform.position = pos2;
-            
-            /*
             foreach (List<Vector2> line in lidarPoint.lines)
             {
                 GameObject lineObject = Instantiate(linePreFab, redPartent.transform);
@@ -89,26 +83,28 @@ namespace Lidar
                     o.transform.SetParent(lineObject.transform, true);
                 }
             }
-
-            foreach (var line in lidarPoint.finallines)
-            {
-                DrawLine(line, Color.red, 10000);
-            }
             
-            foreach (var line in lidarPoint1.finallines)
-            {
-                DrawLine(line + new Vector4(0,0,0,0), Color.blue, 10000);
-            }
-            
-            foreach (var line in lidarPoint2.finallines)
-            {
-                DrawLine(line + new Vector4(0,0,0,0), Color.green, 10000);
-            }
-
             foreach (Vector2 intersectionPoint in lidarPoint.intersectionPoints)
             {
                 GameObject o = Instantiate(whitespherePreFab, intersectionPoint, Quaternion.identity);
-                o.transform.SetParent(lightbluePartent.transform, true);
+                o.transform.SetParent(redPartent.transform, true);
+            }
+            
+            foreach (Vector2 intersectionPoint in lidarPoint1.intersectionPoints)
+            {
+                GameObject o = Instantiate(whitespherePreFab, intersectionPoint, Quaternion.identity);
+                o.transform.SetParent(bluePartent.transform, true);
+            }
+            
+            Overlap overlap1 = OverlapIntersectionPointsWithRotation(lidarPoint, lidarPoint1);
+            bluePartent.transform.position = overlap1.pos;
+            bluePartent.transform.eulerAngles = new Vector3(0,0,overlap1.rotation);
+            
+            
+            /*
+            foreach (var line in lidarPoint2.finallines)
+            {
+                DrawLine(RotateVector(line), Color.green, 10000);
             }
             */
         }
@@ -149,11 +145,7 @@ namespace Lidar
                 }
             }
             overlaps.Sort(SortListByAccuracy);
-            
-            Debug.Log(overlaps[0].pos);
-            Debug.Log(overlaps[0].accuracy);
-            Debug.Log(overlaps.Count);
-            
+
             return overlaps[0].pos;
         }
         private static int SortListByAccuracy(Overlap x, Overlap y)
@@ -164,5 +156,98 @@ namespace Lidar
             }
             return x.accuracy > y.accuracy ? 1 : 0;
         }
+
+        private Overlap OverlapIntersectionPointsWithRotation(LidarPoint lidarPoint, LidarPoint lidarPoint1)
+        {
+            overlaps = new List<Overlap>();
+            foreach (Vector2 point in lidarPoint.intersectionPoints)
+            {
+                foreach (Vector2 point1 in lidarPoint.intersectionPoints)
+                {
+                    if(point == point1) continue;
+                    
+                    float distance = (point - point1).magnitude;
+                    float bestDistance = float.MaxValue;
+                    Vector2 bestPoint = Vector2.zero;
+                    Vector2 bestPoint1 = Vector2.zero;
+
+                    foreach (Vector2 point2 in lidarPoint1.intersectionPoints)
+                    {
+                        foreach (Vector2 point3 in lidarPoint1.intersectionPoints)
+                        {
+                            if(point2 == point3) continue;
+                            
+                            float testDistance = Math.Abs(distance - (point2 - point3).magnitude);
+
+                            if (testDistance >= bestDistance) continue;
+                            bestDistance = testDistance;
+                            bestPoint = point2;
+                            bestPoint1 = point3;
+                        }
+                    }
+
+                    Vector2[,] points =
+                    {
+                        {point, point1, bestPoint, bestPoint1},
+                        {point, point1, bestPoint1, bestPoint},
+                        {point1, point, bestPoint1, bestPoint},
+                        {point1, point, bestPoint, bestPoint1}
+                    };
+
+                    bestDistance = float.MaxValue;
+                    Overlap overlap = new Overlap();
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector3 result = LayTowlinesOverEachother(
+                            points[i, 0], points[i, 1], 
+                            points[i, 2], points[i, 3]);
+                        
+                        Vector2 testVector = RotateVector(points[i, 3], result.z) + new Vector2(result.x, result.y);
+                        float testdistance = (testVector - points[i, 1]).magnitude;
+                        
+                        if(testdistance >= bestDistance) continue;
+                        bestDistance = testdistance;
+                        overlap.pos = new Vector2(result.x, result.y);
+                        overlap.rotation = result.z;
+                    }
+
+                    foreach (Vector2 testpoint in lidarPoint.intersectionPoints)
+                    {
+                        
+                        float changedDistance = float.MaxValue;
+                        foreach (Vector2 testpoint1 in lidarPoint1.intersectionPoints)
+                        {
+                            float testChangedDistance = (testpoint - RotateVector(testpoint1, overlap.rotation) + overlap.pos).magnitude;
+                            if (testChangedDistance < changedDistance)
+                            {
+                                changedDistance = testChangedDistance;
+                            }
+                        }
+
+                        overlap.accuracy += changedDistance;
+                    }
+                    overlaps.Add(overlap);
+                }
+            }
+            overlaps.Sort(SortListByAccuracy);
+
+            return overlaps[0];
+        }
+
+        private Vector3 LayTowlinesOverEachother(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+        {
+            Vector2 dir1 = p1 - p2;
+            Vector2 dir2 = p3 - p4;
+            float angle = -Vector2.Angle(dir1, dir2);
+            Vector2 p5 = p1 - RotateVector(p3, angle);
+            
+            return new Vector3(p5.x, p5.y, angle);
+        }
+
+        private Vector2 RotateVector(Vector2 vector, float angle)
+        {
+            return Quaternion.Euler(0, 0, angle) * vector;
+        }
+
     }
 }
