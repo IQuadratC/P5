@@ -86,8 +86,8 @@ namespace Lidar
         }
         
 
-        private const float maxDistance = 0.5f;
-        private const int minLineLength = 4;
+        private const float maxDistance = 2f;
+        private const int minLineLength = 10;
         private void UpdateLines()
         {
             int linePos0 = 0;

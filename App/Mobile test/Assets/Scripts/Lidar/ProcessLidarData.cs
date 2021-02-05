@@ -100,13 +100,9 @@ namespace Lidar
             bluePartent.transform.position = overlap1.pos;
             bluePartent.transform.eulerAngles = new Vector3(0,0,overlap1.rotation);
             
-            
-            /*
-            foreach (var line in lidarPoint2.finallines)
-            {
-                DrawLine(RotateVector(line), Color.green, 10000);
-            }
-            */
+            Overlap overlap2 = OverlapIntersectionPointsWithRotation(lidarPoint, lidarPoint2);
+            greenPartent.transform.position = overlap2.pos;
+            greenPartent.transform.eulerAngles = new Vector3(0,0,overlap2.rotation);
         }
         
         private void DrawLine(Vector4 line, Color color, int bounds)
@@ -217,7 +213,7 @@ namespace Lidar
                         float changedDistance = float.MaxValue;
                         foreach (Vector2 testpoint1 in lidarPoint1.intersectionPoints)
                         {
-                            float testChangedDistance = (testpoint - RotateVector(testpoint1, overlap.rotation) + overlap.pos).magnitude;
+                            float testChangedDistance = (testpoint - RotateVector(testpoint1, overlap.rotation) - overlap.pos).magnitude;
                             if (testChangedDistance < changedDistance)
                             {
                                 changedDistance = testChangedDistance;
