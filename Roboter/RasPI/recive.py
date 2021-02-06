@@ -104,7 +104,7 @@ def move(x, y): # x, y in meters
         m2speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
         m3speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
         m4speed.to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-        (directions * 16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
+        (directions).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
     )
 
 
@@ -123,7 +123,7 @@ def rotate(a):  # a in degrees
         int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 2 Speed
         int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 3 Speed
         int(rotationMillisecondPerSteep).to_bytes(1, "big", signed=False) +  # 1 Byte Motor 4 Speed
-        (directions * 16).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
+        (directions).to_bytes(1, "big", signed=False)  # 1.-4. Bit Motor 1-4 direction
     )
 
 
