@@ -125,6 +125,9 @@ namespace Lidar
                         mathAdditions.Rotate(line[line.Count - 1], overlay2.z)), 
                     Color.green, 10000);
             }
+            
+            Debug.Log(overlay1.w);
+            Debug.Log(overlay2.w);
         }
         
         private void DrawLine(float4 line, Color color, int bounds)
@@ -252,6 +255,8 @@ namespace Lidar
 
                         overlay.w += changedDistance;
                     }
+
+                    overlay.w /= intersections.Length;
 
                     if (overlay.w >= finalOverlay.w) continue;
                     finalOverlay = overlay;

@@ -82,13 +82,10 @@ namespace Utility
         // https://stackoverflow.com/questions/22818531/how-to-rotate-2d-vector
         public static float2 Rotate(float2 v, float angle)
         {
-            /*float radian = math.radians(angle);
+            float radian = math.radians(angle);
             float ca = math.cos(radian);
             float sa = math.sin(radian);
-            return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);*/
-            
-            float3 result = math.mul(quaternion.Euler(0, 0, math.radians(angle)), new float3(v, 0));
-            return new float2(result.x, result.y);
+            return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);
         }
         
         public static float3 LayTowlinesOverEachother(float2 p1, float2 p2, float2 p3, float2 p4)
