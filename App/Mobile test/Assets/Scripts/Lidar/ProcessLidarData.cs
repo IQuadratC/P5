@@ -155,10 +155,12 @@ namespace Lidar
 
             processOverlayJob.Schedule(count, 1).Complete();
 
-            /*for (int i = 0; i < count; i++)
+            /*
+            for (int i = 0; i < count; i++)
             {
                 processOverlayJob.Execute(i);
-            }*/
+            }
+            */
             intersections.Dispose();
             intersections1.Dispose();
 
@@ -238,11 +240,11 @@ namespace Lidar
                     {
                         float2 testpoint = intersections[j];
                         float changedDistance = float.MaxValue;
-                        for (int k = 0; k < intersections.Length; k++)
+                        for (int k = 0; k < intersections1.Length; k++)
                         {
-                            float2 testpoint1 = intersections[k];
+                            float2 testpoint1 = intersections1[k];
                             float testChangedDistance =
-                                math.length(testpoint - mathAdditions.Rotate(testpoint1, overlay.z) + overlay.xy);
+                                math.length(testpoint - mathAdditions.Rotate(testpoint1, overlay.z) - overlay.xy);
 
                             if (testChangedDistance >= changedDistance) continue;
                             changedDistance = testChangedDistance;

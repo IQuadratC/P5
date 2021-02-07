@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.Burst;
 using Unity.Mathematics;
 using UnityEngine;
 using Utility;
@@ -73,7 +72,7 @@ namespace Lidar
         }
 
         private const float maxDistance = 0.5f;
-        private const int minLineLength = 10;
+        private const int minLineLength = 5;
         private void UpdateLines()
         {
             List<List<float2>> lineList = new List<List<float2>>();
@@ -138,12 +137,6 @@ namespace Lidar
                     }
                 }
                 
-                if (line.Count >= minLineLength)
-                {
-                    float4 v = mathAdditions.FindLinearLeastSquaresFit(line);
-                    line.Add(new float2(v.x, v.y));
-                    line.Add(new float2(v.z, v.w));
-                }
                 lineList.Add(line);
             }
             
@@ -160,7 +153,7 @@ namespace Lidar
                 {
                     foreach (float2 point in line)
                     {
-                        for (int j = testline.Count - 3; j >= 0; j--)
+                        for (int j = testline.Count - 1; j >= 0; j--)
                         {
                             if (testline[j].Equals(point))
                             {
@@ -184,6 +177,13 @@ namespace Lidar
                 {
                     break;
                 }
+            }
+            
+            for (int i = 0; i < lines.Count; i++)
+            {
+                float4 v = mathAdditions.FindLinearLeastSquaresFit(lines[i]);
+                lines[i].Add(new float2(v.x, v.y));
+                lines[i].Add(new float2(v.z, v.w));
             }
         }
         private static int SortListByLenght(List<float2> x, List<float2> y)
@@ -215,8 +215,17 @@ namespace Lidar
                         new float2(finalLine.x + finalLine.z, finalLine.y + finalLine.w), 
                         new float2(testFinalLine.x, testFinalLine.y), 
                         new float2(testFinalLine.x + testFinalLine.z, testFinalLine.y + testFinalLine.w));
+                    
+                    bool isNotinList = true;
+                    foreach (float2 intersectionPoint in intersections)
+                    {
+                        if (math.length(intersectionPoint - intersection) < 1.0f)
+                        {
+                            isNotinList = false;
+                        }
+                    }
 
-                    if (!intersections.Contains(intersection) && math.length(intersection) < bounds)
+                    if (math.length(intersection) < bounds && isNotinList)
                     {
                         intersections.Add(intersection);
                     }
