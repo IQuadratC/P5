@@ -1,24 +1,22 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Utility
 {
     public static class Csv
     {
-        public static List<List<string>> ParseCVSFile(string csvString)
+        public static string[][] ParseCVSFile(string csvString)
         {
-            List<List<string>> csvData = new List<List<string>>();
             string[] lines = csvString.Split('\n');
-            for (var i = 0; i < lines.Length; i++)
+            string[][] csvData = new string[lines.Length][];
+            
+            for (int i = 0; i < lines.Length; i++)
             {
                 string[] fields = lines[i].Split(',',';');
-                csvData.Add(new List<string>());
-                for (var j = 0; j < fields.Length; j++)
-                {
-                    csvData[i].Add(fields[j].Replace("\r",""));
-                }
+                fields[fields.Length - 1] = fields[fields.Length - 1].Replace("\r","");
+                csvData[i] = fields;
             }
-
             return csvData;
         } 
     }

@@ -20,6 +20,7 @@
             <e p="GameEvent.cs" t="Include" />
             <e p="GameEventListener.cs" t="Include" />
           </e>
+          <e p="MathAdditions.cs" t="Include" />
           <e p="Variables" t="Include">
             <e p="BoolVariable.cs" t="Include" />
             <e p="FloatVariable.cs" t="Include" />
