@@ -20,43 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ButtonListener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ButtonListener.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Map.renderTexture" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Map.renderTexture.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/SetResolution.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/SetResolution.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/App Layout.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/App Layout.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/down.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/down.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/left.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/left.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/options.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/options.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/right.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/right.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/rotate left.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/rotate left.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/rotate right.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/rotate right.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/up.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/up.jpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/texturs/rotate right.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/InGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/InGame.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ButtonListener.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ButtonListener.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map.renderTexture" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map.renderTexture.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TCPTestClient.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TCPTestClient.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Utility/mathAdditions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Utility/mathAdditions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,10 +38,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17AD9609-AE06-4F2C-9315-931FF97ADCF1/d3/bea21c7b/NativeArray`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.4.4/Runtime/BurstRuntime.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577AC7A-62EF-4317-9789-031239BA8798/2a/0d72e35c/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FCB9DAC8-AE3A-4886-93B0-F4CD5B0DB0BE/4d/a685c47f/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@0.9.0-preview.6/Unity.Collections/NativeSort.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/float4.gen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/float2x2.gen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/float2.gen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/math.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/quaternion.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17AD9609-AE06-4F2C-9315-931FF97ADCF1/d7/e6a07302/Vector2.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
-    <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/UI/SetResolution.cs" />
-    </changedPaths>
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" />
+        <option value="$PROJECT_DIR$/Assets/Utility/mathAdditions.cs" />
+      </list>
+    </option>
   </component>
   <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -81,12 +70,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.24902724" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.09338521" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.24839744" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.09294872" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="XThreadsFramesViewSplitterKey" value="0.16455697" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.119266056" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -102,16 +91,16 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <list />
+        <set />
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="1836">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="1836" />
       <option name="selectedOptions">
-        <list />
+        <set />
       </option>
       <method v="2" />
     </configuration>
@@ -137,6 +126,9 @@
       <workItem from="1612546425955" duration="15055000" />
       <workItem from="1612603428329" duration="24000" />
       <workItem from="1612626728650" duration="1248000" />
+      <workItem from="1612693113903" duration="4296000" />
+      <workItem from="1612697482157" duration="128000" />
+      <workItem from="1612697737632" duration="1541000" />
     </task>
     <task id="LOCAL-00001" summary="created button which sends http post request">
       <created>1611761954943</created>
@@ -275,6 +267,88 @@
     <MESSAGE value="Rotation test backup" />
     <option name="LAST_COMMIT_MESSAGE" value="Rotation test backup" />
   </component>
+  <component name="WindowStateProjectService">
+    <state width="498" height="466" key="DebuggerActiveHint" timestamp="1612696738654">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="498" height="466" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612696738654" />
+    <state width="655" height="939" key="GridCell.Tab.0.bottom" timestamp="1612699157588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157588" />
+    <state width="655" height="939" key="GridCell.Tab.0.center" timestamp="1612699157588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157588" />
+    <state width="655" height="939" key="GridCell.Tab.0.left" timestamp="1612699157588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157588" />
+    <state width="655" height="939" key="GridCell.Tab.0.right" timestamp="1612699157588">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157588" />
+    <state width="655" height="939" key="GridCell.Tab.1.bottom" timestamp="1612699163111">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699163111" />
+    <state width="655" height="939" key="GridCell.Tab.1.center" timestamp="1612699163110">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699163110" />
+    <state width="655" height="939" key="GridCell.Tab.1.left" timestamp="1612699163110">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699163110" />
+    <state width="655" height="939" key="GridCell.Tab.1.right" timestamp="1612699163111">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699163111" />
+    <state width="655" height="939" key="GridCell.Tab.2.bottom" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.2.center" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.2.left" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.2.right" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.3.bottom" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.3.center" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.3.left" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state width="655" height="939" key="GridCell.Tab.3.right" timestamp="1612699157431">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="655" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612699157431" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612658431992">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612658431992" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612658449277">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612658449277" />
+    <state x="623" y="225" key="search.everywhere.popup" timestamp="1612693499144">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612693499144" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -289,6 +363,19 @@
           <line>30</line>
           <properties documentPath="D:\dev\Mobile test\Assets\Gravity\Scrips\GravityArea.cs" initialLine="30" />
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lidar/ProcessLidarData.cs</url>
+          <line>164</line>
+          <properties documentPath="D:\School\Q1\P5\App\Mobile test\Assets\Scripts\Lidar\ProcessLidarData.cs" initialLine="138">
+            <startOffsets>
+              <option value="7126" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7181" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

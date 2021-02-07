@@ -13,8 +13,8 @@ namespace Lidar
         public List<float2> intersections;
         public float2[] positions = new float2[360];
         
-        private List<float>[] distances = new List<float>[360];
-        private List<List<float2>> lines = new List<List<float2>>();
+        public List<float>[] distances = new List<float>[360];
+        public List<List<float2>> lines = new List<List<float2>>();
         
         public void LoadCSV(string name)
         {

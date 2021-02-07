@@ -61,7 +61,7 @@ namespace Utility
             float dx34 = p4.x - p3.x;
             float dy34 = p4.y - p3.y;
             
-            float denominator = (dy12 * dx34 - dx12 * dy34);
+            float denominator = dy12 * dx34 - dx12 * dy34;
             float t1 = ((p1.x - p3.x) * dy34 + (p3.y - p1.y) * dx34) / denominator;
             
             if (float.IsInfinity(t1))
@@ -72,23 +72,30 @@ namespace Utility
             return new float2(p1.x + dx12 * t1, p1.y + dy12 * t1);
         }
 
+        // https://math.stackexchange.com/questions/878785/how-to-find-an-angle-in-range0-360-between-2-vectors
         public static float Angle(float2 x, float2 y)
         {
-            return math.acos(math.abs(math.dot(x, y)) / (math.length(x) * math.length(y)));
+            float denominator = x.x * y.y - y.x * x.y;
+            return math.degrees(math.atan2(denominator, math.dot(x, y)));
         }
 
+        // https://stackoverflow.com/questions/22818531/how-to-rotate-2d-vector
         public static float2 Rotate(float2 v, float angle)
         {
-            var ca = math.cos(angle);
-            var sa = math.sin(angle);
-            return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);
+            /*float radian = math.radians(angle);
+            float ca = math.cos(radian);
+            float sa = math.sin(radian);
+            return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);*/
+            
+            float3 result = math.mul(quaternion.Euler(0, 0, math.radians(angle)), new float3(v, 0));
+            return new float2(result.x, result.y);
         }
         
         public static float3 LayTowlinesOverEachother(float2 p1, float2 p2, float2 p3, float2 p4)
         {
             float2 dir1 = p1 - p2;
             float2 dir2 = p3 - p4;
-            float angle = -mathAdditions.Angle(dir1, dir2);
+            float angle = -Angle(dir1, dir2);
 
             float2 p5 = p1 - Rotate(p3, angle);
             

@@ -25,13 +25,13 @@ namespace Lidar
         private void Start()
         {
             LidarPoint lidarPoint = new LidarPoint();
-            lidarPoint.LoadCSV("Testdata_notMove.csv");
+            lidarPoint.LoadCSV("Testdata_gedreht_0.csv");
             
             LidarPoint lidarPoint1 = new LidarPoint();
-            lidarPoint1.LoadCSV("Testdata_Move_20cm.csv");
+            lidarPoint1.LoadCSV("Testdata_gedreht_1.csv");
             
             LidarPoint lidarPoint2 = new LidarPoint();
-            lidarPoint2.LoadCSV("Testdata_Move_40cm.csv");
+            lidarPoint2.LoadCSV("Testdata_gedreht_2.csv");
             
             foreach (Vector2 lidarPointPosition in lidarPoint.positions)
             {
@@ -49,6 +49,36 @@ namespace Lidar
                 o.transform.SetParent(greenPartent.transform, true);
             }
             
+            foreach (List<float2> line in lidarPoint.lines)
+            {
+                GameObject lineObject = Instantiate(linePreFab, redPartent.transform);
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point, Quaternion.identity);
+                    o.transform.SetParent(lineObject.transform, true);
+                }
+            }
+            
+            foreach (List<float2> line in lidarPoint1.lines)
+            {
+                GameObject lineObject = Instantiate(linePreFab, bluePartent.transform);
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point, Quaternion.identity);
+                    o.transform.SetParent(lineObject.transform, true);
+                }
+            }
+            
+            foreach (List<float2> line in lidarPoint2.lines)
+            {
+                GameObject lineObject = Instantiate(linePreFab, greenPartent.transform);
+                foreach (Vector2 point in line)
+                {
+                    GameObject o = Instantiate(lightbluespherePreFab, point, Quaternion.identity);
+                    o.transform.SetParent(lineObject.transform, true);
+                }
+            }
+            
             foreach (Vector2 intersectionPoint in lidarPoint.intersections)
             {
                 GameObject o = Instantiate(whitespherePreFab, intersectionPoint, Quaternion.identity);
@@ -61,17 +91,43 @@ namespace Lidar
                 o.transform.SetParent(bluePartent.transform, true);
             }
             
-            float4 overlap1 = OverlayTwoLidarPoints(lidarPoint, lidarPoint1);
-            bluePartent.transform.position = new Vector3(overlap1.x, overlap1.y, 0);
-            bluePartent.transform.eulerAngles = new Vector3(0,0,overlap1.z);
+            foreach (Vector2 intersectionPoint in lidarPoint2.intersections)
+            {
+                GameObject o = Instantiate(whitespherePreFab, intersectionPoint, Quaternion.identity);
+                o.transform.SetParent(greenPartent.transform, true);
+            }
             
-            float4 overlap2 = OverlayTwoLidarPoints(lidarPoint, lidarPoint2);
-            greenPartent.transform.position = new Vector3(overlap2.x, overlap2.y, 0);
-            greenPartent.transform.eulerAngles = new Vector3(0,0,overlap2.z);
+            float4 overlay1 = OverlayTwoLidarPoints(lidarPoint, lidarPoint1);
+            bluePartent.transform.position = new Vector3(overlay1.x, overlay1.y, 0);
+            bluePartent.transform.eulerAngles = new Vector3(0,0,overlay1.z);
             
+            float4 overlay2 = OverlayTwoLidarPoints(lidarPoint, lidarPoint2);
+            greenPartent.transform.position = new Vector3(overlay2.x, overlay2.y, 0);
+            greenPartent.transform.eulerAngles = new Vector3(0,0,overlay2.z);
+            
+            foreach (List<float2> line in lidarPoint.lines)
+            {
+                DrawLine(new float4(line[line.Count -2], line[line.Count -1]), Color.red, 10000);
+            }
+            
+            foreach (List<float2> line in lidarPoint1.lines)
+            {
+                DrawLine(new float4(
+                        mathAdditions.Rotate(line[line.Count - 2], overlay1.z) + overlay1.xy, 
+                        mathAdditions.Rotate(line[line.Count - 1], overlay1.z)), 
+                Color.blue, 10000);
+            }
+            
+            foreach (List<float2> line in lidarPoint2.lines)
+            {
+                DrawLine(new float4(
+                        mathAdditions.Rotate(line[line.Count - 2], overlay2.z) + overlay2.xy, 
+                        mathAdditions.Rotate(line[line.Count - 1], overlay2.z)), 
+                    Color.green, 10000);
+            }
         }
         
-        private void DrawLine(Vector4 line, Color color, int bounds)
+        private void DrawLine(float4 line, Color color, int bounds)
         {
             Vector3 pos = new Vector3(line.x - line.z * bounds, line.y - line.w * bounds, 0);
             Vector3 dir = new Vector3(line.z, line.w) * bounds * 2;
@@ -188,10 +244,8 @@ namespace Lidar
                             float testChangedDistance =
                                 math.length(testpoint - mathAdditions.Rotate(testpoint1, overlay.z) + overlay.xy);
 
-                            if (testChangedDistance < changedDistance)
-                            {
-                                changedDistance = testChangedDistance;
-                            }
+                            if (testChangedDistance >= changedDistance) continue;
+                            changedDistance = testChangedDistance;
                         }
 
                         overlay.w += changedDistance;
