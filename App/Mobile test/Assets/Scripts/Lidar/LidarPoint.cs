@@ -9,11 +9,12 @@ namespace Lidar
 {
     public class LidarPoint
     {
-        public List<float2> intersections;
-        public float2[] positions = new float2[360];
-        
         public List<float>[] distances = new List<float>[360];
+        public float2[] positions = new float2[360];
         public List<List<float2>> lines = new List<List<float2>>();
+        public List<float2> intersections;
+        public bool ready;
+        public float4 overlay;
         
         public void LoadCSV(string name)
         {
@@ -42,17 +43,16 @@ namespace Lidar
             {
                 distances[data[i,0]].Add((float)data[i,1] / 10);
             }
-            
-            Update();
         }
 
-        private void Update()
+        public void Update()
         {
+            ready = false;
             UpdatePositions();
             UpdateLines();
             UpdateIntersections();
+            ready = true;
         }
-
         
         private void UpdatePositions()
         {
@@ -71,7 +71,7 @@ namespace Lidar
             }
         }
 
-        private const float maxDistance = 0.5f;
+        private const float maxDistance = 1f;
         private const int minLineLength = 5;
         private void UpdateLines()
         {

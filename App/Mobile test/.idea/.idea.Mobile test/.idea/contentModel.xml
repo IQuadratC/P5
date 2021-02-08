@@ -8,6 +8,7 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="Lidar" t="Include">
+            <e p="LidarMap.cs" t="Include" />
             <e p="LidarPoint.cs" t="Include" />
             <e p="ProcessLidarData.cs" t="Include" />
           </e>

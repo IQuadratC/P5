@@ -25,13 +25,13 @@ namespace Lidar
         private void Start()
         {
             LidarPoint lidarPoint = new LidarPoint();
-            lidarPoint.LoadCSV("Testdata_gedreht_0.csv");
+            lidarPoint.LoadCSV("Testdata_notMove.csv");
             
             LidarPoint lidarPoint1 = new LidarPoint();
-            lidarPoint1.LoadCSV("Testdata_gedreht_1.csv");
+            lidarPoint1.LoadCSV("Testdata_Move_20cm.csv");
             
             LidarPoint lidarPoint2 = new LidarPoint();
-            lidarPoint2.LoadCSV("Testdata_gedreht_2.csv");
+            lidarPoint2.LoadCSV("Testdata_Move_40cm.csv");
             
             foreach (Vector2 lidarPointPosition in lidarPoint.positions)
             {
