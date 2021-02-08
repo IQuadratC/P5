@@ -13,7 +13,7 @@ public class TCPTestClient : MonoBehaviour {
 	private Thread clientReceiveThread; 	
 	#endregion
 
-	public string IP;
+	private string IP;
 	// Use this for initialization 	
 	void Start () {
 		ConnectToTcpServer();     
@@ -21,37 +21,33 @@ public class TCPTestClient : MonoBehaviour {
 	/// <summary> 	
 	/// Setup socket connection. 	
 	/// </summary> 	
-	private void ConnectToTcpServer () { 		
+	private void ConnectToTcpServer () {
 		try {  			
-			clientReceiveThread = new Thread (new ThreadStart(ListenForData)); 			
+			clientReceiveThread = new Thread (new ThreadStart(Connect)); 			
 			clientReceiveThread.IsBackground = true; 			
 			clientReceiveThread.Start();  		
 		} 		
 		catch (Exception e) { 			
 			Debug.Log("On client connect exception " + e); 		
 		} 	
-	}  	
+	}
+	public void SetIP(string newIp)
+	{
+		IP = newIp;
+		ConnectToTcpServer();
+	}
 	/// <summary> 	
-	/// Runs in background clientReceiveThread; Listens for incomming data. 	
+	/// Runs in background
 	/// </summary>     
-	private void ListenForData() { 		
+	private void Connect() { 		
+		if (socketConnection != null)
+		{
+			socketConnection.GetStream().Close();
+			socketConnection.Close();
+			socketConnection = null;
+		}
 		try { 			
-			socketConnection = new TcpClient(IP, 5000);  			
-			Byte[] bytes = new Byte[1024];             
-			while (true) { 				
-				// Get a stream object for reading 				
-				using (NetworkStream stream = socketConnection.GetStream()) { 					
-					int length; 					
-					// Read incomming stream into byte arrary. 					
-					while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) { 						
-						var incommingData = new byte[length]; 						
-						Array.Copy(bytes, 0, incommingData, 0, length); 						
-						// Convert byte array to string message. 						
-						string serverMessage = Encoding.ASCII.GetString(incommingData); 						
-						Debug.Log("server message received as: " + serverMessage); 					
-					} 				
-				} 			
-			}         
+			socketConnection = new TcpClient(IP, 5000);   
 		}         
 		catch (SocketException socketException) {             
 			Debug.Log("Socket exception: " + socketException);         
