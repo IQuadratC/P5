@@ -95,13 +95,13 @@ namespace Lidar
                         if (lidarPoint.bigLidarPoint)
                         {
                             bigLidarPoints.Add(lidarPoint);
-                            ShowPoint(lidarPoint);
                         }
                         else
                         {
                             smallLidarPoints.Add(lidarPoint);
                             currentPosition = lidarPoint.overlay.xyz;
                         }
+                        ShowPoint(lidarPoint);
                         break;
                 }
             }
@@ -113,20 +113,22 @@ namespace Lidar
             
         }
 
+        private int counter;
         public GameObject[] pointPreFabs;
         private void ShowPoint(LidarPoint lidarPoint)
         {
-            int index = bigLidarPoints.FindIndex(LidarPoint => LidarPoint == lidarPoint);
-            GameObject point = new GameObject("Point" + index);
+            GameObject point = new GameObject("Point " + counter +" "+ lidarPoint.bigLidarPoint);
             point.transform.position = new Vector3(lidarPoint.overlay.x, lidarPoint.overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.overlay.z);
 
             foreach (float2 lidarPointPosition in lidarPoint.positions)
             {
-                GameObject o = Instantiate(pointPreFabs[index], 
+                GameObject o = Instantiate(pointPreFabs[counter], 
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
                 o.transform.SetParent(point.transform, false);
             }
+
+            counter++;
         }
 
         private int frame;
@@ -136,7 +138,10 @@ namespace Lidar
         {
             "Testdata_gedreht_0.csv",
             "Testdata_gedreht_1.csv",
-            "Testdata_gedreht_2.csv"
+            "Testdata_gedreht_2.csv",
+            "Testdata_notMove.csv",
+            "Testdata_Move_20cm.csv",
+            "Testdata_Move_40cm.csv"
         };
         public void SimulateData()
         {

@@ -275,14 +275,14 @@ namespace Lidar
         private JobHandle overlayHandle;
         private void UpdateOverlay()
         {
-            int count = intersections.Count;
-            int count1 = otherLidarPoint.intersections.Count;
+            int count = otherLidarPoint.intersections.Count;
+            int count1 = intersections.Count;
             
             nativeIntersections = new NativeArray<float2>(count, Allocator.Persistent);
             nativeIntersections1 = new NativeArray<float2>(count1, Allocator.Persistent);
 
-            for (int i = 0; i < count; i++) { nativeIntersections[i] = intersections[i]; }
-            for (int i = 0; i < count1; i++) { nativeIntersections1[i] = otherLidarPoint.intersections[i]; }
+            for (int i = 0; i < count; i++) { nativeIntersections[i] = otherLidarPoint.intersections[i]; }
+            for (int i = 0; i < count1; i++) { nativeIntersections1[i] = intersections[i]; }
             
             overlays = new NativeArray<float4>(count, Allocator.Persistent);
 

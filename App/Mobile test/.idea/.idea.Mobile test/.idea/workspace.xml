@@ -20,11 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Purple Variant.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Purple Variant.prefab.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Roboter/RasPI/recive.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Roboter/RasPI/recive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +40,17 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/math.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
-    <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/UI/IPInputField.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" />
-    </changedPaths>
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarMap.cs" />
+      </list>
+    </option>
   </component>
   <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -55,12 +62,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.2758007" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.10320285" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.21828358" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.08955224" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="XThreadsFramesViewSplitterKey" value="0.119266056" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.74626863" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -76,16 +83,16 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <list />
+        <set />
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="15944">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="15944" />
       <option name="selectedOptions">
-        <list />
+        <set />
       </option>
       <method v="2" />
     </configuration>
@@ -235,7 +242,14 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_WIDTH">
+                <map>
+                  <entry key="2" value="34" />
+                  <entry key="3" value="33" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -263,6 +277,80 @@
     <MESSAGE value="Finally, it is working again." />
     <option name="LAST_COMMIT_MESSAGE" value="Finally, it is working again." />
   </component>
+  <component name="WindowStateProjectService">
+    <state width="490" height="466" key="DebuggerActiveHint" timestamp="1612817218017">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="490" height="466" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612817218017" />
+    <state width="567" height="939" key="GridCell.Tab.0.bottom" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.0.center" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.0.left" timestamp="1612818420937">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420937" />
+    <state width="567" height="939" key="GridCell.Tab.0.right" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.1.bottom" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.1.center" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.1.left" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.1.right" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.2.bottom" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.2.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.2.center" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.2.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.2.left" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.2.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.2.right" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.3.bottom" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.3.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.3.center" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.3.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.3.left" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.3.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state width="567" height="939" key="GridCell.Tab.3.right" timestamp="1612818420938">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="567" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612816578743">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612816578743" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -278,11 +366,50 @@
           <properties documentPath="D:\dev\Mobile test\Assets\Gravity\Scrips\GravityArea.cs" initialLine="30" />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs</url>
+          <line>293</line>
+          <properties documentPath="D:\School\Q1\P5\App\Mobile test\Assets\Scripts\Lidar\LidarPoint.cs" initialLine="293">
+            <startOffsets>
+              <option value="9904" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9918" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs</url>
+          <line>314</line>
+          <properties documentPath="D:\School\Q1\P5\App\Mobile test\Assets\Scripts\Lidar\LidarPoint.cs" initialLine="314">
+            <startOffsets>
+              <option value="10581" />
+            </startOffsets>
+            <endOffsets>
+              <option value="10636" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs</url>
+          <line>343</line>
+          <properties documentPath="D:\School\Q1\P5\App\Mobile test\Assets\Scripts\Lidar\LidarPoint.cs" initialLine="343">
+            <startOffsets>
+              <option value="11903" />
+            </startOffsets>
+            <endOffsets>
+              <option value="11954" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
-        <PinnedItemInfo parentTag="Type#Lidar.LidarPoint" memberName="lines" />
+        <PinnedItemInfo parentTag="Type#Lidar.LidarMap" memberName="lidarPointsProcessing" />
       </pinned-members>
     </pin-to-top-manager>
   </component>
