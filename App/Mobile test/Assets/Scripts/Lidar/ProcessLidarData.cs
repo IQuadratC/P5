@@ -24,13 +24,13 @@ namespace Lidar
         
         private void Start()
         {
-            LidarPoint lidarPoint = new LidarPoint();
+            LidarPoint lidarPoint = new LidarPoint(false);
             lidarPoint.LoadCsv("Testdata_notMove.csv");
             
-            LidarPoint lidarPoint1 = new LidarPoint();
+            LidarPoint lidarPoint1 = new LidarPoint(false);
             lidarPoint1.LoadCsv("Testdata_Move_20cm.csv");
             
-            LidarPoint lidarPoint2 = new LidarPoint();
+            LidarPoint lidarPoint2 = new LidarPoint(false);
             lidarPoint2.LoadCsv("Testdata_Move_40cm.csv");
             
             foreach (Vector2 lidarPointPosition in lidarPoint.positions)
@@ -97,11 +97,11 @@ namespace Lidar
                 o.transform.SetParent(greenPartent.transform, true);
             }
             
-            lidarPoint1.overlay = OverlayTwoLidarPoints(lidarPoint, lidarPoint1);
+            //lidarPoint1.overlay = OverlayTwoLidarPoints(lidarPoint, lidarPoint1);
             bluePartent.transform.position = new Vector3(lidarPoint1.overlay.x, lidarPoint1.overlay.y, 0);
             bluePartent.transform.eulerAngles = new Vector3(0,0,lidarPoint1.overlay.z);
             
-            lidarPoint2.overlay = OverlayTwoLidarPoints(lidarPoint, lidarPoint2);
+            //lidarPoint2.overlay = OverlayTwoLidarPoints(lidarPoint, lidarPoint2);
             greenPartent.transform.position = new Vector3(lidarPoint2.overlay.x, lidarPoint2.overlay.y, 0);
             greenPartent.transform.eulerAngles = new Vector3(0,0,lidarPoint2.overlay.z);
             
