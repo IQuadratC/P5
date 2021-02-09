@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Mathematics;
 
 namespace Utility
 {
     public static class mathAdditions
     {
+        [BurstCompile]
         public static float GetDistancetoLine(float2 line0Pos, float2 line1Pos, float2 testPos)
         {
             float3 b = new float3(line0Pos - line1Pos, 0);
             return math.length(math.cross(new float3(testPos - line0Pos, 0), b)) / math.length(b);
         }
         
+        [BurstCompile]
         public static float4 FindLinearLeastSquaresFit(float2[] points)
         {
             double s1 = points.Length;
@@ -33,6 +36,7 @@ namespace Utility
             return new float4(0, (float)b,1,(float)m);
         }
         
+        [BurstCompile]
         public static float4 FindLinearLeastSquaresFit(List<float2> points)
         {
             double s1 = points.Count;
@@ -54,6 +58,7 @@ namespace Utility
             return new float4(0, (float)b,1,(float)m);
         }
         
+        [BurstCompile]
         public static float2 FindIntersection(float2 p1, float2 p2, float2 p3, float2 p4)
         {
             float dx12 = p2.x - p1.x;
@@ -72,6 +77,7 @@ namespace Utility
             return new float2(p1.x + dx12 * t1, p1.y + dy12 * t1);
         }
 
+        [BurstCompile]
         // https://math.stackexchange.com/questions/878785/how-to-find-an-angle-in-range0-360-between-2-vectors
         public static float Angle(float2 x, float2 y)
         {
@@ -79,6 +85,7 @@ namespace Utility
             return math.degrees(math.atan2(denominator, math.dot(x, y)));
         }
 
+        [BurstCompile]
         // https://stackoverflow.com/questions/22818531/how-to-rotate-2d-vector
         public static float2 Rotate(float2 v, float angle)
         {
@@ -88,6 +95,7 @@ namespace Utility
             return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);
         }
         
+        [BurstCompile]
         public static float3 LayTowlinesOverEachother(float2 p1, float2 p2, float2 p3, float2 p4)
         {
             float2 dir1 = p1 - p2;

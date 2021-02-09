@@ -1,21 +1,49 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using Utility;
 
 namespace Lidar
 {
+    public enum LidarPointState
+    {
+        addingData = 1,
+        waitingForUpdate = 2,
+        performingUpdate = 3,
+        finished = 4
+    }
+    
     public class LidarPoint
     {
+        public LidarPointState state = LidarPointState.addingData;
+        public bool bigLidarPoint;
+        
+        private readonly List<float>[] distances;
+        public readonly float2[] positions;
+        public readonly List<List<float2>> lines;
         public List<float2> intersections;
-        public float2[] positions = new float2[360];
-        
-        public List<float>[] distances = new List<float>[360];
-        public List<List<float2>> lines = new List<List<float2>>();
-        
-        public void LoadCSV(string name)
+        public float4 overlay;
+
+        public LidarPoint(bool bigLidarPoint)
+        {
+            this.bigLidarPoint = bigLidarPoint;
+            distances = new List<float>[360];
+            for (int i = 0; i < distances.Length; i++)
+            {
+                distances[i] = new List<float>();
+            }
+            
+            positions = new float2[360];
+            lines = new List<List<float2>>();
+            intersections = new List<float2>();
+        }
+
+        public void LoadCsv(string name)
         {
             string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + name));
 
@@ -30,29 +58,37 @@ namespace Lidar
                     
                 int index = (int) float.Parse(line[0]);
                 float data = int.Parse(line[1]);
-                if (data == 0.0f) continue;
                 distances[index].Add(data / 10);
             }
-            
-            Update();
         }
-        public void AddData(int[,] data)
+        public void AddData(List<int2> data)
         {
-            for (int i = 0; i < data.GetLength(0); i++)
+            for (int i = 0; i < data.Count; i++)
             {
-                distances[data[i,0]].Add((float)data[i,1] / 10);
+                if (data[i].y == 0.0f) continue;
+                distances[data[i].x].Add((float)data[i].y / 10);
             }
-            
-            Update();
         }
 
-        private void Update()
+        private LidarPoint otherLidarPoint;
+        public void Update(LidarPoint otherLidarPoint)
         {
+            state = LidarPointState.performingUpdate;
+            this.otherLidarPoint = otherLidarPoint;
             UpdatePositions();
             UpdateLines();
             UpdateIntersections();
+            UpdateOverlay();
         }
-
+        
+        public void Update()
+        {
+            state = LidarPointState.performingUpdate;
+            UpdatePositions();
+            UpdateLines();
+            UpdateIntersections();
+            state = LidarPointState.finished;
+        }
         
         private void UpdatePositions()
         {
@@ -71,7 +107,7 @@ namespace Lidar
             }
         }
 
-        private const float maxDistance = 0.5f;
+        private const float maxDistance = 1f;
         private const int minLineLength = 5;
         private void UpdateLines()
         {
@@ -142,10 +178,9 @@ namespace Lidar
             
             lineList.Sort(SortListByLenght);
             
-            int index = 0;
             for (int k = 0; k < 100000; k++)
             {
-                List<float2> line = lineList[index];
+                List<float2> line = lineList[0];
                 lines.Add(line);
                 lineList.RemoveAt(0);
 
@@ -179,11 +214,11 @@ namespace Lidar
                 }
             }
             
-            for (int i = 0; i < lines.Count; i++)
+            foreach (List<float2> line in lines)
             {
-                float4 v = mathAdditions.FindLinearLeastSquaresFit(lines[i]);
-                lines[i].Add(new float2(v.x, v.y));
-                lines[i].Add(new float2(v.z, v.w));
+                float4 v = mathAdditions.FindLinearLeastSquaresFit(line);
+                line.Add(new float2(v.x, v.y));
+                line.Add(new float2(v.z, v.w));
             }
         }
         private static int SortListByLenght(List<float2> x, List<float2> y)
@@ -216,21 +251,166 @@ namespace Lidar
                         new float2(testFinalLine.x, testFinalLine.y), 
                         new float2(testFinalLine.x + testFinalLine.z, testFinalLine.y + testFinalLine.w));
                     
-                    bool isNotinList = true;
+                    bool isNotInList = true;
                     foreach (float2 intersectionPoint in intersections)
                     {
                         if (math.length(intersectionPoint - intersection) < 1.0f)
                         {
-                            isNotinList = false;
+                            isNotInList = false;
                         }
                     }
 
-                    if (math.length(intersection) < bounds && isNotinList)
+                    if (math.length(intersection) < bounds && isNotInList)
                     {
                         intersections.Add(intersection);
                     }
                 }
             }
+        }
+
+        private bool jobActive = false;
+        private NativeArray<float2> nativeIntersections;
+        private NativeArray<float2> nativeIntersections1;
+        private NativeArray<float4> overlays;
+        private JobHandle overlayHandle;
+        private void UpdateOverlay()
+        {
+            int count = otherLidarPoint.intersections.Count;
+            int count1 = intersections.Count;
+            
+            nativeIntersections = new NativeArray<float2>(count, Allocator.Persistent);
+            nativeIntersections1 = new NativeArray<float2>(count1, Allocator.Persistent);
+
+            for (int i = 0; i < count; i++) { nativeIntersections[i] = otherLidarPoint.intersections[i]; }
+            for (int i = 0; i < count1; i++) { nativeIntersections1[i] = intersections[i]; }
+            
+            overlays = new NativeArray<float4>(count, Allocator.Persistent);
+
+            ProcessOverlayJob processOverlayJob = new ProcessOverlayJob();
+            processOverlayJob.intersections = nativeIntersections;
+            processOverlayJob.intersections1 = nativeIntersections1;
+            processOverlayJob.overlays = overlays;
+
+            if (jobActive)
+            {
+                overlayHandle = processOverlayJob.Schedule(count, 1);
+            }
+            else
+            {
+                for (int i = 0; i < nativeIntersections.Length; i++)
+                {
+                    processOverlayJob.Execute(i);
+                }
+            }
+        }
+        
+        [BurstCompile]
+        private struct ProcessOverlayJob : IJobParallelFor
+        {
+            [ReadOnly] public NativeArray<float2> intersections;
+            [ReadOnly] public NativeArray<float2> intersections1;
+            public NativeArray<float4> overlays;
+            public void Execute(int index)
+            {
+                float4 finalOverlay = new float4(0,0,0,float.MaxValue);
+                float2 point = intersections[index];
+                for (int i = 0; i < intersections.Length; i++)
+                {
+                    float2 point1 = intersections[i];
+                    if (point.Equals(point1)) continue;
+
+                    float distance = math.length(point - point1);
+                    float bestDistance = float.MaxValue;
+                    float2 bestPoint = float2.zero;
+                    float2 bestPoint1 = float2.zero;
+
+                    for (int j = 0; j < intersections1.Length; j++)
+                    {
+                        float2 point2 = intersections1[j];
+                        for (int k = 0; k < intersections1.Length; k++)
+                        {
+                            float2 point3 = intersections1[k];
+                            if (point2.Equals(point3)) continue;
+
+                            float testDistance = math.abs(distance - math.length(point2 - point3));
+
+                            if (testDistance >= bestDistance) continue;
+                            bestDistance = testDistance;
+                            bestPoint = point2;
+                            bestPoint1 = point3;
+                        }
+                    }
+                    
+                    float4 overlay = new float4(0,0,0, float.MaxValue);
+                    overlay = FindBestOverlay(point, point1, bestPoint, bestPoint1, overlay);
+                    overlay = FindBestOverlay(point, point1, bestPoint1, bestPoint, overlay);
+                    overlay = FindBestOverlay(point1, point, bestPoint1, bestPoint, overlay);
+                    overlay = FindBestOverlay(point1, point, bestPoint, bestPoint1, overlay);
+                    
+                    overlay.w = 0;
+                    for (int j = 0; j < intersections.Length; j++)
+                    {
+                        float2 testpoint = intersections[j];
+                        float changedDistance = float.MaxValue;
+                        for (int k = 0; k < intersections1.Length; k++)
+                        {
+                            float2 testpoint1 = intersections1[k];
+                            float testChangedDistance =
+                                math.length(testpoint - mathAdditions.Rotate(testpoint1, overlay.z) - overlay.xy);
+
+                            if (testChangedDistance >= changedDistance) continue;
+                            changedDistance = testChangedDistance;
+                        }
+
+                        overlay.w += changedDistance;
+                    }
+
+                    overlay.w /= intersections.Length;
+
+                    if (overlay.w >= finalOverlay.w) continue;
+                    finalOverlay = overlay;
+                }
+                
+                overlays[index] = finalOverlay;
+            } 
+        }
+
+        private static float4 FindBestOverlay(float2 p1, float2 p2, float2 p3, float2 p4, float4 overlay)
+        {
+            float3 result = mathAdditions.LayTowlinesOverEachother(p1,p2,p3,p4);
+
+            float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
+            float testdistance = math.length(testVector - p2);
+
+            if (testdistance < overlay.w)
+            {
+                overlay.w = testdistance;
+                overlay = new float4(result.x, result.y, result.z, overlay.w);
+            }
+
+            return overlay;
+        }
+        
+        public void ParseOverlay()
+        {
+            if(!overlayHandle.IsCompleted) return;
+            overlayHandle.Complete();
+
+            nativeIntersections.Dispose();
+            nativeIntersections1.Dispose();
+
+            float4 finalOverlay = new float4(0,0,0,float.MaxValue);
+            for (int i = 0; i < overlays.Length; i++)
+            {
+                if(overlays[i].w >= finalOverlay.w) continue;
+                finalOverlay = overlays[i];
+            }
+            overlays.Dispose();
+
+            overlay = finalOverlay;
+            overlay.xyz += otherLidarPoint.overlay.xyz;
+            
+            state = LidarPointState.finished;
         }
     }
 }
