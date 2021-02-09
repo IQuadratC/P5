@@ -1,0 +1,19 @@
+﻿using System;
+using UnityEngine;
+
+namespace Utility.Variables
+{
+    [CreateAssetMenu(fileName = "FloatVariable", menuName = "Utility/Varibles/Float")]
+    public class FloatVariable : ScriptableObject, ISerializationCallbackReceiver
+    {
+        [NonSerialized]
+        public float Value;
+        public float InitialValue;
+        
+        public void OnBeforeSerialize() { }
+        public void OnAfterDeserialize()
+        {
+            Value = InitialValue;
+        }
+    }
+}
