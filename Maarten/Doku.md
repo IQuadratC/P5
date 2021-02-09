@@ -77,9 +77,42 @@ Input:
 
 - Schnittpunkte zusammen fassen
 
-# LidarMap
+# 09.02.2021
 
-Zufälliger Inputvon Datenbank
-Bool ob gerade Große oder kleine Punkte geladen werden.
+Adunio:
+- Motorsteuerung
+- Über Serial mit Respi verbunden.
+- Tim
+
+Respi:
+- AutoComputer
+
+- Py:
+    - Schnitstelle zwischen C++ und Aduino
+    - Umrechnen der Befehle von string to bits für Aduino
+    - Niklas
+
+- C++:
+    - Main Auto logic
+    - TCP Server
+    - TCP strings für Ardunio an Py weiterleiten.
+    - Lidar sensor lesen
+    - Lidar daten über TCP senden
+    - Tim
+
+App:
+- Fersteureung
+- TCP Client.
+- Beweguns Befehle an Arduino senden. Niklas
+- Lidar Daten entfangen. Maarten
+- Lidar Daten umrechnen. Maarten
+- Lidar Karte erstellen. Maarten
+- Algoritmus um in Karte zu navigiren. 
+- Auf Position in der Karte fahren. 
+- Karte darstellen. 
+- Shader für Karte schreiben.
+- StartScerren für App.
+
+
 
 
