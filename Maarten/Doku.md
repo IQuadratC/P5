@@ -77,22 +77,9 @@ Input:
 
 - Schnittpunkte zusammen fassen
 
-4 = 6
-5 = 10
+# LidarMap
 
-1   1
-2
-3
-4
-5
+Zufälliger Inputvon Datenbank
+Bool ob gerade Große oder kleine Punkte geladen werden.
 
-12
-13
-14
-15
-23
-24
-25
-34
-35
-45
+
