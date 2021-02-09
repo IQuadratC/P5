@@ -20,11 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f3e791b-410f-4ecc-a0a2-9bf5d1d83af1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PanZoom.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PanZoom.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Roboter/RasPI/recive.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Roboter/RasPI/recive.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +42,8 @@
     <changedPaths>
       <option value="$PROJECT_DIR$/Assets/Scripts/UI/IPInputField.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/UI/TCPTestClient.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/UI/NewBehaviourScript.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/UI/PanZoom.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1n6oT7QWjaZ4CH5HrjdCyRNaXeT" />
@@ -116,6 +117,7 @@
       <workItem from="1612697737632" duration="1541000" />
       <workItem from="1612699606453" duration="6936000" />
       <workItem from="1612800762196" duration="4195000" />
+      <workItem from="1612856578408" duration="712000" />
     </task>
     <task id="LOCAL-00001" summary="created button which sends http post request">
       <created>1611761954943</created>

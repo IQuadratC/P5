@@ -13,6 +13,7 @@
           </e>
           <e p="UI" t="Include">
             <e p="ButtonListener.cs" t="Include" />
+            <e p="PanZoom.cs" t="Include" />
             <e p="SetResolution.cs" t="Include" />
             <e p="TCPTestClient.cs" t="Include" />
           </e>
