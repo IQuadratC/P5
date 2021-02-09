@@ -12,7 +12,7 @@ rotationMillisecondPerSteep = 20
 stopMultiThread = 0
 
 ser = serial.Serial(
-    port='\\\\.\\COM7',
+    port='\\\\.\\COM4',
     baudrate=115200,
     parity=serial.PARITY_ODD,
     stopbits=serial.STOPBITS_ONE,
@@ -25,8 +25,8 @@ ser.isOpen()
 
 
 def send(msg):
-    ser.write(msg)
-    print(' '.join(format(x, '02x') for x in msg))
+    ser.write(bytearray(msg))
+    print(' '.join(format(x, '02x') for x in bytearray(msg)))
 
 
 def read(msg):
