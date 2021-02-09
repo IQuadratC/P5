@@ -26,12 +26,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
 =======
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Purple Variant.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/Purple Variant.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Mobile test/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LidarTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lidar/LidarPoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Maarten/Doku.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../Maarten/Doku.md" afterDir="false" />
 >>>>>>> 837275cfa7250f59857e38fd9b503ad94f77750d
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,6 +47,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/School/Q1/P5/App/Mobile test/Assets/Scripts/Lidar/LidarMap.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/math.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -103,10 +102,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="15944">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="15944" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -246,7 +245,21 @@
       <option name="project" value="LOCAL" />
       <updated>1612706854926</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Live Input funktioniert aber mach noch mehr Fehler als zu vor.">
+      <created>1612818712544</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1612818712544</updated>
+    </task>
+    <task id="LOCAL-00017" summary="ProcessLidarData.cs deleted">
+      <created>1612818748839</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1612818748839</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,7 +305,9 @@
     <MESSAGE value="Rotation test backup" />
     <MESSAGE value="Job system but some where is an error" />
     <MESSAGE value="Finally, it is working again." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finally, it is working again." />
+    <MESSAGE value="Live Input funktioniert aber mach noch mehr Fehler als zu vor." />
+    <MESSAGE value="ProcessLidarData.cs deleted" />
+    <option name="LAST_COMMIT_MESSAGE" value="ProcessLidarData.cs deleted" />
   </component>
   <component name="WindowStateProjectService">
     <state width="490" height="466" key="DebuggerActiveHint" timestamp="1612817218017">
@@ -363,10 +378,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="567" height="939" key="GridCell.Tab.3.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818420938" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612816578743">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1612818756492">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612816578743" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1612818756492" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

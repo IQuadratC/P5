@@ -42,25 +42,6 @@ namespace Lidar
             lines = new List<List<float2>>();
             intersections = new List<float2>();
         }
-
-        public void LoadCsv(string name)
-        {
-            string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + name));
-
-            for (int i = 0; i < distances.Length; i++)
-            {
-                distances[i] = new List<float>();
-            }
-            
-            foreach (string[] line in csvData)
-            {
-                if(line.Length < 2) continue;
-                    
-                int index = (int) float.Parse(line[0]);
-                float data = int.Parse(line[1]);
-                distances[index].Add(data / 10);
-            }
-        }
         public void AddData(List<int2> data)
         {
             for (int i = 0; i < data.Count; i++)
@@ -89,6 +70,21 @@ namespace Lidar
             UpdateIntersections();
             state = LidarPointState.finished;
         }
+
+        /*public NativeHashMap<int, NativeArray<float>> nativeDistances;
+        private void UpdateLidarPoint()
+        {
+            nativeDistances = new NativeHashMap<int, NativeArray<float>>(distances.Length, Allocator.Persistent);
+            for (int i = 0; i < distances.Length; i++)
+            {
+                NativeArray<float> nativeDistance = new NativeArray<float>(distances[i].Count, Allocator.Persistent);
+                for (int j = 0; j < distances[i].Count; j++)
+                {
+                    nativeDistance[j] = distances[i][j];
+                }
+                nativeDistances[i] = nativeDistance;
+            }
+        }*/
         
         private void UpdatePositions()
         {
@@ -268,7 +264,7 @@ namespace Lidar
             }
         }
 
-        private bool jobActive = false;
+        private bool jobActive = true;
         private NativeArray<float2> nativeIntersections;
         private NativeArray<float2> nativeIntersections1;
         private NativeArray<float4> overlays;
