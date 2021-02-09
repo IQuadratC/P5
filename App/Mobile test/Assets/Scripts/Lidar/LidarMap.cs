@@ -137,11 +137,7 @@ namespace Lidar
         private string[] csvFiles =
         {
             "Testdata_gedreht_0.csv",
-            "Testdata_gedreht_1.csv",
-            "Testdata_gedreht_2.csv",
-            "Testdata_notMove.csv",
-            "Testdata_Move_20cm.csv",
-            "Testdata_Move_40cm.csv"
+            "Testdata_gedreht_1.csv"
         };
         public void SimulateData()
         {
