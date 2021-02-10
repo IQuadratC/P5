@@ -113,8 +113,16 @@ namespace Lidar
                             SmallLidarPoints.Add(lidarPoint);
                             CurrentPosition = lidarPoint.Overlay.xyz;
                         }
-                        //ShowPoint(lidarPoint);
                         UpdateMap();
+
+                        if (showPoints)
+                        {
+                            ShowPoint(lidarPoint);
+                        }
+                        if (showMap)
+                        {
+                            ShowMap();
+                        }
                         break;
                 }
             }
@@ -126,6 +134,7 @@ namespace Lidar
             
         }
 
+        [SerializeField] private bool showPoints;
         private int counter;
         [SerializeField] private GameObject[] pointPreFabs;
         private void ShowPoint(LidarPoint lidarPoint)
@@ -162,10 +171,9 @@ namespace Lidar
                     Map[pos] = value;
                 }
             }
-
-            ShowMap();
         }
 
+        [SerializeField] private bool showMap;
         private List<GameObject> mapPoints;
         private void ShowMap()
         {

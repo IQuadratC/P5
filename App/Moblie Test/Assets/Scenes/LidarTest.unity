@@ -156,6 +156,7 @@ MonoBehaviour:
   maxDistance: 2
   minLineLength: 5
   bounds: 500
+  showPoints: 0
   pointPreFabs:
   - {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5, type: 3}
   - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
@@ -169,6 +170,7 @@ MonoBehaviour:
   - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
   - {fileID: 3763153833125633302, guid: b3480e6b5281fd449bef305d40a5aabe, type: 3}
   - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
+  showMap: 1
   simulateData: 1
   pushDataSpeed: 1
   sendEvent: {fileID: 0}
