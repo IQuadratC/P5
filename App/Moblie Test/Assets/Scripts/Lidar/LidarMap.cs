@@ -4,6 +4,7 @@ using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
 using Utility;
+using Utility.Events;
 using Utility.Variables;
 
 namespace Lidar
@@ -18,6 +19,10 @@ namespace Lidar
         public List<LidarPoint> SmallLidarPoints { get; private set; }
         public float3 CurrentPosition { get; private set; }
         
+        public Dictionary<int2, int> Map { get; private set; }
+        [SerializeField] private int mapScale = 10;
+        public int MapScale => mapScale;
+        
         [SerializeField] private float maxDistance = 0.5f;
         [SerializeField] private int minLineLength = 5;
         [SerializeField] private int bounds = 500;
@@ -29,7 +34,7 @@ namespace Lidar
             lidarPointsProcessing = new List<LidarPoint>();
         }
 
-        public void AddLidarData(List<int2> data)
+        public void AddLidarData(int2[] data)
         {
             if (bigLidarPointActive.Value)
             {
@@ -108,7 +113,8 @@ namespace Lidar
                             SmallLidarPoints.Add(lidarPoint);
                             CurrentPosition = lidarPoint.Overlay.xyz;
                         }
-                        ShowPoint(lidarPoint);
+                        //ShowPoint(lidarPoint);
+                        UpdateMap();
                         break;
                 }
             }
@@ -136,6 +142,48 @@ namespace Lidar
             }
 
             counter++;
+        }
+
+        private void UpdateMap()
+        {
+            Map = new Dictionary<int2, int>();
+            foreach (LidarPoint bigLidarPoint in BigLidarPoints)
+            {
+                foreach (float2 position in bigLidarPoint.Positions)
+                {
+                    int2 pos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay) / mapScale) * mapScale;
+                    if(pos.Equals(int2.zero)) continue;
+                    
+                    int value = 1;
+                    if (Map.ContainsKey(pos))
+                    {
+                        value = Map[pos] + 1;
+                    }
+                    Map[pos] = value;
+                }
+            }
+
+            ShowMap();
+        }
+
+        private List<GameObject> mapPoints;
+        private void ShowMap()
+        {
+            if (mapPoints == null)
+            {
+                mapPoints = new List<GameObject>();
+            }
+            
+            foreach (GameObject mapPoint in mapPoints)
+            {
+                Destroy(mapPoint);
+            }
+            mapPoints.Clear();
+            foreach (int2 mapKey in Map.Keys)
+            {
+                GameObject o = Instantiate(pointPreFabs[0], new Vector3(mapKey.x, mapKey.y, 0), Quaternion.identity);
+                mapPoints.Add(o);
+            }
         }
 
         [SerializeField] private bool simulateData;
@@ -187,13 +235,40 @@ namespace Lidar
                 int index = frame / pushDataSpeed;
                 if (index < data.Count)
                 {
-                    AddLidarData(data[index]);
+                    AddLidarData(data[index].ToArray());
                 }
             }
             
             frame++;
         }
+
+        [SerializeField] private GameEvent sendEvent;
+        [SerializeField] private StringVariable sendString;
+        private void ReqestData()
+        {
+            sendString.Value = "lidar getdata";
+            sendEvent.Raise();
+        }
         
-        
+        [SerializeField] private StringVariable reciveString;
+        public void ReciveData()
+        {
+            string str = reciveString.Value;
+            string[] strs = str.Split(' ');
+            
+            if (!strs[0].Equals("lidarmap")) return;
+            
+            if (strs[1].Equals("data"))
+            {
+                int2[] data = new int2[strs.Length -3];
+                for (int i = 2; i < strs.Length; i++)
+                {
+                    string[] args = strs[2].Split(',');
+                    data[i].x = int.Parse(args[0]);
+                    data[i].y = int.Parse(args[1]);
+                }
+                AddLidarData(data);
+            }
+        }
     }
 }

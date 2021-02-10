@@ -27,7 +27,7 @@ namespace Lidar
         public float2[][] Lines { get; private set; }
         public float2[] Intersections { get; private set; }
         public float4 Overlay => overlay;
-
+        
         public LidarPoint(bool isBigLidarPoint, float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
@@ -42,9 +42,9 @@ namespace Lidar
             this.minLineLength = minLineLength;
             this.bounds = bounds;
         }
-        public void AddData(List<int2> data)
+        public void AddData(int2[] data)
         {
-            for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 if (data[i].y == 0.0f) continue;
                 Distances[data[i].x].Add((float)data[i].y / 10);
@@ -158,6 +158,17 @@ namespace Lidar
                 lineList.Add(line);
             }
             
+            int SortListByLenght(List<float2> x, List<float2> y)
+            {
+                int xLenght = x.Count;
+                int yLenght = y.Count;
+            
+                if (xLenght > yLenght)
+                {
+                    return -1;
+                }
+                return xLenght < yLenght ? 1 : 0;
+            }
             lineList.Sort(SortListByLenght);
             
             List<List<float2>> lineList2 = new List<List<float2>>();
@@ -206,17 +217,6 @@ namespace Lidar
 
                 Lines[i] = lineList2[i].ToArray();
             }
-        }
-        private static int SortListByLenght(List<float2> x, List<float2> y)
-        {
-            int xLenght = x.Count;
-            int yLenght = y.Count;
-            
-            if (xLenght > yLenght)
-            {
-                return -1;
-            }
-            return xLenght < yLenght ? 1 : 0;
         }
 
         private readonly int bounds;
@@ -330,10 +330,24 @@ namespace Lidar
                     }
                     
                     float4 overlay = new float4(0,0,0, float.MaxValue);
-                    overlay = FindBestOverlay(point, point1, bestPoint, bestPoint1, overlay);
-                    overlay = FindBestOverlay(point, point1, bestPoint1, bestPoint, overlay);
-                    overlay = FindBestOverlay(point1, point, bestPoint1, bestPoint, overlay);
-                    overlay = FindBestOverlay(point1, point, bestPoint, bestPoint1, overlay);
+                    void FindBestOverlay(float2 p1, float2 p2, float2 p3, float2 p4)
+                    {
+                        float3 result = mathAdditions.LayTowlinesOverEachother(p1,p2,p3,p4);
+
+                        float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
+                        float testdistance = math.length(testVector - p2);
+
+                        if (testdistance < overlay.w)
+                        {
+                            overlay.w = testdistance;
+                            overlay = new float4(result.x, result.y, result.z, overlay.w);
+                        }
+                    }
+                    
+                    FindBestOverlay(point, point1, bestPoint, bestPoint1);
+                    FindBestOverlay(point, point1, bestPoint1, bestPoint);
+                    FindBestOverlay(point1, point, bestPoint1, bestPoint);
+                    FindBestOverlay(point1, point, bestPoint, bestPoint1);
                     
                     overlay.w = 0;
                     for (int j = 0; j < intersections.Length; j++)
@@ -363,22 +377,6 @@ namespace Lidar
             } 
         }
 
-        private static float4 FindBestOverlay(float2 p1, float2 p2, float2 p3, float2 p4, float4 overlay)
-        {
-            float3 result = mathAdditions.LayTowlinesOverEachother(p1,p2,p3,p4);
-
-            float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
-            float testdistance = math.length(testVector - p2);
-
-            if (testdistance < overlay.w)
-            {
-                overlay.w = testdistance;
-                overlay = new float4(result.x, result.y, result.z, overlay.w);
-            }
-
-            return overlay;
-        }
-        
         private float4 overlay;
         public void ParseOverlay()
         {
@@ -400,6 +398,11 @@ namespace Lidar
             overlay.xyz += otherLidarPoint.overlay.xyz;
             
             State = LidarPointState.finished;
+        }
+
+        public static float2 ApplyOverlay(float2 pos, float4 overlay)
+        {
+            return mathAdditions.Rotate(pos, overlay.z) +  overlay.xy;
         }
     }
 }

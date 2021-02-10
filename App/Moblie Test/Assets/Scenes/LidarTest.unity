@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bigLidarPointActive: {fileID: 11400000, guid: 926d145ee30313c41b1af5e9a3166229,
     type: 2}
+  mapScale: 10
   maxDistance: 2
   minLineLength: 5
   bounds: 500
@@ -170,6 +171,9 @@ MonoBehaviour:
   - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
   simulateData: 1
   pushDataSpeed: 1
+  sendEvent: {fileID: 0}
+  sendString: {fileID: 0}
+  reciveString: {fileID: 0}
 --- !u!4 &762871143
 Transform:
   m_ObjectHideFlags: 0
