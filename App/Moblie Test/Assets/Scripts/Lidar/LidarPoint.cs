@@ -22,7 +22,7 @@ namespace Lidar
     {
         public LidarPointState State { get; set; }
         public bool IsBigLidarPoint { get; }
-        public List<float>[] Distances { get; }
+        public float[] Distances { get; private set; }
         public float2[] Positions { get; private set; }
         public float2[][] Lines { get; private set; }
         public float2[] Intersections { get; private set; }
@@ -32,22 +32,16 @@ namespace Lidar
         {
             State = LidarPointState.addingData;
             IsBigLidarPoint = isBigLidarPoint;
-            Distances = new List<float>[360];
-            for (int i = 0; i < Distances.Length; i++)
-            {
-                Distances[i] = new List<float>();
-            }
-
+            Distances = new float[360];
             this.maxDistance = maxDistance;
             this.minLineLength = minLineLength;
             this.bounds = bounds;
         }
         public void AddData(int2[] data)
         {
-            for (int i = 0; i < data.Length; i++)
+            foreach (int2 int2 in data)
             {
-                if (data[i].y == 0.0f) continue;
-                Distances[data[i].x].Add((float)data[i].y / 10);
+                Distances[int2.x] = int2.y / 10;
             }
         }
 
@@ -76,16 +70,9 @@ namespace Lidar
             Positions = new float2[360];
             for (int i = 0; i < Distances.Length; i++)
             {
-                float sum = Distances[i].Sum();
-                if (sum > 0)
-                {
-                    sum /= Distances[i].Count;
-                }
-                else { continue; }
-                
                 Positions[i] = new float2(
-                    math.sin(i * math.PI / 180) * sum,
-                    math.cos(i * math.PI / 180) * sum);
+                    math.sin(i * math.PI / 180) * Distances[i],
+                    math.cos(i * math.PI / 180) * Distances[i]);
             }
         }
 

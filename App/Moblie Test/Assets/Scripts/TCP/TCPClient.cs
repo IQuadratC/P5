@@ -62,8 +62,8 @@ namespace TCP
 
                 void Action()
                 {
-                    reciveEvent.Raise();
                     Debug.Log(str);
+                    reciveEvent.Raise();
                 }
 
                 Threader.RunOnMainThread(Action);

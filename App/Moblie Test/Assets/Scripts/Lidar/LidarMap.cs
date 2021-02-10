@@ -175,6 +175,8 @@ namespace Lidar
 
         [SerializeField] private bool showMap;
         private List<GameObject> mapPoints;
+        [SerializeField] private GameObject mapPreFab;
+        [SerializeField] private GameObject mapParten;
         private void ShowMap()
         {
             if (mapPoints == null)
@@ -189,7 +191,8 @@ namespace Lidar
             mapPoints.Clear();
             foreach (int2 mapKey in Map.Keys)
             {
-                GameObject o = Instantiate(pointPreFabs[0], new Vector3(mapKey.x, mapKey.y, 0), Quaternion.identity);
+                GameObject o = Instantiate(mapPreFab, new Vector3(mapKey.x, mapKey.y, 0), Quaternion.identity);
+                o.transform.SetParent(mapParten.transform);
                 mapPoints.Add(o);
             }
         }
@@ -252,9 +255,9 @@ namespace Lidar
 
         [SerializeField] private GameEvent sendEvent;
         [SerializeField] private StringVariable sendString;
-        private void ReqestData()
+        public void ReqestData()
         {
-            sendString.Value = "lidar getdata";
+            sendString.Value = "lidar sumdata 50";
             sendEvent.Raise();
         }
         
@@ -268,14 +271,20 @@ namespace Lidar
             
             if (strs[1].Equals("data"))
             {
-                int2[] data = new int2[strs.Length -3];
+                int2[] data = new int2[strs.Length -2];
                 for (int i = 2; i < strs.Length; i++)
                 {
-                    string[] args = strs[2].Split(',');
-                    data[i].x = int.Parse(args[0]);
-                    data[i].y = int.Parse(args[1]);
+                    string[] args = strs[i].Split(',');
+                    if(args.Length < 2) continue;
+                    
+                    data[i - 2].x = int.Parse(args[0]);
+                    data[i - 2].y = int.Parse(args[1]);
                 }
                 AddLidarData(data);
+            }
+            else if (strs[1].Equals("end"))
+            {
+                bigLidarPointActive.Value = false;
             }
         }
     }
