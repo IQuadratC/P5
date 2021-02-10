@@ -48,7 +48,7 @@ namespace Lidar
                 LidarPoint lidarPoint = new LidarPoint(false);
 
                 lidarPoint.AddData(data);
-                lidarPoint.state = LidarPointState.waitingForUpdate;
+                lidarPoint.State = LidarPointState.waitingForUpdate;
                 
                 lidarPointsProcessing.Add(lidarPoint);
             }
@@ -61,12 +61,12 @@ namespace Lidar
             for (int i = lidarPointsProcessing.Count - 1; i >= 0; i--)
             {
                 LidarPoint lidarPoint = lidarPointsProcessing[i];
-                switch (lidarPoint.state)
+                switch (lidarPoint.State)
                 {
                     case LidarPointState.addingData:
-                        if (lidarPoint.bigLidarPoint && wasBigLidarPointActive && !bigLidarPointActive.Value)
+                        if (lidarPoint.IsBigLidarPoint && wasBigLidarPointActive && !bigLidarPointActive.Value)
                         {
-                            lidarPoint.state = LidarPointState.waitingForUpdate;
+                            lidarPoint.State = LidarPointState.waitingForUpdate;
                         }
                         break;
                     
@@ -78,7 +78,7 @@ namespace Lidar
                         }
                         else
                         {
-                            if (lidarPoint.bigLidarPoint)
+                            if (lidarPoint.IsBigLidarPoint)
                             {
                                 lidarPoint.Update();
                             }
@@ -92,14 +92,14 @@ namespace Lidar
                     
                     case LidarPointState.finished:
                         lidarPointsProcessing.Remove(lidarPoint);
-                        if (lidarPoint.bigLidarPoint)
+                        if (lidarPoint.IsBigLidarPoint)
                         {
                             bigLidarPoints.Add(lidarPoint);
                         }
                         else
                         {
                             smallLidarPoints.Add(lidarPoint);
-                            currentPosition = lidarPoint.overlay.xyz;
+                            currentPosition = lidarPoint.Overlay.xyz;
                         }
                         ShowPoint(lidarPoint);
                         break;
@@ -117,11 +117,11 @@ namespace Lidar
         public GameObject[] pointPreFabs;
         private void ShowPoint(LidarPoint lidarPoint)
         {
-            GameObject point = new GameObject("Point " + counter +" "+ lidarPoint.bigLidarPoint);
-            point.transform.position = new Vector3(lidarPoint.overlay.x, lidarPoint.overlay.y, 0);
-            point.transform.eulerAngles = new Vector3(0,0,lidarPoint.overlay.z);
+            GameObject point = new GameObject("Point " + counter +" "+ lidarPoint.IsBigLidarPoint);
+            point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
+            point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
 
-            foreach (float2 lidarPointPosition in lidarPoint.positions)
+            foreach (float2 lidarPointPosition in lidarPoint.Positions)
             {
                 GameObject o = Instantiate(pointPreFabs[counter], 
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
