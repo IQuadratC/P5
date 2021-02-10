@@ -71,21 +71,6 @@ namespace Lidar
             state = LidarPointState.finished;
         }
 
-        /*public NativeHashMap<int, NativeArray<float>> nativeDistances;
-        private void UpdateLidarPoint()
-        {
-            nativeDistances = new NativeHashMap<int, NativeArray<float>>(distances.Length, Allocator.Persistent);
-            for (int i = 0; i < distances.Length; i++)
-            {
-                NativeArray<float> nativeDistance = new NativeArray<float>(distances[i].Count, Allocator.Persistent);
-                for (int j = 0; j < distances[i].Count; j++)
-                {
-                    nativeDistance[j] = distances[i][j];
-                }
-                nativeDistances[i] = nativeDistance;
-            }
-        }*/
-        
         private void UpdatePositions()
         {
             for (int i = 0; i < distances.Length; i++)
@@ -268,7 +253,6 @@ namespace Lidar
         private NativeArray<float2> nativeIntersections;
         private NativeArray<float2> nativeIntersections1;
         private NativeArray<float4> overlays;
-        private JobHandle overlayHandle;
         private void UpdateOverlay()
         {
             int count = otherLidarPoint.intersections.Count;
@@ -289,7 +273,7 @@ namespace Lidar
 
             if (jobActive)
             {
-                overlayHandle = processOverlayJob.Schedule(count, 1);
+                jobHandle = processOverlayJob.Schedule(count, 1);
             }
             else
             {
@@ -389,8 +373,8 @@ namespace Lidar
         
         public void ParseOverlay()
         {
-            if(!overlayHandle.IsCompleted) return;
-            overlayHandle.Complete();
+            if(!jobHandle.IsCompleted) return;
+            jobHandle.Complete();
 
             nativeIntersections.Dispose();
             nativeIntersections1.Dispose();

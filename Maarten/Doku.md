@@ -109,12 +109,10 @@ App:
 - Lidar Karte erstellen. Maarten
 - Algoritmus um in Karte zu navigiren. 
 - Auf Position in der Karte fahren. 
+- Route abfahren.
+- Karte erkunden.
 - Karte darstellen. 
 - Shader für Karte schreiben.
 - StartScerren für App.
 
 TCP Syntax: Entfänger Befehl Argumente ...
-
-
-
-
