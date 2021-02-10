@@ -73,7 +73,7 @@ namespace TCP
         public void Send()
         {
             // Encode the message and send it out to the server.
-            byte[] msg = Encoding.ASCII.GetBytes(sendMessage.Value);
+            byte[] msg = Encoding.UTF8.GetBytes(sendMessage.Value);
             client.GetStream().Write(msg, 0, msg.Length);
         }
     }

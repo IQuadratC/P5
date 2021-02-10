@@ -224,6 +224,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &57668745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -928,7 +929,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1834024516}
         m_MethodName: Send
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

@@ -1552,6 +1552,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1262455241}
   - component: {fileID: 1262455240}
+  - component: {fileID: 1262455249}
+  - component: {fileID: 1262455248}
   - component: {fileID: 1262455239}
   - component: {fileID: 1262455242}
   - component: {fileID: 1262455247}
@@ -1605,6 +1607,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c81bf0186d7c9a4cbed0a22adafd141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sendMessage: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+  reciveEvent: {fileID: 11400000, guid: 50fab6b8adcad3c4a838880019abd33b, type: 2}
+  reciveMessage: {fileID: 11400000, guid: 118e3a844776a5f4b8c6eb291fb12180, type: 2}
 --- !u!4 &1262455241
 Transform:
   m_ObjectHideFlags: 0
@@ -1781,6 +1786,47 @@ MonoBehaviour:
           m_StringArgument: left
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1262455248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262455238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1262455249}
+        m_MethodName: Send
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1262455249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262455238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e8d1db98a28c6439f6e204c88b73ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+  send: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
 --- !u!1 &1507488202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,6 +2255,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &1941124393
 MonoBehaviour:
   m_ObjectHideFlags: 0
