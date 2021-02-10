@@ -10,18 +10,22 @@ namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
-        public List<LidarPoint> bigLidarPoints;
-        public List<LidarPoint> smallLidarPoints;
-        private List<LidarPoint> lidarPointsProcessing;
-        public float3 currentPosition;
-        public BoolVariable bigLidarPointActive;
+        [SerializeField] private BoolVariable bigLidarPointActive;
         private bool wasBigLidarPointActive;
-        public bool simulateData;
+        private List<LidarPoint> lidarPointsProcessing;
+
+        public List<LidarPoint> BigLidarPoints { get; private set; }
+        public List<LidarPoint> SmallLidarPoints { get; private set; }
+        public float3 CurrentPosition { get; private set; }
+        
+        [SerializeField] private float maxDistance = 0.5f;
+        [SerializeField] private int minLineLength = 5;
+        [SerializeField] private int bounds = 500;
 
         private void Awake()
         {
-            bigLidarPoints = new List<LidarPoint>();
-            smallLidarPoints = new List<LidarPoint>();
+            BigLidarPoints = new List<LidarPoint>();
+            SmallLidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
         }
 
@@ -32,7 +36,7 @@ namespace Lidar
                 LidarPoint lidarPoint;
                 if (!wasBigLidarPointActive)
                 {
-                    lidarPoint = new LidarPoint(true);
+                    lidarPoint = new LidarPoint(true, maxDistance, minLineLength, bounds);
 
                     lidarPointsProcessing.Add(lidarPoint);
                     wasBigLidarPointActive = true;
@@ -45,7 +49,7 @@ namespace Lidar
             }
             else
             {
-                LidarPoint lidarPoint = new LidarPoint(false);
+                LidarPoint lidarPoint = new LidarPoint(false, maxDistance, minLineLength, bounds);
 
                 lidarPoint.AddData(data);
                 lidarPoint.State = LidarPointState.waitingForUpdate;
@@ -56,8 +60,11 @@ namespace Lidar
 
         private void Update()
         {
-            SimulateData();
-            
+            if (simulateData)
+            {
+                SimulateData();
+            }
+
             for (int i = lidarPointsProcessing.Count - 1; i >= 0; i--)
             {
                 LidarPoint lidarPoint = lidarPointsProcessing[i];
@@ -72,9 +79,9 @@ namespace Lidar
                     
                     case LidarPointState.waitingForUpdate:
 
-                        if (bigLidarPoints.Count > 0)
+                        if (BigLidarPoints.Count > 0)
                         {
-                            lidarPoint.Update(bigLidarPoints[bigLidarPoints.Count -1]);
+                            lidarPoint.Update(BigLidarPoints[BigLidarPoints.Count -1]);
                         }
                         else
                         {
@@ -94,12 +101,12 @@ namespace Lidar
                         lidarPointsProcessing.Remove(lidarPoint);
                         if (lidarPoint.IsBigLidarPoint)
                         {
-                            bigLidarPoints.Add(lidarPoint);
+                            BigLidarPoints.Add(lidarPoint);
                         }
                         else
                         {
-                            smallLidarPoints.Add(lidarPoint);
-                            currentPosition = lidarPoint.Overlay.xyz;
+                            SmallLidarPoints.Add(lidarPoint);
+                            CurrentPosition = lidarPoint.Overlay.xyz;
                         }
                         ShowPoint(lidarPoint);
                         break;
@@ -114,7 +121,7 @@ namespace Lidar
         }
 
         private int counter;
-        public GameObject[] pointPreFabs;
+        [SerializeField] private GameObject[] pointPreFabs;
         private void ShowPoint(LidarPoint lidarPoint)
         {
             GameObject point = new GameObject("Point " + counter +" "+ lidarPoint.IsBigLidarPoint);
@@ -131,16 +138,17 @@ namespace Lidar
             counter++;
         }
 
+        [SerializeField] private bool simulateData;
         private int frame;
         private List<List<int2>> data;
-        private int pushDataSpeed = 1;
+        [SerializeField] private int pushDataSpeed = 1;
         private string[] csvFiles =
         {
             "Testdata_gedreht_0.csv",
             "Testdata_gedreht_1.csv",
             "Testdata_gedreht_2.csv"
         };
-        public void SimulateData()
+        private void SimulateData()
         {
             if (frame == 0)
             {

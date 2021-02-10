@@ -28,7 +28,7 @@ namespace Lidar
         public float2[] Intersections { get; private set; }
         public float4 Overlay => overlay;
 
-        public LidarPoint(bool isBigLidarPoint)
+        public LidarPoint(bool isBigLidarPoint, float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
             IsBigLidarPoint = isBigLidarPoint;
@@ -37,6 +37,10 @@ namespace Lidar
             {
                 Distances[i] = new List<float>();
             }
+
+            this.maxDistance = maxDistance;
+            this.minLineLength = minLineLength;
+            this.bounds = bounds;
         }
         public void AddData(List<int2> data)
         {
@@ -85,9 +89,8 @@ namespace Lidar
             }
         }
 
-        private const float maxDistance = 0.5f;
-        private const int minLineLength = 5;
-
+        private readonly float maxDistance;
+        private readonly int minLineLength;
         private void UpdateLines()
         {
             List<List<float2>> lineList = new List<List<float2>>();
@@ -194,14 +197,14 @@ namespace Lidar
                 }
             }
             
-            Lines = new float2[][lineList2.Count];
+            Lines = new float2[lineList2.Count][];
             for (int i = 0; i < lineList2.Count; i++)
             {
                 float4 v = mathAdditions.FindLinearLeastSquaresFit(lineList2[i]);
                 lineList2[i].Add(new float2(v.x, v.y));
                 lineList2[i].Add(new float2(v.z, v.w));
 
-                Lines[i] = lineList[i].ToArray();
+                Lines[i] = lineList2[i].ToArray();
             }
         }
         private static int SortListByLenght(List<float2> x, List<float2> y)
@@ -216,8 +219,7 @@ namespace Lidar
             return xLenght < yLenght ? 1 : 0;
         }
 
-        private const int bounds = 500;
-
+        private readonly int bounds;
         private void UpdateIntersections()
         {
             List<float2> intersectionList = new List<float2>();
@@ -236,7 +238,7 @@ namespace Lidar
                         new float2(testFinalLine.x + testFinalLine.z, testFinalLine.y + testFinalLine.w));
                     
                     bool isNotInList = true;
-                    foreach (float2 intersectionPoint in Intersections)
+                    foreach (float2 intersectionPoint in intersectionList)
                     {
                         if (math.length(intersectionPoint - intersection) < 1.0f)
                         {

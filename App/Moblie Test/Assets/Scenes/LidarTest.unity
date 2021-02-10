@@ -150,13 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f996f0da91285de48950b884fd62874e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPosition:
-    x: 0
-    y: 0
-    z: 0
   bigLidarPointActive: {fileID: 11400000, guid: 926d145ee30313c41b1af5e9a3166229,
     type: 2}
-  simulateData: 0
+  maxDistance: 2
+  minLineLength: 5
+  bounds: 500
   pointPreFabs:
   - {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5, type: 3}
   - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
@@ -170,6 +168,8 @@ MonoBehaviour:
   - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
   - {fileID: 3763153833125633302, guid: b3480e6b5281fd449bef305d40a5aabe, type: 3}
   - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
+  simulateData: 1
+  pushDataSpeed: 1
 --- !u!4 &762871143
 Transform:
   m_ObjectHideFlags: 0
