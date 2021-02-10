@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using Utility;
 using Utility.Events;
 using Utility.Variables;
 
@@ -31,7 +32,7 @@ namespace TCP
             }
             catch (Exception e)
             {
-                Debug.Log("Failed to Connect to Server!");
+                Debug.Log("Failed to Connect to Server!" + e);
                 throw;
             }
             
@@ -58,8 +59,16 @@ namespace TCP
                 string str = Encoding.ASCII.GetString(tmp);
                     
                 reciveMessage.Value = str;
-                reciveEvent.Raise();
-                Debug.Log(str);
+
+                void Action()
+                {
+                    reciveEvent.Raise();
+                    Debug.Log(str);
+                }
+
+                Threader.RunOnMainThread(Action);
+                
+                
             }
             // Clear the buffer and start listening again
             Array.Clear(bytes, 0, bytes.Length);
