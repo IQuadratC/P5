@@ -165,7 +165,7 @@ namespace Lidar
                         string[] line = csvData[i];
                         if(line.Length < 2) continue;
                     
-                        int angle = (int) float.Parse(line[0]);
+                        int angle = int.Parse(line[0].Split('.')[0]);
                         int distance = int.Parse(line[1]);
                         
                         if (lastangle > angle)
