@@ -113,6 +113,8 @@ App:
 - Shader für Karte schreiben.
 - StartScerren für App.
 
+TCP Syntax: Entfänger Befehl Argumente ...
+
 
 
 
