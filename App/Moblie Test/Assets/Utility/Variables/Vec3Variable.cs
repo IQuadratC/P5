@@ -15,5 +15,10 @@ namespace Utility.Variables
         {
             Value = InitialValue;
         }
+        
+        public void Set(Vector3 value)
+        {
+            Value = value;
+        }
     }
 }

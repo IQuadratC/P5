@@ -15,5 +15,10 @@ namespace Utility.Variables
         {
             Value = InitialValue;
         }
+        
+        public void Set(string value)
+        {
+            Value = value;
+        }
     }
 }

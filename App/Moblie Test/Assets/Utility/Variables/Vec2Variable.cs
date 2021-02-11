@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "FloatVariable", menuName = "Utility/Varibles/Float")]
-    public class FloatVariable : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "Vec3Variable", menuName = "Utility/Varibles/Vec3")]
+    public class Vec2Variable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public float Value;
-        public float InitialValue;
+        public Vector2 Value;
+        public Vector2 InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -16,7 +16,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(float value)
+        public void Set(Vector2 value)
         {
             Value = value;
         }
