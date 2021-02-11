@@ -123,77 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &159901826
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 159901828}
-  - component: {fileID: 159901827}
-  m_Layer: 0
-  m_Name: Lidar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &159901827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159901826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f996f0da91285de48950b884fd62874e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bigLidarPointActive: {fileID: 11400000, guid: 926d145ee30313c41b1af5e9a3166229,
-    type: 2}
-  mapScale: 10
-  maxDistance: 2
-  minLineLength: 5
-  bounds: 500
-  showPoints: 0
-  pointPreFabs:
-  - {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5, type: 3}
-  - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
-  - {fileID: 4200935013765546722, guid: 41808abed9a029c4f98ceb110d573d48, type: 3}
-  - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
-  - {fileID: 3763153833125633302, guid: b3480e6b5281fd449bef305d40a5aabe, type: 3}
-  - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
-  - {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5, type: 3}
-  - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
-  - {fileID: 4200935013765546722, guid: 41808abed9a029c4f98ceb110d573d48, type: 3}
-  - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
-  - {fileID: 3763153833125633302, guid: b3480e6b5281fd449bef305d40a5aabe, type: 3}
-  - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
-  showMap: 0
-  mapPreFab: {fileID: 0}
-  mapParten: {fileID: 0}
-  simulateData: 1
-  pushDataSpeed: 1
-  sendEvent: {fileID: 0}
-  sendString: {fileID: 0}
-  reciveString: {fileID: 0}
---- !u!4 &159901828
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159901826}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &874928649
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -309,7 +238,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 100
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -333,7 +262,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137598585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 50, y: 50, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -518,8 +447,8 @@ Canvas:
   m_GameObject: {fileID: 1154822056}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1137598587}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -543,13 +472,43 @@ RectTransform:
   m_Children:
   - {fileID: 1535916810}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1286504344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1286504345}
+  m_Layer: 0
+  m_Name: Path
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1286504345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286504344}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1535916809
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,9 +558,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1535916809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f04ac5abaf674744880815e3d5962cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7442a1e8e63641d4b9cb7da144e3e362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  start:
+    x: 0
+    y: 0
+  end:
+    x: 5
+    y: 5
+  parent: {fileID: 1286504344}
+  pointPrefab: {fileID: 4200935013765546722, guid: 41808abed9a029c4f98ceb110d573d48,
+    type: 3}
+  obsticalsPointPrefab: {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6,
+    type: 3}
 --- !u!114 &1535916812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,8 +617,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1535916811}
-        m_TargetAssemblyTypeName: FindPath, Assembly-CSharp
-        m_MethodName: Test
+        m_TargetAssemblyTypeName: Test, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -760,5 +730,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
