@@ -10,7 +10,7 @@ public class FindPath : MonoBehaviour
     private Node start;
     private Node end;
     private bool gotStuck;
-    [SerializeField] private Dictionary<int2,int> obsticals;
+    private Dictionary<int2,int> obsticals;
 
     public Node findPath(Node _start, Node _end)
     {
@@ -24,7 +24,7 @@ public class FindPath : MonoBehaviour
         while(!gotStuck && security < 1000)
         {
             security++;
-            current = findLowestF();
+            current = findLowest();
             current.completed = true;
             if (current.pos.Equals(end.pos))
             {
@@ -45,16 +45,25 @@ public class FindPath : MonoBehaviour
         return current;
     }
 
-    private Node findLowestF()
+    private Node findLowest()
     {
         Node lowest = null;
-        int score = int.MaxValue;
+        int fscore = int.MaxValue;
+        int hscore = int.MaxValue;
         foreach (var node in grid)
         {
-            if (!node.Value.completed && node.Value.FScore < score && node.Value.walkable)
+            if (!node.Value.completed && node.Value.FScore < fscore && node.Value.walkable)
             {
                 lowest = node.Value;
+                fscore = node.Value.FScore;
             }
+            else if (!node.Value.completed && node.Value.FScore == fscore && node.Value.FScore < hscore && node.Value.walkable)
+            {
+                lowest = node.Value;
+                fscore = node.Value.FScore;
+                hscore = node.Value.hScore;
+            }
+
         }
         if (lowest == null)
         {
@@ -85,8 +94,7 @@ public class FindPath : MonoBehaviour
         {
             if (!grid.ContainsKey(neighbor))
             {
-                
-                grid[neighbor] = new Node(neighbor, true);
+                grid[neighbor] = new Node(neighbor, !obsticals.ContainsKey(neighbor) || obsticals[neighbor] < 1);
             }
         }
         
