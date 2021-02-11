@@ -7,21 +7,17 @@ using UnityEngine;
 public class FindPath : MonoBehaviour
 {
     private Dictionary<int2, Node> grid = new Dictionary<int2, Node>();
-    private Node start;
-    private Node end;
-    private bool gotStuck;
     private Dictionary<int2,int> obsticals;
 
-    public Node findPath(Node _start, Node _end)
+    public Node findPathBetweneNodes(Node start, Node end)
     {
-        start = _start;
-        end = _end;
         Node current = start;
-        start.setGScore(start);
+        start.setGScore(current);
         start.setHScore(end);
         grid[start.pos] = start;
+        
         int security = 0;
-        while(!gotStuck && security < 1000)
+        while(security < 1000)
         {
             security++;
             current = findLowest();
@@ -38,11 +34,9 @@ public class FindPath : MonoBehaviour
                     grid[neigbor].setGScore(current);
                     grid[neigbor].setHScore(end);
                 }
-                
             }
-            
         }
-        return current;
+        return null;
     }
 
     private Node findLowest()
@@ -65,10 +59,6 @@ public class FindPath : MonoBehaviour
             }
 
         }
-        if (lowest == null)
-        {
-            gotStuck = true;
-        }
         return lowest;
     }
     
@@ -81,7 +71,7 @@ public class FindPath : MonoBehaviour
         {
             for (int j = -1; j < 2; j++)
             {
-                if (i == j && j == 0) {continue; }
+                if (i == j && j == 0){continue;}
 
                 pos.x = i;
                 pos.y = j;
@@ -99,6 +89,12 @@ public class FindPath : MonoBehaviour
         }
         
         return neigbors;
+    }
+
+    public List<int2> findPathBetweenInt2(int2 start, int2 end)
+    {
+        return Node.getPath(findPathBetweneNodes(new Node(start, true),
+            new Node(end, true)));
     }
     public void Test()
     {
@@ -125,15 +121,15 @@ public class FindPath : MonoBehaviour
                 obsticaList.Add(obstical.Key);
             }
         }
-        SowList(obsticaList, obsticalsPointPrefab);
+        ShowList(obsticaList, obsticalsPointPrefab);
         
-        SowList(Node.getPath(findPath(new Node(int2.zero, true), new Node(new int2(5, 5), true))), pointPrefab);
+        ShowList(), pointPrefab);
     }
 
     [SerializeField]private GameObject parent;
     [SerializeField]private GameObject pointPrefab;
     [SerializeField]private GameObject obsticalsPointPrefab;
-    public void SowList(List<int2> path, GameObject pointPrefab)
+    public void ShowList(List<int2> path, GameObject pointPrefab)
     {
         foreach (int2 int2 in path)
         {
