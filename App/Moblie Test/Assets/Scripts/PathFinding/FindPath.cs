@@ -10,26 +10,30 @@ public class FindPath : MonoBehaviour
     private Node start;
     private Node end;
     private bool gotStuck;
+    [SerializeField] private Dictionary<int2,int> obsticals;
 
-    public Node findPath(Node start, Node end)
+    public Node findPath(Node _start, Node _end)
     {
-        this.start = start;
-        this.end = end;
-        Node current;
+        start = _start;
+        end = _end;
+        Node current = start;
+        start.setGScore(start);
+        start.setHScore(end);
         grid[start.pos] = start;
-        
-        while(!gotStuck)
+        int security = 0;
+        while(!gotStuck && security < 1000)
         {
+            security++;
             current = findLowestF();
             current.completed = true;
-            if (current == end)
+            if (current.pos.Equals(end.pos))
             {
                 return current;
             }
 
             foreach (int2 neigbor in getNeigbors(current))
             {
-                if (!grid[neigbor].completed || grid[neigbor].walkable)
+                if (!grid[neigbor].completed && grid[neigbor].walkable)
                 {
                     grid[neigbor].setGScore(current);
                     grid[neigbor].setHScore(end);
@@ -38,15 +42,16 @@ public class FindPath : MonoBehaviour
             }
             
         }
-        return null;
+        return current;
     }
 
     private Node findLowestF()
     {
-        Node lowest = new Node(new int2(0,0), false);
+        Node lowest = null;
+        int score = int.MaxValue;
         foreach (var node in grid)
         {
-            if (!node.Value.completed && node.Value.FScore < lowest.FScore )
+            if (!node.Value.completed && node.Value.FScore < score && node.Value.walkable)
             {
                 lowest = node.Value;
             }
@@ -60,30 +65,72 @@ public class FindPath : MonoBehaviour
     
     private int2[] getNeigbors(Node self)
     {
-        int2[] neigbors = new int2[]{};
-        int2 pos; 
+        int2[] neigbors = new int2[8];
+        int2 pos;
+        int k = 0;
         for (int i = -1; i < 2; i++)
         {
             for (int j = -1; j < 2; j++)
             {
+                if (i == j && j == 0) {continue; }
+
                 pos.x = i;
                 pos.y = j;
-                neigbors[3 * (i + 1) + j] = self.pos + pos;
+                neigbors[k] = self.pos + pos;
+                k++;
             }
         }
 
         foreach (int2 neighbor in neigbors)
         {
-            if (grid[neighbor] == null)
+            if (!grid.ContainsKey(neighbor))
             {
+                
                 grid[neighbor] = new Node(neighbor, true);
             }
         }
         
         return neigbors;
     }
-    public void Start()
+    public void Test()
     {
-        Debug.Log(findPath(new Node(int2.zero, true), new Node(new int2(5, 5), true)));
+        obsticals = new Dictionary<int2, int>();
+        for (int i = 0; i < 100; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                if (i % 5 > 2 && j % 5 > 2)
+                {
+                    obsticals.Add(new int2(i,j), 1);
+                }
+                else
+                {
+                    obsticals.Add(new int2(i,j), 0);
+                }
+            }
+        }
+        List<int2> obsticaList = new List<int2>();
+        foreach (KeyValuePair<int2,int> obstical in obsticals)
+        {
+            if (obstical.Value > 0)
+            {
+                obsticaList.Add(obstical.Key);
+            }
+        }
+        SowList(obsticaList, obsticalsPointPrefab);
+        
+        SowList(Node.getPath(findPath(new Node(int2.zero, true), new Node(new int2(5, 5), true))), pointPrefab);
+    }
+
+    [SerializeField]private GameObject parent;
+    [SerializeField]private GameObject pointPrefab;
+    [SerializeField]private GameObject obsticalsPointPrefab;
+    public void SowList(List<int2> path, GameObject pointPrefab)
+    {
+        foreach (int2 int2 in path)
+        {
+            GameObject o = Instantiate(pointPrefab, new Vector3(int2.x,int2.y, 0), Quaternion.identity);
+            o.transform.SetParent(parent.transform);
+        }
     }
 }
