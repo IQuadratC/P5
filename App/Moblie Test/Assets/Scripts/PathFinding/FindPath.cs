@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class FindPath : MonoBehaviour
+public class FindPath
 {
     private Dictionary<int2, Node> grid = new Dictionary<int2, Node>();
-    private Dictionary<int2,int> obsticals;
+    private Dictionary<int2,int> obstacles;
 
+    public FindPath(Dictionary<int2,int> obstacles)
+    {
+        this.obstacles = obstacles;
+    }
     public Node findPathBetweneNodes(Node start, Node end)
     {
         Node current = start;
@@ -84,57 +88,16 @@ public class FindPath : MonoBehaviour
         {
             if (!grid.ContainsKey(neighbor))
             {
-                grid[neighbor] = new Node(neighbor, !obsticals.ContainsKey(neighbor) || obsticals[neighbor] < 1);
+                grid[neighbor] = new Node(neighbor, !obstacles.ContainsKey(neighbor) || obstacles[neighbor] < 1);
             }
         }
         
         return neigbors;
     }
 
-    public List<int2> findPathBetweenInt2(int2 start, int2 end)
+    public List<int2> findPathBetweenInt2(int2 start, int2 end, Dictionary<int2,int> obstacles)
     {
         return Node.getPath(findPathBetweneNodes(new Node(start, true),
             new Node(end, true)));
-    }
-    public void Test()
-    {
-        obsticals = new Dictionary<int2, int>();
-        for (int i = 0; i < 100; i++)
-        {
-            for (int j = 0; j < 100; j++)
-            {
-                if (i % 5 > 2 && j % 5 > 2)
-                {
-                    obsticals.Add(new int2(i,j), 1);
-                }
-                else
-                {
-                    obsticals.Add(new int2(i,j), 0);
-                }
-            }
-        }
-        List<int2> obsticaList = new List<int2>();
-        foreach (KeyValuePair<int2,int> obstical in obsticals)
-        {
-            if (obstical.Value > 0)
-            {
-                obsticaList.Add(obstical.Key);
-            }
-        }
-        ShowList(obsticaList, obsticalsPointPrefab);
-        
-        ShowList(), pointPrefab);
-    }
-
-    [SerializeField]private GameObject parent;
-    [SerializeField]private GameObject pointPrefab;
-    [SerializeField]private GameObject obsticalsPointPrefab;
-    public void ShowList(List<int2> path, GameObject pointPrefab)
-    {
-        foreach (int2 int2 in path)
-        {
-            GameObject o = Instantiate(pointPrefab, new Vector3(int2.x,int2.y, 0), Quaternion.identity);
-            o.transform.SetParent(parent.transform);
-        }
     }
 }
