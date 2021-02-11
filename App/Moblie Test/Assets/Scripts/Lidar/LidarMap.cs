@@ -170,6 +170,8 @@ namespace Lidar
                     Map[pos] = value;
                 }
             }
+
+            UpdateMapMesh();
         }
 
         [SerializeField] private bool showMap;
@@ -194,6 +196,45 @@ namespace Lidar
                 o.transform.SetParent(mapParten.transform);
                 mapPoints.Add(o);
             }
+        }
+
+        [SerializeField] private int meshBounds;
+        [SerializeField] private MeshFilter meshFilter;
+        private void UpdateMapMesh()
+        {
+            bool[,] meshData = new bool[meshBounds * 2, meshBounds * 2];
+            foreach (KeyValuePair<int2,int> keyValuePair in Map)
+            {
+                int x = keyValuePair.Key.x / mapScale;
+                int y = keyValuePair.Key.y / mapScale;
+                if(x < -meshBounds || x >= meshBounds || y < -meshBounds || y >= meshBounds) continue;
+                
+                meshData[x + meshBounds, y + meshBounds] = true;
+            }
+           
+            List<Vector3> vertices = new List<Vector3>();
+            List<int> indices = new List<int>();
+            for (int i = 0; i < meshBounds * 2; i++)
+            {
+                for (int j = 0; j < meshBounds * 2; j++)
+                {
+                    int x = (i - meshBounds) * mapScale;
+                    int y = (j - meshBounds) * mapScale;
+                    int z = meshData[i, j] ? 1 : 0;
+                    
+                    vertices.Add(new Vector3(x, y, z));
+                    vertices.Add(new Vector3(x + mapScale, y, z));
+                    vertices.Add(new Vector3(x, y + mapScale, z));
+                    vertices.Add(new Vector3(x + mapScale, y + mapScale, z));
+
+                    int k = (i * meshBounds * 2 + j) * 4;
+                    indices.AddRange(new []{k + 2, k + 1, k, k + 1, k + 2, k + 3});
+                }
+            }
+            Mesh mesh = new Mesh();
+            mesh.vertices = vertices.ToArray();
+            mesh.triangles = indices.ToArray();
+            meshFilter.mesh = mesh;
         }
 
         [SerializeField] private bool simulateData;
