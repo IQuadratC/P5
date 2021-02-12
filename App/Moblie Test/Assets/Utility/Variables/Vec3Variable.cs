@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Utility.Variables
@@ -7,8 +8,8 @@ namespace Utility.Variables
     public class Vec3Variable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public Vector3 Value;
-        public Vector3 InitialValue;
+        public float3 Value;
+        public float3 InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -16,7 +17,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(Vector3 value)
+        public void Set(float3 value)
         {
             Value = value;
         }

@@ -20,18 +20,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Layer_60372158:
-        m_Texture: {fileID: 8400000, guid: 0c6472486031e19489966cabf542ef07, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Layer_6B16B88C:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_bec5ac12b5f64af1857a6cc5a5585532:
-        m_Texture: {fileID: 8400000, guid: 0c6472486031e19489966cabf542ef07, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -45,12 +33,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_82795d8db28441fb9729447430539e0c: 0.6
-    - WaveIntensity: 0.3
+    - Vector1_05e5122995d14eaca5fa0446f5f14e2b: 0.05
+    - Vector1_82795d8db28441fb9729447430539e0c: 5
+    - Vector1_b7c4a85b61c34767a89a8c75354c7f98: 0.1
+    - WaveIntensity: 0.1
     - WaveSize: 1000
-    - WaveSpeed: 1000
+    - WaveSpeed: 500
     m_Colors:
+    - Color_30ba087ee0d043638899d36dcb5b0c06: {r: 0.03, g: 0.03, b: 0.03, a: 0}
+    - Color_381634d277db46d9890f6e0409d80908: {r: 0, g: 0, b: 0, a: 1}
+    - Color_43c9090e0e034310be7afdbf226097de: {r: 0, g: 0.6666667, b: 0.7254902, a: 0}
     - Position: {r: 0, g: 0, b: 0, a: 0}
-    - WallColor: {r: 1, g: 0.7214558, b: 0, a: 0}
+    - WallColor: {r: 0, g: 0.6662472, b: 0.7264151, a: 0}
     - WaveColor: {r: 0, g: 0.9452324, b: 1, a: 0}
   m_BuildTextureStacks: []

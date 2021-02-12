@@ -1,14 +1,15 @@
 ﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "Vec3Variable", menuName = "Utility/Varibles/Vec3")]
+    [CreateAssetMenu(fileName = "Vec2Variable", menuName = "Utility/Varibles/Vec2")]
     public class Vec2Variable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public Vector2 Value;
-        public Vector2 InitialValue;
+        public float2 Value;
+        public float2 InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -16,7 +17,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(Vector2 value)
+        public void Set(float2 value)
         {
             Value = value;
         }
