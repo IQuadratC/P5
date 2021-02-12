@@ -138,8 +138,9 @@ App Logik:
     - Listen NewPoint
 
 - Controller UI
-    - Toggle AI
+    - Toggle AI / HI
 
+- Controller HI
     - Raises Send Event
     - Raises GetData Event
 
