@@ -116,3 +116,33 @@ App:
 - StartScerren für App.
 
 TCP Syntax: Entfänger Befehl Argumente ...
+
+# 12.02.2021 
+
+App Logik:
+- TCP:
+    - Liste Send Event (Send String)
+    - Raises Recive Event (Recive String)
+
+- LidarController:
+    - State
+    - Data (List Points)
+    - Position
+
+    - Listen GetData Event
+    - Raises Send Event
+    - Raises NewPoint Event
+    - Listen Recive Event
+    
+- LidarMap: 
+    - Listen NewPoint
+
+- Controller UI
+    - Toggle AI
+
+    - Raises Send Event
+    - Raises GetData Event
+
+- Controller AI
+    - Listen NewPoint Event
+    - Raises Send Event

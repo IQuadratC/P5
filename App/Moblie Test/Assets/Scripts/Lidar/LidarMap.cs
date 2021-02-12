@@ -195,6 +195,7 @@ namespace Lidar
                 meshData[x + meshBounds, y + meshBounds] = true;
             }
            
+            
             List<Vector3> vertices = new List<Vector3>();
             List<int> indices = new List<int>();
             List<Vector2> uv = new List<Vector2>();

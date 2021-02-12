@@ -281,7 +281,7 @@ MonoBehaviour:
   bigLidarPointActive: {fileID: 11400000, guid: 926d145ee30313c41b1af5e9a3166229,
     type: 2}
   position: {fileID: 11400000, guid: 7e5aa4bea8f3b87418a17182aca80b14, type: 2}
-  mapScale: 10
+  mapScale: 5
   maxDistance: 2
   minLineLength: 5
   bounds: 500
