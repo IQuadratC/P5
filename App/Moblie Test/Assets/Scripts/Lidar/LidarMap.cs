@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,12 +11,9 @@ namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
-        [SerializeField] private BoolVariable bigLidarPointActive;
-        private bool wasBigLidarPointActive;
         private List<LidarPoint> lidarPointsProcessing;
 
-        public List<LidarPoint> BigLidarPoints { get; private set; }
-        public List<LidarPoint> SmallLidarPoints { get; private set; }
+        public List<LidarPoint> LidarPoints { get; private set; }
         [SerializeField] private Vec2Variable position;
 
         public Dictionary<int2, int> Map { get; private set; }
@@ -28,97 +26,134 @@ namespace Lidar
 
         private void Awake()
         {
-            BigLidarPoints = new List<LidarPoint>();
-            SmallLidarPoints = new List<LidarPoint>();
+            LidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
             meshFilter = meshObject.GetComponent<MeshFilter>();
             meshMaterial = meshObject.GetComponent<MeshRenderer>().material;
         }
 
-        public void AddLidarData(int2[] data)
-        {
-            if (bigLidarPointActive.Value)
-            {
-                LidarPoint lidarPoint;
-                if (!wasBigLidarPointActive)
-                {
-                    lidarPoint = new LidarPoint(true, maxDistance, minLineLength, bounds);
-
-                    lidarPointsProcessing.Add(lidarPoint);
-                    wasBigLidarPointActive = true;
-                }
-                else
-                {
-                    lidarPoint = lidarPointsProcessing[lidarPointsProcessing.Count - 1];
-                }
-                lidarPoint.AddData(data);
-            }
-            else
-            {
-                LidarPoint lidarPoint = new LidarPoint(false, maxDistance, minLineLength, bounds);
-
-                lidarPoint.AddData(data);
-                lidarPoint.State = LidarPointState.waitingForUpdate;
-                
-                lidarPointsProcessing.Add(lidarPoint);
-            }
-        }
-
-        private void Update()
+        private void Start()
         {
             if (simulateData)
             {
                 SimulateData();
             }
+        }
+        
+        [SerializeField] private bool simulateData;
+        private string[] csvFiles =
+        {
+            "Testdata_gedreht_0.csv",
+            "Testdata_gedreht_1.csv",
+            "Testdata_gedreht_2.csv"
+        };
+        private void SimulateData()
+        {
+            foreach (string csvFile in csvFiles)
+            {
+                string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + csvFile));
 
+                List<int2> data = new List<int2>();
+                for (int i = 0; i < csvData.Length; i++)
+                {
+                    string[] line = csvData[i];
+                    if (line.Length < 2) continue;
+
+                    int angle = int.Parse(line[0].Split('.')[0]);
+                    int distance = int.Parse(line[1]);
+                    
+                    if(distance == 0) continue;
+
+                    int index = -1;
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        if (data[j].x == angle)
+                        {
+                            index = j;
+                        }
+                    }
+
+                    if (index == -1)
+                    {
+                        data.Add(new int2(angle, distance));
+                    }
+                    else
+                    {
+                        data[index] = (new int2(angle, distance) + data[index]) / 2;
+                    }
+                }
+
+                AddLidarData(data.ToArray());
+                PushLidarData();
+            }
+        }
+
+        private bool isAdding;
+        private void AddLidarData(int2[] data)
+        {
+            LidarPoint lidarPoint;
+            if (!isAdding)
+            {
+                isAdding = true;
+                lidarPoint = new LidarPoint(maxDistance, minLineLength, bounds);
+                lidarPointsProcessing.Add(lidarPoint);
+            }
+            else
+            {
+                lidarPoint = lidarPointsProcessing[lidarPointsProcessing.Count - 1];
+            }
+            lidarPoint.AddData(data);
+        }
+
+        private void PushLidarData()
+        {
+            isAdding = false;
+            lidarPointsProcessing[lidarPointsProcessing.Count - 1].State = LidarPointState.waitingForCalculation;
+        }
+
+        private void Update()
+        {
             for (int i = lidarPointsProcessing.Count - 1; i >= 0; i--)
             {
                 LidarPoint lidarPoint = lidarPointsProcessing[i];
                 switch (lidarPoint.State)
                 {
                     case LidarPointState.addingData:
-                        if (lidarPoint.IsBigLidarPoint && wasBigLidarPointActive && !bigLidarPointActive.Value)
+                        
+                        break;
+                    
+                    case LidarPointState.waitingForCalculation:
+                        if (lidarPoint == lidarPointsProcessing[0])
                         {
-                            lidarPoint.State = LidarPointState.waitingForUpdate;
+                            lidarPoint.State = LidarPointState.readyForCalculation;
                         }
                         break;
                     
-                    case LidarPointState.waitingForUpdate:
-
-                        if (BigLidarPoints.Count > 0)
+                    case LidarPointState.readyForCalculation:
+                        if (LidarPoints.Count > 0)
                         {
-                            lidarPoint.Update(BigLidarPoints[BigLidarPoints.Count -1]);
+                            lidarPoint.Calculate(LidarPoints[LidarPoints.Count -1]);
                         }
                         else
                         {
-                            if (lidarPoint.IsBigLidarPoint)
-                            {
-                                lidarPoint.Update();
-                            }
+                            lidarPoint.Calculate();
                         }
                         
                         break;
                     
-                    case LidarPointState.performingUpdate:
+                    case LidarPointState.performingCalculation:
                         lidarPoint.ParseOverlay();
                         break;
                     
                     case LidarPointState.finished:
                         lidarPointsProcessing.Remove(lidarPoint);
-                        if (lidarPoint.IsBigLidarPoint)
-                        {
-                            BigLidarPoints.Add(lidarPoint);
-                            
-                            position.Value = new float2(lidarPoint.Overlay.xy);
-                            meshMaterial.SetVector("Position",
-                                new Vector4(position.Value.x, position.Value.y, 0,0));
-                        }
-                        else
-                        {
-                            SmallLidarPoints.Add(lidarPoint);
-                        }
+                        LidarPoints.Add(lidarPoint);
+                        
+                        position.Value = new float2(lidarPoint.Overlay.xy);
+                        meshMaterial.SetVector("Position",
+                            new Vector4(position.Value.x, position.Value.y, 0,0));
+                        
                         UpdateMap();
-
                         if (showPoints)
                         {
                             ShowPoint(lidarPoint);
@@ -130,12 +165,6 @@ namespace Lidar
                         break;
                 }
             }
-
-            if (!bigLidarPointActive.Value)
-            {
-                wasBigLidarPointActive = false;
-            }
-            
         }
 
         [SerializeField] private bool showPoints;
@@ -143,7 +172,7 @@ namespace Lidar
         [SerializeField] private GameObject[] pointPreFabs;
         private void ShowPoint(LidarPoint lidarPoint)
         {
-            GameObject point = new GameObject("Point " + counter +" "+ lidarPoint.IsBigLidarPoint);
+            GameObject point = new GameObject("Point " + counter);
             point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
 
@@ -160,7 +189,7 @@ namespace Lidar
         private void UpdateMap()
         {
             Map = new Dictionary<int2, int>();
-            foreach (LidarPoint bigLidarPoint in BigLidarPoints)
+            foreach (LidarPoint bigLidarPoint in LidarPoints)
             {
                 foreach (float2 position in bigLidarPoint.Positions)
                 {
@@ -271,62 +300,6 @@ namespace Lidar
             meshFilter.mesh = mesh;
         }
 
-        [SerializeField] private bool simulateData;
-        private int frame;
-        private List<List<int2>> data;
-        [SerializeField] private int pushDataSpeed = 1;
-        private string[] csvFiles =
-        {
-            "Testdata_gedreht_0.csv",
-            "Testdata_gedreht_1.csv",
-            "Testdata_gedreht_2.csv"
-        };
-        private void SimulateData()
-        {
-            if (frame == 0)
-            {
-                data = new List<List<int2>>();
-                foreach (string csvFile in csvFiles)
-                {
-                    string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + csvFile));
-
-                    
-                    List<int2> dataset = new List<int2>();
-                    int lastangle = -1;
-                    for (int i = 0; i < csvData.Length; i++)
-                    {
-                        string[] line = csvData[i];
-                        if(line.Length < 2) continue;
-                    
-                        int angle = int.Parse(line[0].Split('.')[0]);
-                        int distance = int.Parse(line[1]);
-                        
-                        if (lastangle > angle)
-                        {
-                            data.Add(dataset);
-                            dataset = new List<int2>();
-                        }
-                        lastangle = angle;
-                        
-                        dataset.Add(new int2(angle, distance));
-                    }
-                    data.Add(dataset);
-                }
-            }
-            bigLidarPointActive.Value = frame % (100 * pushDataSpeed) != 0;
-
-            if (frame % pushDataSpeed == 0)
-            {
-                int index = frame / pushDataSpeed;
-                if (index < data.Count)
-                {
-                    AddLidarData(data[index].ToArray());
-                }
-            }
-            
-            frame++;
-        }
-
         [SerializeField] private GameEvent sendEvent;
         [SerializeField] private StringVariable sendString;
         public void ReqestData()
@@ -358,7 +331,7 @@ namespace Lidar
             }
             else if (strs[1].Equals("end"))
             {
-                bigLidarPointActive.Value = false;
+                PushLidarData();
             }
         }
     }

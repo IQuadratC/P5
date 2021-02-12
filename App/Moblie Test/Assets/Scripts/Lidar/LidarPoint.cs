@@ -10,25 +10,24 @@ namespace Lidar
     public enum LidarPointState
     {
         addingData = 1,
-        waitingForUpdate = 2,
-        performingUpdate = 3,
-        finished = 4
+        waitingForCalculation = 2,
+        readyForCalculation = 3,
+        performingCalculation = 4,
+        finished = 5
     }
     
     public class LidarPoint
     {
         public LidarPointState State { get; set; }
-        public bool IsBigLidarPoint { get; }
         public float[] Distances { get; private set; }
         public float2[] Positions { get; private set; }
         public float2[][] Lines { get; private set; }
         public float2[] Intersections { get; private set; }
         public float4 Overlay => overlay;
         
-        public LidarPoint(bool isBigLidarPoint, float maxDistance, int minLineLength, int bounds)
+        public LidarPoint(float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
-            IsBigLidarPoint = isBigLidarPoint;
             Distances = new float[360];
             this.maxDistance = maxDistance;
             this.minLineLength = minLineLength;
@@ -43,26 +42,26 @@ namespace Lidar
         }
 
         private LidarPoint otherLidarPoint;
-        public void Update(LidarPoint otherLidarPoint)
+        public void Calculate(LidarPoint otherLidarPoint)
         {
-            State = LidarPointState.performingUpdate;
+            State = LidarPointState.performingCalculation;
             this.otherLidarPoint = otherLidarPoint;
-            UpdatePositions();
-            UpdateLines();
-            UpdateIntersections();
-            UpdateOverlay();
+            CalculatePositions();
+            CalculateLines();
+            CalculateIntersections();
+            CalculateOverlay();
         }
         
-        public void Update()
+        public void Calculate()
         {
-            State = LidarPointState.performingUpdate;
-            UpdatePositions();
-            UpdateLines();
-            UpdateIntersections();
+            State = LidarPointState.performingCalculation;
+            CalculatePositions();
+            CalculateLines();
+            CalculateIntersections();
             State = LidarPointState.finished;
         }
 
-        private void UpdatePositions()
+        private void CalculatePositions()
         {
             Positions = new float2[360];
             for (int i = 0; i < Distances.Length; i++)
@@ -75,7 +74,7 @@ namespace Lidar
 
         private readonly float maxDistance;
         private readonly int minLineLength;
-        private void UpdateLines()
+        private void CalculateLines()
         {
             List<List<float2>> lineList = new List<List<float2>>();
             for (int i = 0; i < Positions.Length; i++)
@@ -204,7 +203,7 @@ namespace Lidar
         }
 
         private readonly int bounds;
-        private void UpdateIntersections()
+        private void CalculateIntersections()
         {
             List<float2> intersectionList = new List<float2>();
             foreach (float2[] line in Lines)
@@ -239,13 +238,13 @@ namespace Lidar
 
             Intersections = intersectionList.ToArray();
         }
-
-        private bool jobActive = true;
+        private bool jobActive = false;
         private NativeArray<float2> nativeIntersections;
+
         private NativeArray<float2> nativeIntersections1;
         private NativeArray<float4> overlays;
         private JobHandle jobHandle;
-        private void UpdateOverlay()
+        private void CalculateOverlay()
         {
             int length = otherLidarPoint.Intersections.Length;
             int lenght1 = Intersections.Length;
