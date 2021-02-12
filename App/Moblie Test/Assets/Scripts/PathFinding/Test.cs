@@ -35,7 +35,7 @@ public class Test : MonoBehaviour
         ShowList(obsticaList, obsticalsPointPrefab);
 
         FindPath path = new FindPath(obstacles);
-        ShowList(path.findPathBetweenInt2(start, end, obstacles), pointPrefab);
+        ShowList(path.findPathBetweenInt2(start, end), pointPrefab);
     }
 
     [SerializeField]private GameObject parent;

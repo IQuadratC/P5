@@ -246,12 +246,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   measure: 0
-  path: {fileID: 11400000, guid: 0e458289eba31d74d89f1a4dcb98542e, type: 2}
   direction: {fileID: 11400000, guid: f94cf9e1cf3b3b34ab8d8a2eaec39352, type: 2}
   rotation: {fileID: 11400000, guid: 8ffe77da540ecf445a72144416a68ca3, type: 2}
   finishedMeasure: {fileID: 11400000, guid: 50fab6b8adcad3c4a838880019abd33b, type: 2}
   send: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
   sendSting: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+  posRotation: 0
+  pos:
+    x: 5
+    y: 5
+  goal:
+    x: 100
+    y: 0
 --- !u!1 &337379142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1480,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 214461519}
+        m_TargetAssemblyTypeName: MovementHandle, Assembly-CSharp
+        m_MethodName: updatePath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1070007823
 MonoBehaviour:
@@ -1672,7 +1690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1262455239
 MonoBehaviour:
   m_ObjectHideFlags: 0
