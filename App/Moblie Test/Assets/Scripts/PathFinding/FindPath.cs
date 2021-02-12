@@ -95,7 +95,7 @@ public class FindPath
         return neigbors;
     }
 
-    public List<int2> findPathBetweenInt2(int2 start, int2 end, Dictionary<int2,int> obstacles)
+    public List<int2> findPathBetweenInt2(int2 start, int2 end)
     {
         return Node.getPath(findPathBetweneNodes(new Node(start, true),
             new Node(end, true)));

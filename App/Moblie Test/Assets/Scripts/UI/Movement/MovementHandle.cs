@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -19,10 +20,7 @@ public class MovementHandle : MonoBehaviour
     }
 
     private States State = States.stop;
-    [FormerlySerializedAs("measur")]
-    [FormerlySerializedAs("mesur")]
     public bool measure;
-    public Int2ArrayVariable path;
     public Vec2Variable direction;
     public FloatVariable rotation;
     public GameEvent finishedMeasure;
@@ -49,6 +47,22 @@ public class MovementHandle : MonoBehaviour
                     break;
                 
             }
+        }
+    }
+    
+    public Vec2Variable pos;
+    public Vec2Variable goal;
+    public Dictionary<int2, int> obstacles;
+    public void updatePath()
+    {
+        String msg = "python multi,";
+        int2 start = (int2) (pos.Value / 10);
+        int2 end = (int2) (goal.Value / 10);
+        FindPath finder = new FindPath(obstacles);
+        List<int2> path = finder.findPathBetweenInt2(start, end);
+        foreach (int2 point in path)
+        {
+            msg += " ";
         }
     }
 }
