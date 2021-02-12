@@ -16,8 +16,8 @@ namespace Lidar
 
         public List<LidarPoint> BigLidarPoints { get; private set; }
         public List<LidarPoint> SmallLidarPoints { get; private set; }
-        [SerializeField] private Vec3Variable position;
-        
+        [SerializeField] private Vec2Variable position;
+
         public Dictionary<int2, int> Map { get; private set; }
         [SerializeField] private int mapScale = 10;
         public int MapScale => mapScale;
@@ -31,6 +31,8 @@ namespace Lidar
             BigLidarPoints = new List<LidarPoint>();
             SmallLidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
+            meshFilter = meshObject.GetComponent<MeshFilter>();
+            meshMaterial = meshObject.GetComponent<MeshRenderer>().material;
         }
 
         public void AddLidarData(int2[] data)
@@ -106,7 +108,10 @@ namespace Lidar
                         if (lidarPoint.IsBigLidarPoint)
                         {
                             BigLidarPoints.Add(lidarPoint);
-                            position.Value = new Vector3(lidarPoint.Overlay.x, 0);
+                            
+                            position.Value = new float2(lidarPoint.Overlay.xy);
+                            meshMaterial.SetVector("Position",
+                                new Vector4(position.Value.x, position.Value.y, 0,0));
                         }
                         else
                         {
@@ -120,7 +125,7 @@ namespace Lidar
                         }
                         if (showMap)
                         {
-                            ShowMap();
+                            UpdateMapMesh();
                         }
                         break;
                 }
@@ -159,9 +164,9 @@ namespace Lidar
             {
                 foreach (float2 position in bigLidarPoint.Positions)
                 {
+                    if(position.Equals(int2.zero)) continue;
                     int2 pos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay) / mapScale) * mapScale;
-                    if(pos.Equals(int2.zero)) continue;
-                    
+
                     int value = 1;
                     if (Map.ContainsKey(pos))
                     {
@@ -170,36 +175,14 @@ namespace Lidar
                     Map[pos] = value;
                 }
             }
-
-            UpdateMapMesh();
         }
 
         [SerializeField] private bool showMap;
-        private List<GameObject> mapPoints;
-        [SerializeField] private GameObject mapPreFab;
-        [SerializeField] private GameObject mapParten;
-        private void ShowMap()
-        {
-            if (mapPoints == null)
-            {
-                mapPoints = new List<GameObject>();
-            }
-            
-            foreach (GameObject mapPoint in mapPoints)
-            {
-                Destroy(mapPoint);
-            }
-            mapPoints.Clear();
-            foreach (int2 mapKey in Map.Keys)
-            {
-                GameObject o = Instantiate(mapPreFab, new Vector3(mapKey.x, mapKey.y, 0), Quaternion.identity);
-                o.transform.SetParent(mapParten.transform);
-                mapPoints.Add(o);
-            }
-        }
 
         [SerializeField] private int meshBounds;
-        [SerializeField] private MeshFilter meshFilter;
+        [SerializeField] private GameObject meshObject;
+        private MeshFilter meshFilter;
+        private Material meshMaterial;
         private void UpdateMapMesh()
         {
             bool[,] meshData = new bool[meshBounds * 2, meshBounds * 2];
