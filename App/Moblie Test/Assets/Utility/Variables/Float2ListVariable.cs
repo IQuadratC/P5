@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "Int2ArrayVariable", menuName = "Utility/Varibles/Int2[]")]
-    public class Int2ArrayVariable : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "ListVariable", menuName = "Utility/Varibles/Float2List")] 
+    public class Float2ListVariable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public int2[] Value;
-        public int2[] InitialValue;
+        public List<float2> Value;
+        public List<float2> InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -17,7 +18,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(int2[] value)
+        public void Set(List<float2> value)
         {
             Value = value;
         }
