@@ -6,7 +6,6 @@ namespace Utility.Variables
     [CreateAssetMenu(fileName = "FloatVariable", menuName = "Utility/Varibles/Float")]
     public class FloatVariable : ScriptableObject, ISerializationCallbackReceiver
     {
-        [NonSerialized]
         public float Value;
         public float InitialValue;
         

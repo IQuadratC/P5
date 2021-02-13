@@ -29,10 +29,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (pressed)
         {
-            direction.Value = Input.GetTouch(0).deltaPosition;
             Vector2 touch = Input.GetTouch(0).position;
             touch = Camera.main.ScreenToWorldPoint(touch);
             stick.position = ((Vector3)touch);
+            direction.Value = (Vector2)basis.position - touch;
         }
         else
         {
