@@ -82,10 +82,12 @@ namespace Lidar
                 if(Positions[i].Equals(float2.zero)) continue;
 
                 int linePos = i - 1;
-                
-                if (linePos < 0)
+
+                int k = 1;
+                while (linePos < 0 || Positions[linePos].Equals(float2.zero))
                 {
-                    linePos = Positions.Length - 1;
+                    linePos = Positions.Length - k;
+                    k++;
                 }
 
                 List<float2> line = new List<float2>();
@@ -320,11 +322,9 @@ namespace Lidar
                         float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
                         float testdistance = math.length(testVector - p2);
 
-                        if (testdistance < overlay.w)
-                        {
-                            overlay.w = testdistance;
-                            overlay = new float4(result.x, result.y, result.z, overlay.w);
-                        }
+                        if (testdistance >= overlay.w) return;
+                        overlay.w = testdistance;
+                        overlay = new float4(result.x, result.y, result.z, overlay.w);
                     }
                     
                     FindBestOverlay(point, point1, bestPoint, bestPoint1);
@@ -341,7 +341,7 @@ namespace Lidar
                         {
                             float2 testpoint1 = intersections1[k];
                             float testChangedDistance =
-                                math.length(testpoint - mathAdditions.Rotate(testpoint1, overlay.z) - overlay.xy);
+                                math.length(LidarPoint.ApplyOverlay(testpoint, overlay) - testpoint1);
 
                             if (testChangedDistance >= changedDistance) continue;
                             changedDistance = testChangedDistance;
@@ -385,7 +385,7 @@ namespace Lidar
 
         public static float2 ApplyOverlay(float2 pos, float4 overlay)
         {
-            return mathAdditions.Rotate(pos, overlay.z) +  overlay.xy;
+            return mathAdditions.Rotate(pos, overlay.z) + overlay.xy;
         }
     }
 }
