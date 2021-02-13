@@ -28,25 +28,18 @@ namespace Lidar
         public float2[] Intersections { get; private set; }
         public float4 Overlay;
         
-        public LidarPoint(float maxDistance, int minLineLength, int bounds)
-        {
-            
-        }
-        
-        public List<List<Vector2>> lines;
-        public List<Vector4> finallines;
+        public List<float4> finallines;
         public List<Vector2> intersectionPoints;
         
-        public LidarPoint()
+        public LidarPoint(float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
             Distances = new float[360];
-            //this.maxDistance = maxDistance;
-            //this.minLineLength = minLineLength;
-            //this.bounds = bounds;
+            this.maxDistance = maxDistance;
+            this.minLineLength = minLineLength;
+            this.bounds = bounds;
             
-            lines = new List<List<Vector2>>();
-            finallines = new List<Vector4>();
+            finallines = new List<float4>();
             intersectionPoints = new List<Vector2>();
         }
         
@@ -64,7 +57,7 @@ namespace Lidar
             State = LidarPointState.performingCalculation;
             this.otherLidarPoint = otherLidarPoint;
             CalculatePositions();
-            UpdateLines();
+            CalculateLines();
             UpdateIntersectionPoints();
             CalculateOverlay(otherLidarPoint);
             State = LidarPointState.finished;
@@ -74,7 +67,7 @@ namespace Lidar
         {
             State = LidarPointState.performingCalculation;
             CalculatePositions();
-            UpdateLines();
+            CalculateLines();
             UpdateIntersectionPoints();
             State = LidarPointState.finished;
         }
@@ -96,16 +89,16 @@ namespace Lidar
         }
 
 
-        private const float maxDistance = 2f;
-        private const int minLineLength = 10;
-        private void UpdateLines()
+        private float maxDistance = 2f;
+        private int minLineLength = 10;
+        private void CalculateLines()
         {
-            int linePos0 = 0;
-            int linePos1 = 0;
+            int linePos0;
+            int linePos1;
             
             float2[] positionsArray = new float2[Positions.Length];
             Positions.CopyTo(positionsArray, 0);
-            List<List<Vector2>> linelist = new List<List<Vector2>>();
+            List<List<float2>> linelist = new List<List<float2>>();
 
             for (int i = 0; i < positionsArray.Length; i++)
             {
@@ -116,7 +109,7 @@ namespace Lidar
                     linePos1 = positionsArray.Length - 1;
                 }
 
-                List<Vector2> line = new List<Vector2>();
+                List<float2> line = new List<float2>();
                 for (int j = 0; j < positionsArray.Length; j++)
                 {
                     int testPos = i + j;
@@ -125,7 +118,7 @@ namespace Lidar
                         testPos -= positionsArray.Length;
                     }
                     
-                    float distance = GetDistancetoLine(
+                    float distance = mathAdditions.GetDistancetoLine(
                         positionsArray[linePos0],
                         positionsArray[linePos1],
                         positionsArray[testPos]);
@@ -148,7 +141,7 @@ namespace Lidar
                         testPos += positionsArray.Length;
                     }
                     
-                    float distance = GetDistancetoLine(
+                    float distance = mathAdditions.GetDistancetoLine(
                         positionsArray[linePos0],
                         positionsArray[linePos1],
                         positionsArray[testPos]);
@@ -166,25 +159,38 @@ namespace Lidar
                 linelist.Add(line);
             }
             
+            List<List<float2>> linelist2 = new List<List<float2>>();
             int index = 0;
             for (int k = 0; k < 100000; k++)
             {
-                List<Vector2> line = linelist[index];
-                lines.Add(line);
+                List<float2> line = linelist[index];
+                linelist2.Add(line);
                 linelist.RemoveAt(0);
 
-                foreach (List<Vector2> testline in linelist)
+                foreach (List<float2> testline in linelist)
                 {
                     foreach (Vector2 point in line)
                     {
                         for (int j = testline.Count - 1; j >= 0; j--)
                         {
-                            if (testline[j] == point)
+                            if (testline[j].Equals(point))
                             {
                                 testline.RemoveAt(j);
                             }
                         }
                     }
+                }
+                
+                int SortListByLenght<T>(List<T> x, List<T> y)
+                {
+                    int xLenght = x.Count;
+                    int yLenght = y.Count;
+            
+                    if (xLenght > yLenght)
+                    {
+                        return -1;
+                    }
+                    return xLenght < yLenght ? 1 : 0;
                 }
                 
                 linelist.Sort(SortListByLenght);
@@ -203,53 +209,15 @@ namespace Lidar
                 }
             }
 
-            
-            for (int i = 0; i < lines.Count; i++)
+            Lines = new float2[linelist2.Count][];
+            for (int i = 0; i < linelist2.Count; i++)
             {
-                finallines.Add(FindLinearLeastSquaresFit(lines[i]));
+                finallines.Add(mathAdditions.FindLinearLeastSquaresFit(linelist2[i]));
+                Lines[i] = linelist2[i].ToArray();
             }
-            
-            int t = 0;
         }
-        private float GetDistancetoLine(Vector2 line0Pos, Vector2 line1Pos, Vector2 testPos)
-        {
-            Vector2 b = line0Pos - line1Pos;
-            return Vector3.Cross(testPos - line0Pos, b).magnitude / b.magnitude;
-        }
-        private static int SortListByLenght<T>(List<T> x, List<T> y)
-        {
-            int xLenght = x.Count;
-            int yLenght = y.Count;
-            
-            if (xLenght > yLenght)
-            {
-                return -1;
-            }
-            return xLenght < yLenght ? 1 : 0;
-        }
-        private static Vector4 FindLinearLeastSquaresFit(List<Vector2> points)
-        {
-            double S1 = points.Count;
-            double Sx = 0;
-            double Sy = 0;
-            double Sxx = 0;
-            double Sxy = 0;
-            foreach (Vector2 pt in points)
-            {
-                Sx += pt.x;
-                Sy += pt.y;
-                Sxx += pt.x * pt.x;
-                Sxy += pt.x * pt.y;
-            }
-            
-            double m = (Sxy * S1 - Sx * Sy) / (Sxx * S1 - Sx * Sx);
-            double b = (Sxy * Sx - Sy * Sxx) / (Sx * Sx - S1 * Sxx);
-            
-            return new Vector4(0, (float)b,1,(float)m);
-        }
-
         
-        private const int bounds = 500;
+        private int bounds = 500;
         private void UpdateIntersectionPoints()
         {
             foreach (Vector4 finalline in finallines)

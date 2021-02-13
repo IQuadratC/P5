@@ -20,8 +20,8 @@ namespace Lidar
         [SerializeField] private int mapScale = 10;
         public int MapScale => mapScale;
         
-        [SerializeField] private float maxDistance = 0.5f;
-        [SerializeField] private int minLineLength = 5;
+        [SerializeField] private float maxDistance = 2f;
+        [SerializeField] private int minLineLength = 10;
         [SerializeField] private int bounds = 500;
 
         private void Awake()
@@ -104,7 +104,7 @@ namespace Lidar
             if (!isAdding)
             {
                 isAdding = true;
-                lidarPoint = new LidarPoint();
+                lidarPoint = new LidarPoint(maxDistance, minLineLength, bounds);
                 lidarPointsProcessing.Add(lidarPoint);
             }
             else
@@ -186,14 +186,14 @@ namespace Lidar
             point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
 
-            foreach (Vector2 lidarPointPosition in lidarPoint.Positions)
+            foreach (float2 lidarPointPosition in lidarPoint.Positions)
             {
                 GameObject o = Instantiate(pointPreFabs[counter], 
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
                 o.transform.SetParent(point.transform, false);
             }
 
-            foreach (List<Vector2> line in lidarPoint.lines)
+            foreach (float2[] line in lidarPoint.Lines)
             {
                 foreach (float2 float2 in line)
                 {

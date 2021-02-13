@@ -281,7 +281,7 @@ MonoBehaviour:
   position: {fileID: 11400000, guid: 7e5aa4bea8f3b87418a17182aca80b14, type: 2}
   mapScale: 5
   maxDistance: 2
-  minLineLength: 5
+  minLineLength: 10
   bounds: 500
   simulateData: 1
   showPoints: 1
