@@ -21,7 +21,7 @@ public class FindPath
         grid[start.pos] = start;
         
         int security = 0;
-        while(security < 1000)
+        while(security < 100000)
         {
             security++;
             current = findLowest();

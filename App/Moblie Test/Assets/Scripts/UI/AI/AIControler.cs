@@ -4,29 +4,42 @@ using System.Collections.Generic;
 using Lidar;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Utility.Variables;
 
 public class AIControler : MonoBehaviour
 {
-    public float posRotation;
-    public float2 pos;
-    public float2 goal;
-    public Dictionary<int2, int> obstacles = new Dictionary<int2, int>();
+    [SerializeField]private Vec3Variable position;
+    [SerializeField]private Vec2Variable goal;
+    [SerializeField]private Dictionary<int2, int> obstacles = new Dictionary<int2, int>();
     public void updatePath()
     {
         String msg = "python multi,";
-        int2 start = (int2) (pos / 10);
-        int2 end = (int2) (goal / 10);
+        int2 start =  (int2)(position.Value.xy);
+        int2 end = (int2) (goal.Value);
         FindPath finder = new FindPath(obstacles);
         List<int2> path = finder.findPathBetweenInt2(start, end);
-        float2 old = pos;
+        float2 old = position.Value.xy;
         float2 move;
-        foreach (int2 point in path)
+        for (int i = 0; i < path.Count; i++)
         {
-            move =  old - (point * 10 + new int2(5, 5));
+            if (i >= 1 && i < (path.Count - 1) &&
+                 ((path[i - 1] + new int2(2, 0)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(0, 2)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(-2, 0)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(0, -2)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(-2, 2)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(-2, -2)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(2, 2)).Equals(path[i + 1]) ||
+                 (path[i - 1] + new int2(2, -2)).Equals(path[i + 1])))
+            {
+                continue;
+            }
+            move =  old - (path[i]);
             msg += "move " + move.x + " " + move.y + ",";
-            old = (point * 10 + new int2(5, 5));
+            old = (path[i]);
         }
-        move = old - (goal * 10 + new int2(5, 5));
+        move = old - (goal.Value.xy);
         msg += "move " + move.x + " " + move.y + ",";
         Debug.Log(msg);
     }
