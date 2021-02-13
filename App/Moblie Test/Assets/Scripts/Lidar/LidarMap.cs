@@ -219,14 +219,24 @@ namespace Lidar
                 foreach (float2 position in bigLidarPoint.Positions)
                 {
                     if(position.Equals(int2.zero)) continue;
-                    int2 pos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay) / mapScale) * mapScale;
+                    int2 worldPos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay));
+                    int2 scaledPos = (worldPos / mapScale) * mapScale;
+                    
+                    if (worldPos.x < 0)
+                    {
+                        scaledPos.x -= mapScale;
+                    }
+                    if (worldPos.y < 0)
+                    {
+                        scaledPos.y -= mapScale;
+                    }
 
                     int value = 1;
-                    if (Map.ContainsKey(pos))
+                    if (Map.ContainsKey(scaledPos))
                     {
-                        value = Map[pos] + 1;
+                        value = Map[scaledPos] + 1;
                     }
-                    Map[pos] = value;
+                    Map[scaledPos] = value;
                 }
             }
         }
