@@ -22,9 +22,17 @@ namespace Lidar
     public class LidarPoint
     {
         public LidarPointState State { get; set; }
+        public float[] Distances { get; private set; }
+        public float2[] Positions { get; private set; }
+        public float2[][] Lines { get; private set; }
+        public float2[] Intersections { get; private set; }
         public float4 Overlay;
         
-        private List<float>[] distances;
+        public LidarPoint(float maxDistance, int minLineLength, int bounds)
+        {
+            
+        }
+        
         public Dictionary<int, Vector2> positions;
         public List<List<Vector2>> lines;
         public List<Vector4> finallines;
@@ -33,12 +41,10 @@ namespace Lidar
         public LidarPoint()
         {
             State = LidarPointState.addingData;
-            
-            distances = new List<float>[360];
-            for (int i = 0; i < distances.Length; i++)
-            {
-                distances[i] = new List<float>();
-            }
+            Distances = new float[360];
+            //this.maxDistance = maxDistance;
+            //this.minLineLength = minLineLength;
+            //this.bounds = bounds;
             
             positions = new Dictionary<int, Vector2>();
             lines = new List<List<Vector2>>();
@@ -48,9 +54,9 @@ namespace Lidar
         
         public void AddData(int2[] data)
         {
-            for (int i = 0; i < data.Length; i++)
+            foreach (int2 int2 in data)
             {
-                distances[data[i].x].Add((float)data[i].y / 10);
+                Distances[int2.x] = (float)int2.y / 10;
             }
         }
 
@@ -78,24 +84,10 @@ namespace Lidar
 
         private void UpdatePositions()
         {
-            for (int i = 0; i < distances.Length; i++)
+            for (int i = 0; i < Distances.Length; i++)
             {
-                float sum = 0;
-                foreach (var distance in distances[i])
-                {
-                    sum += distance;
-                }
-                if (sum > 0)
-                {
-                    sum /= distances[i].Count;
-                }
-                else
-                {
-                    continue;
-                }
-
-                float x = (float)(Math.Sin(i * Math.PI / 180) * sum);
-                float y = (float)(Math.Cos(i * Math.PI / 180) * sum);
+                float x = (float)(Math.Sin(i * Math.PI / 180) * Distances[i]);
+                float y = (float)(Math.Cos(i * Math.PI / 180) * Distances[i]);
                 positions[i] = new Vector2(x,y);
             }
         }
