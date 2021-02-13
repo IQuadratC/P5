@@ -51,45 +51,49 @@ namespace Lidar
         {
             foreach (string csvFile in csvFiles)
             {
-                AddLidarData(new int2[0]);
-                lidarPointsProcessing[lidarPointsProcessing.Count - 1].LoadCSVData(csvFile);
-                PushLidarData();
+                string[][] csvData = Csv.ParseCVSFile(
+                    File.ReadAllText(Application.dataPath + "\\" + csvFile));
+                csvData[csvData.Length - 1] = new []{"0.0","0"};
                 
-                /*
-                string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + csvFile));
-
-                List<int2> data = new List<int2>();
-                for (int i = 0; i < csvData.Length; i++)
+                List<int>[] distances = new List<int>[360];
+                for (int i = 0; i < distances.Length; i++)
                 {
-                    string[] line = csvData[i];
-                    if (line.Length < 2) continue;
-
-                    int angle = int.Parse(line[0].Split('.')[0]);
+                    distances[i] = new List<int>();
+                }
+                
+                foreach (var line in csvData)
+                {
+                    int angle = (int) float.Parse(line[0]);
                     int distance = int.Parse(line[1]);
                     
                     if(distance == 0) continue;
-
-                    int index = -1;
-                    for (int j = 0; j < data.Count; j++)
+                    
+                    distances[angle].Add(distance);
+                }
+                
+                List<int2> data = new List<int2>();
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    int sum = 0;
+                    foreach (var distance in distances[i])
                     {
-                        if (data[j].x == angle)
-                        {
-                            index = j;
-                        }
+                        sum += distance;
                     }
-
-                    if (index == -1)
+                    if (sum > 0)
                     {
-                        data.Add(new int2(angle, distance));
+                        sum /= distances[i].Count;
                     }
                     else
                     {
-                        data[index] = (new int2(angle, distance) + data[index]) / 2;
+                        continue;
                     }
+                    if(sum == 0) continue;
+                    
+                    data.Add(new int2(i, sum));
                 }
-
+                
                 AddLidarData(data.ToArray());
-                PushLidarData();*/
+                PushLidarData();
             }
         }
 

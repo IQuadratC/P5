@@ -46,28 +46,6 @@ namespace Lidar
             intersectionPoints = new List<Vector2>();
         }
         
-        public void LoadCSVData(string name)
-        {
-            string[][] csvData = Csv.ParseCVSFile(
-                File.ReadAllText(Application.dataPath + "\\" + name));
-            csvData[csvData.Length - 1] = new []{"0.0","0"};
-            
-            for (int i = 0; i < distances.Length; i++)
-            {
-                distances[i] = new List<float>();
-            }
-            
-            foreach (var line in csvData)
-            {
-                int index = (int) float.Parse(line[0]);
-                int data = int.Parse(line[1]);
-                if (data != 0)
-                {
-                    distances[index].Add((float)data / 10);
-                }
-            }
-        }
-        
         public void AddData(int2[] data)
         {
             for (int i = 0; i < data.Length; i++)
