@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "Vec3Variable", menuName = "Utility/Varibles/Vec3")] 
-    public class Vec3Variable : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "ListVariable", menuName = "Utility/Varibles/Float2List")] 
+    public class Float2ListVariable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public float3 Value;
-        public float3 InitialValue;
+        public List<float2> Value;
+        public List<float2> InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -17,7 +18,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(float3 value)
+        public void Set(List<float2> value)
         {
             Value = value;
         }
