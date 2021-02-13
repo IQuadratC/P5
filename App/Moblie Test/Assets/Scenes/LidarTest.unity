@@ -280,8 +280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {fileID: 11400000, guid: 7e5aa4bea8f3b87418a17182aca80b14, type: 2}
   mapScale: 5
-  maxDistance: 1
-  minLineLength: 10
+  maxDistance: 2
+  minLineLength: 5
   bounds: 500
   simulateData: 1
   showPoints: 1
@@ -296,7 +296,9 @@ MonoBehaviour:
   - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
   - {fileID: 3763153833125633302, guid: b3480e6b5281fd449bef305d40a5aabe, type: 3}
   - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
-  showMap: 1
+  linePreFab: {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5,
+    type: 3}
+  showMap: 0
   meshBounds: 60
   meshObject: {fileID: 80768923}
   sendEvent: {fileID: 0}
