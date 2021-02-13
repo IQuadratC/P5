@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "Int2ArrayVariable", menuName = "Utility/Varibles/Int2[]")]
-    public class Int2ArrayVariable : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "Vec3Variable", menuName = "Utility/Varibles/Vec3")] 
+    public class Vec3Variable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public int2[] Value;
-        public int2[] InitialValue;
+        public float3 Value;
+        public float3 InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -17,7 +17,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(int2[] value)
+        public void Set(float3 value)
         {
             Value = value;
         }
