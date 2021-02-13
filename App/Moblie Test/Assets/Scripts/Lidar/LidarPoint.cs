@@ -33,7 +33,6 @@ namespace Lidar
             
         }
         
-        public Dictionary<int, Vector2> positions;
         public List<List<Vector2>> lines;
         public List<Vector4> finallines;
         public List<Vector2> intersectionPoints;
@@ -46,7 +45,6 @@ namespace Lidar
             //this.minLineLength = minLineLength;
             //this.bounds = bounds;
             
-            positions = new Dictionary<int, Vector2>();
             lines = new List<List<Vector2>>();
             finallines = new List<Vector4>();
             intersectionPoints = new List<Vector2>();
@@ -59,22 +57,37 @@ namespace Lidar
                 Distances[int2.x] = (float)int2.y / 10;
             }
         }
-
+        
+        private LidarPoint otherLidarPoint;
+        public void Calculate(LidarPoint otherLidarPoint)
+        {
+            State = LidarPointState.performingCalculation;
+            this.otherLidarPoint = otherLidarPoint;
+            CalculatePositions();
+            UpdateLines();
+            UpdateIntersectionPoints();
+            CalculateOverlay(otherLidarPoint);
+            State = LidarPointState.finished;
+        }
+        
         public void Calculate()
         {
-            UpdatePositions();
+            State = LidarPointState.performingCalculation;
+            CalculatePositions();
             UpdateLines();
             UpdateIntersectionPoints();
             State = LidarPointState.finished;
         }
-        
-        public void Calculate(LidarPoint lidarPoint)
+
+        private void CalculatePositions()
         {
-            UpdatePositions();
-            UpdateLines();
-            UpdateIntersectionPoints();
-            CalculateOverlay(lidarPoint);
-            State = LidarPointState.finished;
+            Positions = new float2[360];
+            for (int i = 0; i < Distances.Length; i++)
+            {
+                Positions[i] = new float2(
+                    math.sin(i * math.PI / 180) * Distances[i],
+                    math.cos(i * math.PI / 180) * Distances[i]);
+            }
         }
 
         public void ParseOverlay()
@@ -82,16 +95,6 @@ namespace Lidar
             
         }
 
-        private void UpdatePositions()
-        {
-            for (int i = 0; i < Distances.Length; i++)
-            {
-                float x = (float)(Math.Sin(i * Math.PI / 180) * Distances[i]);
-                float y = (float)(Math.Cos(i * Math.PI / 180) * Distances[i]);
-                positions[i] = new Vector2(x,y);
-            }
-        }
-        
 
         private const float maxDistance = 2f;
         private const int minLineLength = 10;
@@ -100,8 +103,8 @@ namespace Lidar
             int linePos0 = 0;
             int linePos1 = 0;
             
-            Vector2[] positionsArray = new Vector2[positions.Count];
-            positions.Values.CopyTo(positionsArray, 0);
+            float2[] positionsArray = new float2[Positions.Length];
+            Positions.CopyTo(positionsArray, 0);
             List<List<Vector2>> linelist = new List<List<Vector2>>();
 
             for (int i = 0; i < positionsArray.Length; i++)

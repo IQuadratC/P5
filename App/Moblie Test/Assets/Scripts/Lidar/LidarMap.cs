@@ -186,7 +186,7 @@ namespace Lidar
             point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
 
-            foreach (Vector2 lidarPointPosition in lidarPoint.positions.Values)
+            foreach (Vector2 lidarPointPosition in lidarPoint.Positions)
             {
                 GameObject o = Instantiate(pointPreFabs[counter], 
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
@@ -216,7 +216,7 @@ namespace Lidar
             Map = new Dictionary<int2, int>();
             foreach (LidarPoint bigLidarPoint in LidarPoints)
             {
-                foreach (float2 position in bigLidarPoint.positions.Values)
+                foreach (float2 position in bigLidarPoint.Positions)
                 {
                     if(position.Equals(int2.zero)) continue;
                     int2 pos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay) / mapScale) * mapScale;
