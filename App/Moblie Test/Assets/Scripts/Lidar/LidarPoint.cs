@@ -29,8 +29,7 @@ namespace Lidar
         public float4 Overlay;
         
         public List<float4> finallines;
-        public List<Vector2> intersectionPoints;
-        
+
         public LidarPoint(float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
@@ -40,7 +39,6 @@ namespace Lidar
             this.bounds = bounds;
             
             finallines = new List<float4>();
-            intersectionPoints = new List<Vector2>();
         }
         
         public void AddData(int2[] data)
@@ -58,7 +56,7 @@ namespace Lidar
             this.otherLidarPoint = otherLidarPoint;
             CalculatePositions();
             CalculateLines();
-            UpdateIntersectionPoints();
+            CalculateIntersections();
             CalculateOverlay(otherLidarPoint);
             State = LidarPointState.finished;
         }
@@ -68,7 +66,7 @@ namespace Lidar
             State = LidarPointState.performingCalculation;
             CalculatePositions();
             CalculateLines();
-            UpdateIntersectionPoints();
+            CalculateIntersections();
             State = LidarPointState.finished;
         }
 
@@ -217,42 +215,39 @@ namespace Lidar
             }
         }
         
-        private int bounds = 500;
-        private void UpdateIntersectionPoints()
+        private readonly int bounds;
+        private void CalculateIntersections()
         {
-            foreach (Vector4 finalline in finallines)
+            List<float2> intersectionList = new List<float2>();
+            foreach (float4 finalLine in finallines)
             {
-                foreach (Vector4 testFinalline in finallines)
+                foreach (float4 testFinalLine in finallines)
                 {
-                    Vector2 intersection = FindIntersection(
-                        new Vector2(finalline.x, finalline.y), 
-                        new Vector2(finalline.x + finalline.z, finalline.y + finalline.w), 
-                        new Vector2(testFinalline.x, testFinalline.y), 
-                        new Vector2(testFinalline.x + testFinalline.z, testFinalline.y + testFinalline.w));
-
-                    if (!intersectionPoints.Contains(intersection) && intersection.magnitude < bounds)
+                    if(finalLine.Equals(testFinalLine)) continue;
+                    
+                    float2 intersection = mathAdditions.FindIntersection(
+                        new float2(finalLine.x, finalLine.y), 
+                        new float2(finalLine.x + finalLine.z, finalLine.y + finalLine.w), 
+                        new float2(testFinalLine.x, testFinalLine.y), 
+                        new float2(testFinalLine.x + testFinalLine.z, testFinalLine.y + testFinalLine.w));
+                    
+                    bool isNotInList = true;
+                    foreach (float2 intersectionPoint in intersectionList)
                     {
-                        intersectionPoints.Add(intersection);
+                        if (math.length(intersectionPoint - intersection) < 1.0f)
+                        {
+                            isNotInList = false;
+                        }
+                    }
+
+                    if (math.length(intersection) < bounds && isNotInList)
+                    {
+                        intersectionList.Add(intersection);
                     }
                 }
             }
-        }
-        private Vector2 FindIntersection(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
-        {
-            float dx12 = p2.x - p1.x;
-            float dy12 = p2.y - p1.y;
-            float dx34 = p4.x - p3.x;
-            float dy34 = p4.y - p3.y;
-            
-            float denominator = (dy12 * dx34 - dx12 * dy34);
-            float t1 = ((p1.x - p3.x) * dy34 + (p3.y - p1.y) * dx34) / denominator;
-            
-            if (float.IsInfinity(t1))
-            {
-                return  new Vector2(float.NaN, float.NaN);
-            }
-            
-            return new Vector2(p1.x + dx12 * t1, p1.y + dy12 * t1);
+
+            Intersections = intersectionList.ToArray();
         }
 
         private void CalculateOverlay(LidarPoint otherPoint)
@@ -272,9 +267,9 @@ namespace Lidar
         private Overlap OverlapIntersectionPointsWithRotation(LidarPoint lidarPoint, LidarPoint lidarPoint1)
         {
             List<Overlap> overlaps = new List<Overlap>();
-            foreach (Vector2 point in lidarPoint.intersectionPoints)
+            foreach (Vector2 point in lidarPoint.Intersections)
             {
-                foreach (Vector2 point1 in lidarPoint.intersectionPoints)
+                foreach (Vector2 point1 in lidarPoint.Intersections)
                 {
                     if(point == point1) continue;
                     
@@ -283,9 +278,9 @@ namespace Lidar
                     Vector2 bestPoint = Vector2.zero;
                     Vector2 bestPoint1 = Vector2.zero;
 
-                    foreach (Vector2 point2 in lidarPoint1.intersectionPoints)
+                    foreach (Vector2 point2 in lidarPoint1.Intersections)
                     {
-                        foreach (Vector2 point3 in lidarPoint1.intersectionPoints)
+                        foreach (Vector2 point3 in lidarPoint1.Intersections)
                         {
                             if(point2 == point3) continue;
                             
@@ -323,11 +318,11 @@ namespace Lidar
                         overlap.rotation = result.z;
                     }
 
-                    foreach (Vector2 testpoint in lidarPoint.intersectionPoints)
+                    foreach (Vector2 testpoint in lidarPoint.Intersections)
                     {
                         
                         float changedDistance = float.MaxValue;
-                        foreach (Vector2 testpoint1 in lidarPoint1.intersectionPoints)
+                        foreach (Vector2 testpoint1 in lidarPoint1.Intersections)
                         {
                             float testChangedDistance = (testpoint - RotateVector(testpoint1, overlap.rotation) - overlap.pos).magnitude;
                             if (testChangedDistance < changedDistance)

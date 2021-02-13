@@ -202,7 +202,7 @@ namespace Lidar
                 }
             }
             
-            foreach (Vector2 intersectionPoint in lidarPoint.intersectionPoints)
+            foreach (Vector2 intersectionPoint in lidarPoint.Intersections)
             {
                 GameObject o = Instantiate(linePreFab, intersectionPoint, Quaternion.identity);
                 o.transform.SetParent(point.transform, false);
