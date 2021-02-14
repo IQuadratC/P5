@@ -886,10 +886,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985886b18adfa5049bbcd3e1ce7e9cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeedDirection: 0
-  speedDirection: 0
-  minDirectionChange: 1
-  maxSpeedRotation: 0
+  maxSpeedDirection: 1
+  speedDirection: 10
+  minDirectionChange: 0.1
+  speedRotation: 10
   minRotationChange: 0.1
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
   rotation: {fileID: 11400000, guid: aab1c7b6846de8f4a821ec3fc4ba041d, type: 2}
