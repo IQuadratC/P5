@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEngine;
 using Utility;
 
 namespace Lidar
@@ -25,6 +28,8 @@ namespace Lidar
         public float2[] Intersections { get; private set; }
         public float4 Overlay => overlay;
         
+        public List<float4> finallines;
+
         public LidarPoint(float maxDistance, int minLineLength, int bounds)
         {
             State = LidarPointState.addingData;
@@ -32,15 +37,18 @@ namespace Lidar
             this.maxDistance = maxDistance;
             this.minLineLength = minLineLength;
             this.bounds = bounds;
+            
+            finallines = new List<float4>();
         }
+        
         public void AddData(int2[] data)
         {
             foreach (int2 int2 in data)
             {
-                Distances[int2.x] = int2.y / 10;
+                Distances[int2.x] = (float)int2.y / 10;
             }
         }
-
+        
         private LidarPoint otherLidarPoint;
         public void Calculate(LidarPoint otherLidarPoint)
         {
@@ -71,42 +79,44 @@ namespace Lidar
                     math.cos(i * math.PI / 180) * Distances[i]);
             }
         }
-
-        private readonly float maxDistance;
-        private readonly int minLineLength;
+        
+        private float maxDistance = 2f;
+        private int minLineLength = 10;
         private void CalculateLines()
         {
-            List<List<float2>> lineList = new List<List<float2>>();
-            for (int i = 0; i < Positions.Length; i++)
-            {
-                if(Positions[i].Equals(float2.zero)) continue;
+            int linePos0;
+            int linePos1;
+            
+            float2[] positionsArray = new float2[Positions.Length];
+            Positions.CopyTo(positionsArray, 0);
+            List<List<float2>> linelist = new List<List<float2>>();
 
-                int linePos = i - 1;
-                
-                if (linePos < 0)
+            for (int i = 0; i < positionsArray.Length; i++)
+            {
+                linePos0 = i;
+                linePos1 = i - 1;
+                if (linePos1 < 0)
                 {
-                    linePos = Positions.Length - 1;
+                    linePos1 = positionsArray.Length - 1;
                 }
 
                 List<float2> line = new List<float2>();
-                for (int j = 0; j < Positions.Length; j++)
+                for (int j = 0; j < positionsArray.Length; j++)
                 {
                     int testPos = i + j;
-                    if (testPos >= Positions.Length)
+                    if (testPos >= positionsArray.Length)
                     {
-                        testPos -= Positions.Length;
+                        testPos -= positionsArray.Length;
                     }
-                    if (Positions[testPos].Equals(float2.zero)) continue;
-                    
                     
                     float distance = mathAdditions.GetDistancetoLine(
-                        Positions[i],
-                        Positions[linePos],
-                        Positions[testPos]);
+                        positionsArray[linePos0],
+                        positionsArray[linePos1],
+                        positionsArray[testPos]);
 
                     if (distance < maxDistance)
                     {
-                        line.Add(Positions[testPos]);
+                        line.Add(positionsArray[testPos]);
                     }
                     else
                     {
@@ -114,23 +124,22 @@ namespace Lidar
                     }
                 }
 
-                for (int j = 1; j < Positions.Length; j++)
+                for (int j = 1; j < positionsArray.Length; j++)
                 {
                     int testPos = i - j;
                     if (testPos < 0)
                     {
-                        testPos += Positions.Length;
+                        testPos += positionsArray.Length;
                     }
-                    if (Positions[testPos].Equals(float2.zero)) continue;
                     
                     float distance = mathAdditions.GetDistancetoLine(
-                        Positions[i],
-                        Positions[linePos],
-                        Positions[testPos]);
+                        positionsArray[linePos0],
+                        positionsArray[linePos1],
+                        positionsArray[testPos]);
 
                     if (distance < maxDistance)
                     {
-                        line.Add(Positions[testPos]);
+                        line.Add(positionsArray[testPos]);
                     }
                     else
                     {
@@ -138,32 +147,20 @@ namespace Lidar
                     }
                 }
                 
-                lineList.Add(line);
+                linelist.Add(line);
             }
             
-            int SortListByLenght(List<float2> x, List<float2> y)
-            {
-                int xLenght = x.Count;
-                int yLenght = y.Count;
-            
-                if (xLenght > yLenght)
-                {
-                    return -1;
-                }
-                return xLenght < yLenght ? 1 : 0;
-            }
-            lineList.Sort(SortListByLenght);
-            
-            List<List<float2>> lineList2 = new List<List<float2>>();
+            List<List<float2>> linelist2 = new List<List<float2>>();
+            int index = 0;
             for (int k = 0; k < 100000; k++)
             {
-                List<float2> line = lineList[0];
-                lineList2.Add(line);
-                lineList.RemoveAt(0);
+                List<float2> line = linelist[index];
+                linelist2.Add(line);
+                linelist.RemoveAt(0);
 
-                foreach (List<float2> testline in lineList)
+                foreach (List<float2> testline in linelist)
                 {
-                    foreach (float2 point in line)
+                    foreach (Vector2 point in line)
                     {
                         for (int j = testline.Count - 1; j >= 0; j--)
                         {
@@ -175,45 +172,52 @@ namespace Lidar
                     }
                 }
                 
-                lineList.Sort(SortListByLenght);
-
-                for (int i = 0; i < lineList.Count; i++)
+                int SortListByLenght<T>(List<T> x, List<T> y)
                 {
-                    if (lineList[i].Count > minLineLength) continue;
+                    int xLenght = x.Count;
+                    int yLenght = y.Count;
+            
+                    if (xLenght > yLenght)
+                    {
+                        return -1;
+                    }
+                    return xLenght < yLenght ? 1 : 0;
+                }
                 
-                    lineList.RemoveRange(i, lineList.Count - i);
+                linelist.Sort(SortListByLenght);
+
+                for (int i = 0; i < linelist.Count; i++)
+                {
+                    if (linelist[i].Count > minLineLength) continue;
+                
+                    linelist.RemoveRange(i, linelist.Count - i);
                     break;
                 }
 
-                if (lineList.Count <= 0)
+                if (linelist.Count <= 0)
                 {
                     break;
                 }
             }
-            
-            Lines = new float2[lineList2.Count][];
-            for (int i = 0; i < lineList2.Count; i++)
-            {
-                float4 v = mathAdditions.FindLinearLeastSquaresFit(lineList2[i]);
-                lineList2[i].Add(new float2(v.x, v.y));
-                lineList2[i].Add(new float2(v.z, v.w));
 
-                Lines[i] = lineList2[i].ToArray();
+            Lines = new float2[linelist2.Count][];
+            for (int i = 0; i < linelist2.Count; i++)
+            {
+                finallines.Add(mathAdditions.FindLinearLeastSquaresFit(linelist2[i]));
+                Lines[i] = linelist2[i].ToArray();
             }
         }
-
+        
         private readonly int bounds;
         private void CalculateIntersections()
         {
             List<float2> intersectionList = new List<float2>();
-            foreach (float2[] line in Lines)
+            foreach (float4 finalLine in finallines)
             {
-                float4 finalLine = new float4(line[line.Length-2], line[line.Length-1]);
-                foreach (float2[] line1 in Lines)
+                foreach (float4 testFinalLine in finallines)
                 {
-                    if(line == line1) continue;
-                        
-                    float4 testFinalLine = new float4(line1[line1.Length-2], line1[line1.Length-1]);
+                    if(finalLine.Equals(testFinalLine)) continue;
+                    
                     float2 intersection = mathAdditions.FindIntersection(
                         new float2(finalLine.x, finalLine.y), 
                         new float2(finalLine.x + finalLine.z, finalLine.y + finalLine.w), 
@@ -238,7 +242,8 @@ namespace Lidar
 
             Intersections = intersectionList.ToArray();
         }
-        private bool jobActive = false;
+        
+        private bool jobActive = true;
         private NativeArray<float2> nativeIntersections;
 
         private NativeArray<float2> nativeIntersections1;
@@ -320,11 +325,9 @@ namespace Lidar
                         float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
                         float testdistance = math.length(testVector - p2);
 
-                        if (testdistance < overlay.w)
-                        {
-                            overlay.w = testdistance;
-                            overlay = new float4(result.x, result.y, result.z, overlay.w);
-                        }
+                        if (testdistance >= overlay.w) return;
+                        overlay.w = testdistance;
+                        overlay = new float4(result.x, result.y, result.z, overlay.w);
                     }
                     
                     FindBestOverlay(point, point1, bestPoint, bestPoint1);
@@ -359,7 +362,7 @@ namespace Lidar
                 overlays[index] = finalOverlay;
             } 
         }
-
+        
         private float4 overlay;
         public void ParseOverlay()
         {
@@ -382,10 +385,10 @@ namespace Lidar
             
             State = LidarPointState.finished;
         }
-
+        
         public static float2 ApplyOverlay(float2 pos, float4 overlay)
         {
-            return mathAdditions.Rotate(pos, overlay.z) +  overlay.xy;
+            return mathAdditions.Rotate(pos, overlay.z) + overlay.xy;
         }
     }
 }

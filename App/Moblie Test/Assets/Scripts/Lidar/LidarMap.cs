@@ -20,8 +20,8 @@ namespace Lidar
         [SerializeField] private int mapScale = 10;
         public int MapScale => mapScale;
         
-        [SerializeField] private float maxDistance = 0.5f;
-        [SerializeField] private int minLineLength = 5;
+        [SerializeField] private float maxDistance = 2f;
+        [SerializeField] private int minLineLength = 10;
         [SerializeField] private int bounds = 500;
 
         private void Awake()
@@ -51,38 +51,47 @@ namespace Lidar
         {
             foreach (string csvFile in csvFiles)
             {
-                string[][] csvData = Csv.ParseCVSFile(File.ReadAllText(Application.dataPath + "\\" + csvFile));
-
-                List<int2> data = new List<int2>();
-                for (int i = 0; i < csvData.Length; i++)
+                string[][] csvData = Csv.ParseCVSFile(
+                    File.ReadAllText(Application.dataPath + "\\" + csvFile));
+                csvData[csvData.Length - 1] = new []{"0.0","0"};
+                
+                List<int>[] distances = new List<int>[360];
+                for (int i = 0; i < distances.Length; i++)
                 {
-                    string[] line = csvData[i];
-                    if (line.Length < 2) continue;
-
-                    int angle = int.Parse(line[0].Split('.')[0]);
+                    distances[i] = new List<int>();
+                }
+                
+                foreach (var line in csvData)
+                {
+                    int angle = (int) float.Parse(line[0]);
                     int distance = int.Parse(line[1]);
                     
                     if(distance == 0) continue;
-
-                    int index = -1;
-                    for (int j = 0; j < data.Count; j++)
+                    
+                    distances[angle].Add(distance);
+                }
+                
+                List<int2> data = new List<int2>();
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    int sum = 0;
+                    foreach (var distance in distances[i])
                     {
-                        if (data[j].x == angle)
-                        {
-                            index = j;
-                        }
+                        sum += distance;
                     }
-
-                    if (index == -1)
+                    if (sum > 0)
                     {
-                        data.Add(new int2(angle, distance));
+                        sum /= distances[i].Count;
                     }
                     else
                     {
-                        data[index] = (new int2(angle, distance) + data[index]) / 2;
+                        continue;
                     }
+                    if(sum == 0) continue;
+                    
+                    data.Add(new int2(i, sum));
                 }
-
+                
                 AddLidarData(data.ToArray());
                 PushLidarData();
             }
@@ -132,7 +141,7 @@ namespace Lidar
                     case LidarPointState.readyForCalculation:
                         if (LidarPoints.Count > 0)
                         {
-                            lidarPoint.Calculate(LidarPoints[LidarPoints.Count -1]);
+                            lidarPoint.Calculate(LidarPoints[0]);
                         }
                         else
                         {
@@ -170,6 +179,7 @@ namespace Lidar
         [SerializeField] private bool showPoints;
         private int counter;
         [SerializeField] private GameObject[] pointPreFabs;
+        [SerializeField] private GameObject linePreFab;
         private void ShowPoint(LidarPoint lidarPoint)
         {
             GameObject point = new GameObject("Point " + counter);
@@ -180,6 +190,21 @@ namespace Lidar
             {
                 GameObject o = Instantiate(pointPreFabs[counter], 
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
+                o.transform.SetParent(point.transform, false);
+            }
+
+            foreach (float2[] line in lidarPoint.Lines)
+            {
+                foreach (float2 float2 in line)
+                {
+                    GameObject o = Instantiate(linePreFab, new Vector3(float2.x, float2.y, 0), Quaternion.identity);
+                    o.transform.SetParent(point.transform, false);
+                }
+            }
+            
+            foreach (Vector2 intersectionPoint in lidarPoint.Intersections)
+            {
+                GameObject o = Instantiate(linePreFab, intersectionPoint, Quaternion.identity);
                 o.transform.SetParent(point.transform, false);
             }
 
@@ -194,14 +219,24 @@ namespace Lidar
                 foreach (float2 position in bigLidarPoint.Positions)
                 {
                     if(position.Equals(int2.zero)) continue;
-                    int2 pos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay) / mapScale) * mapScale;
+                    int2 worldPos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay));
+                    int2 scaledPos = (worldPos / mapScale) * mapScale;
+                    
+                    if (worldPos.x < 0)
+                    {
+                        scaledPos.x -= mapScale;
+                    }
+                    if (worldPos.y < 0)
+                    {
+                        scaledPos.y -= mapScale;
+                    }
 
                     int value = 1;
-                    if (Map.ContainsKey(pos))
+                    if (Map.ContainsKey(scaledPos))
                     {
-                        value = Map[pos] + 1;
+                        value = Map[scaledPos] + 1;
                     }
-                    Map[pos] = value;
+                    Map[scaledPos] = value;
                 }
             }
         }
