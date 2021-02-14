@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Lidar;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,15 +11,23 @@ using Utility.Variables;
 public class AIControler : MonoBehaviour
 {
     [SerializeField]private Vec3Variable position;
-    [SerializeField]private Vec2Variable goal;
+    [SerializeField]private Float2ListVariable goals;
     [SerializeField]private Dictionary<int2, int> obstacles = new Dictionary<int2, int>();
+    [SerializeField]private Float2ListVariable pathFloat;
+    List<int2> path = new List<int2>();
+
     public void updatePath()
     {
-        String msg = "python multi,";
-        int2 start =  (int2)(position.Value.xy);
-        int2 end = (int2) (goal.Value);
         FindPath finder = new FindPath(obstacles);
-        List<int2> path = finder.findPathBetweenInt2(start, end);
+        int2 start = (int2) (position.Value.xy);
+        foreach (float2 goal in goals.Value)
+        {
+            int2 end = (int2) (goal);
+            path.AddRange(finder.findPathBetweenInt2(start, end));
+            start = end;
+        }
+        
+        String msg = "python multi,";
         float2 old = position.Value.xy;
         float2 move;
         for (int i = 0; i < path.Count; i++)
@@ -35,12 +44,19 @@ public class AIControler : MonoBehaviour
             {
                 continue;
             }
-            move =  old - (path[i]);
+            move =  (path[i]) - old;
             msg += "move " + move.x + " " + move.y + ",";
             old = (path[i]);
         }
-        move = old - (goal.Value.xy);
+        move = old - (goals.Value[goals.Value.Count - 1].xy);
         msg += "move " + move.x + " " + move.y + ",";
         Debug.Log(msg);
+    }
+    private void OnDrawGizmos()
+    {
+        foreach (int2 point in path)
+        {
+            Gizmos.DrawSphere(new Vector3(point.x, point.y), 1);
+        }
     }
 }
