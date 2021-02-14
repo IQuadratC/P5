@@ -149,6 +149,4 @@ App Logik:
     - Raises Send Event
 
 Icons:
-Alle Icons als png hohe Auflösung weiß auf durchsictig.
 
-- Auto Sicht von oben drauf für die Karte.

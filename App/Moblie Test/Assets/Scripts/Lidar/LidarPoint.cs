@@ -245,7 +245,6 @@ namespace Lidar
         
         private bool jobActive = true;
         private NativeArray<float2> nativeIntersections;
-
         private NativeArray<float2> nativeIntersections1;
         private NativeArray<float4> overlays;
         private JobHandle jobHandle;
