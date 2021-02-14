@@ -292,8 +292,8 @@ RectTransform:
   m_Father: {fileID: 1485894310}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -794,7 +794,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -852,7 +852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &997816141
 RectTransform:
   m_ObjectHideFlags: 0
@@ -893,6 +893,8 @@ MonoBehaviour:
   minRotationChange: 0.1
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
   rotation: {fileID: 11400000, guid: aab1c7b6846de8f4a821ec3fc4ba041d, type: 2}
+  sendString: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+  sendEvent: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
 --- !u!1 &1327249868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,6 +1155,79 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1580727283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1580727286}
+  - component: {fileID: 1580727285}
+  - component: {fileID: 1580727284}
+  m_Layer: 0
+  m_Name: FakeTCP
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1580727284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580727283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1580727285}
+        m_TargetAssemblyTypeName: FakeTCP, Assembly-CSharp
+        m_MethodName: sendMsg
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1580727285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580727283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8cf6e431ce9224e871a1cf50a88fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  msg: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+--- !u!4 &1580727286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580727283}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.7623663, y: -2.661866, z: -4.1932316}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1619758219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1619758220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1203,9 +1278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d131fbf41f1b71945a3377e787baa7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sendEvent: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
+  sendString: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
   position: {fileID: 11400000, guid: 7b283b3420c3e59458e9681c244f2134, type: 2}
   goals: {fileID: 11400000, guid: a46260b3a89ff764eb8acdf928e677d5, type: 2}
-  pathFloat: {fileID: 0}
+  obstaclesPoints: {fileID: 11400000, guid: 792b6a10ab80be34c9e7a9f180bd9397, type: 2}
+  path: {fileID: 11400000, guid: 3fef45a296df4424a89746731f33604f, type: 2}
+  distanceToWalls: 10
 --- !u!114 &1619758222
 MonoBehaviour:
   m_ObjectHideFlags: 0

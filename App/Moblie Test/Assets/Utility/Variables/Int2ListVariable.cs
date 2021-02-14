@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Utility.Variables
 {
-    [CreateAssetMenu(fileName = "ListVariable", menuName = "Utility/Varibles/Float2List")] 
-    public class Float2ListVariable : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "Int2List", menuName = "Utility/Varibles/Int2List")] 
+    public class Int2ListVariable : ScriptableObject, ISerializationCallbackReceiver
     {
         [NonSerialized]
-        public List<float2> Value;
-        public List<float2> InitialValue;
+        public List<int2> Value;
+        public List<int2> InitialValue;
         
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
@@ -18,7 +18,7 @@ namespace Utility.Variables
             Value = InitialValue;
         }
         
-        public void Set(List<float2> value)
+        public void Set(List<int2> value)
         {
             Value = value;
         }

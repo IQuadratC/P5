@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a106c4dbaf47f0b60d272da14575ec, type: 3}
   m_Name: Obsticals
   m_EditorClassIdentifier: 
-  InitialValue: []
+  InitialValue:
+  - x: 50
+    y: 50
