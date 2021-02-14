@@ -20,6 +20,7 @@ public class AIControler : MonoBehaviour
     private List<int2> circle = new List<int2>();
     [SerializeField]private Int2ListVariable path;
     [SerializeField]private int distanceToWalls;
+    [SerializeField]private float speed;
     private void Start()
     {
         circle = new List<int2>();
@@ -68,7 +69,7 @@ public class AIControler : MonoBehaviour
             move =  (path.Value[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move " + move.x + " " + move.y + ",";
+                msg += "move " + move.x + " " + move.y + " " + speed + ",";
             }
             old = (path.Value[i]);
         }
