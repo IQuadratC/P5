@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Utility.Events;
 using Utility.Variables;
 
 public class HIControler : MonoBehaviour
@@ -15,6 +16,8 @@ public class HIControler : MonoBehaviour
     private float lastRotation;
     [SerializeField]private Vec2Variable direction;
     [SerializeField]private FloatVariable rotation;
+    [SerializeField]private StringVariable sendString;
+    [SerializeField]private GameEvent sendEvent;
     
     // Update is called once per frame
     void Update()
@@ -23,20 +26,24 @@ public class HIControler : MonoBehaviour
         float2 frameDirection = direction.Value;
         if (math.abs(frameRotation - lastRotation) > minRotationChange)
         {
-            print(frameRotation);
+            sendString.Value = "rotate " + frameRotation;
+            sendEvent.Raise();
             lastRotation = frameRotation;
         }
         else if (!lastRotation.Equals(0f) && frameRotation.Equals(0f))
         {
-            print(frameRotation);
+            sendString.Value = "rotate " + frameRotation;
+            sendEvent.Raise();
             lastRotation = frameRotation;
         }else if (math.abs(math.length(frameDirection - lastDirection)) > minDirectionChange)
         {
-            print(frameDirection);
+            sendString.Value = "move " + frameDirection;
+            sendEvent.Raise();
             lastDirection = frameDirection;
         }else if (!lastDirection.Equals(float2.zero) && frameDirection.Equals(float2.zero))
         {
-            print(frameDirection);
+            sendString.Value = "move " + frameDirection;
+            sendEvent.Raise();
             lastDirection = frameDirection;
         }
     }

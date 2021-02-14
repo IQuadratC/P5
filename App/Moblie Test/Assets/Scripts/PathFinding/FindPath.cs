@@ -15,6 +15,7 @@ public class FindPath
     }
     public Node findPathBetweneNodes(Node start, Node end)
     {
+        grid = new Dictionary<int2, Node>();
         Node current = start;
         start.setGScore(current);
         start.setHScore(end);
