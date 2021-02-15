@@ -21,6 +21,7 @@ public class AIControler : MonoBehaviour
     [SerializeField]private Int2ListVariable path;
     [SerializeField]private int distanceToWalls;
     [SerializeField]private float speed;
+    public bool useRotation;
     private void Start()
     {
         circle = new List<int2>();
@@ -36,15 +37,30 @@ public class AIControler : MonoBehaviour
         }
     }
 
-    public void updatePath()
+    public void UpdatePath()
     {
         UpdateObsticals();
+
+        if (useRotation)
+        {
+            sendString.Value = WithRotation();
+        }
+        else
+        {
+            sendString.Value = NoRotation();
+        }
+
+        sendEvent.Raise();
+    }
+
+    private string WithRotation()
+    {
         path.Value = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int2 start = (int2) (position.Value.xy);
         foreach (int2 goal in goals.Value)
         {
-            int2 end = (int2) (goal);
+            int2 end = goal;
             path.Value.AddRange(finder.findPathBetweenInt2(start, end));
             start = end;
         }
@@ -55,7 +71,7 @@ public class AIControler : MonoBehaviour
         for (int i = 0; i < path.Value.Count; i++)
         {
             if (i >= 1 && i < (path.Value.Count - 1) &&
-                 ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
+                ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(0, 2)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(-2, 0)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(0, -2)).Equals(path.Value[i + 1]) ||
@@ -78,9 +94,52 @@ public class AIControler : MonoBehaviour
         {
             msg += "move," + move.x + ";" + move.y + ",";
         }
+
+        return msg;
+    }
+    private string NoRotation()
+    {
+        path.Value = new List<int2>();
+        FindPath finder = new FindPath(obstacles);
+        int2 start = (int2) (position.Value.xy);
+        foreach (int2 goal in goals.Value)
+        {
+            int2 end = (int2) (goal);
+            path.Value.AddRange(finder.findPathBetweenInt2(start, end));
+            start = end;
+        }
         
-        sendString.Value = msg;
-        sendEvent.Raise();
+        String msg = "roboter multi ";
+        float2 old = position.Value.xy;
+        float2 move;
+        for (int i = 0; i < path.Value.Count; i++)
+        {
+            if (i >= 1 && i < (path.Value.Count - 1) &&
+                ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(0, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, 0)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(0, -2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, -2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(2, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(2, -2)).Equals(path.Value[i + 1])))
+            {
+                continue;
+            }
+            move =  (path.Value[i]) - old;
+            if (!move.Equals(float2.zero))
+            {
+                msg += "move," + move.y + ";" + move.x + ";" + speed + ",";
+            }
+            old = (path.Value[i]);
+        }
+        move = old - (goals.Value[goals.Value.Count - 1].xy);
+        if (!move.Equals(float2.zero))
+        {
+            msg += "move," + move.y + ";" + move.x + ",";
+        }
+
+        return msg;
     }
     private void UpdateObsticals()
     {

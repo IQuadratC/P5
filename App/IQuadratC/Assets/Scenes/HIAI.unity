@@ -658,8 +658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e8d9b2a1d64fb4997f7df86861be1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainSlider: {fileID: 800765378}
-  rotation: {fileID: 11400000, guid: aab1c7b6846de8f4a821ec3fc4ba041d, type: 2}
+  mainSlider: {fileID: 0}
+  rotation: {fileID: 0}
 --- !u!1 &817540372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1286,7 @@ MonoBehaviour:
   path: {fileID: 11400000, guid: 3fef45a296df4424a89746731f33604f, type: 2}
   distanceToWalls: 10
   speed: 10
+  useRotation: 0
 --- !u!114 &1619758222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,7 +1305,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1619758221}
         m_TargetAssemblyTypeName: AIControler, Assembly-CSharp
-        m_MethodName: updatePath
+        m_MethodName: UpdatePath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
