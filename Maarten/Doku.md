@@ -148,5 +148,19 @@ App Logik:
     - Listen NewPoint Event
     - Raises Send Event
 
-Icons:
+# Convention 
 
+TCP einheiten:
+- Länge cm
+- Geschwindikeit cm/ms
+- Zeit ms
+- Datentypen int
+
+1. Space (Ort Befehl Argument)
+2. , (Argumente ,..,..)
+3. ; ...
+4. :
+5. |
+
+roboter move 1,1,1
+roboter multi move,1;1;1,move,1;1;1,move,1;1;1
