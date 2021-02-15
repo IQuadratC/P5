@@ -49,7 +49,7 @@ public class AIControler : MonoBehaviour
             start = end;
         }
         
-        String msg = "python multi,";
+        String msg = "roboter multi ";
         float2 old = position.Value.xy;
         float2 move;
         for (int i = 0; i < path.Value.Count; i++)
@@ -69,14 +69,14 @@ public class AIControler : MonoBehaviour
             move =  (path.Value[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move " + move.x + " " + move.y + " " + speed + ",";
+                msg += "move," + move.x + ";" + move.y + ";" + speed + ",";
             }
             old = (path.Value[i]);
         }
         move = old - (goals.Value[goals.Value.Count - 1].xy);
         if (!move.Equals(float2.zero))
         {
-            msg += "move " + move.x + " " + move.y + ",";
+            msg += "move," + move.x + ";" + move.y + ",";
         }
         
         sendString.Value = msg;
