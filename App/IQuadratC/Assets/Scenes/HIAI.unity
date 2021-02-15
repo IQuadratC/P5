@@ -1286,7 +1286,7 @@ MonoBehaviour:
   path: {fileID: 11400000, guid: 3fef45a296df4424a89746731f33604f, type: 2}
   distanceToWalls: 10
   speed: 10
-  useRotation: 0
+  useRotation: 1
 --- !u!114 &1619758222
 MonoBehaviour:
   m_ObjectHideFlags: 0

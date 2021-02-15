@@ -6,6 +6,7 @@ using Lidar;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utility;
 using Utility.Events;
 using Utility.Variables;
 
@@ -67,6 +68,7 @@ public class AIControler : MonoBehaviour
         
         String msg = "roboter multi ";
         float2 old = position.Value.xy;
+        float2 oldRotation = mathAdditions.Rotate(new float2(0,1), position.Value.z);
         float2 move;
         for (int i = 0; i < path.Value.Count; i++)
         {
@@ -85,7 +87,9 @@ public class AIControler : MonoBehaviour
             move =  (path.Value[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move," + move.x + ";" + move.y + ";" + speed + ",";
+                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move);
+                msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
+                oldRotation = (path.Value[i]) - old;
             }
             old = (path.Value[i]);
         }
