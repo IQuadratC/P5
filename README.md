@@ -1,7 +1,7 @@
 # P5
 Mit einem Lidar Sensor eine Karte erstellen und in dieser Karte navigieren. 
 
-# Ziehle:
+# Ziele:
 1. Die Empfangen Daten des Sensors grafisch drastellen.
 2. Messfehler minimiren.
 3. Liniare bewegung zu einem Punkt erkennen in dem man die Änderung in den Messwerten erkennt.

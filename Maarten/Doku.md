@@ -77,22 +77,90 @@ Input:
 
 - Schnittpunkte zusammen fassen
 
-4 = 6
-5 = 10
+# 09.02.2021
 
-1   1
-2
-3
-4
-5
+Adunio:
+- Motorsteuerung
+- Über Serial mit Respi verbunden.
+- Tim
 
-12
-13
-14
-15
-23
-24
-25
-34
-35
-45
+Respi:
+- AutoComputer
+
+- Py:
+    - Schnitstelle zwischen C++ und Aduino
+    - Umrechnen der Befehle von string to bits für Aduino
+    - Niklas
+
+- C++:
+    - Main Auto logic
+    - TCP Server
+    - TCP strings für Ardunio an Py weiterleiten.
+    - Lidar sensor lesen
+    - Lidar daten über TCP senden
+    - Tim
+
+App:
+- Fersteureung
+- TCP Client.
+- Beweguns Befehle an Arduino senden. Niklas
+- Lidar Daten entfangen. Maarten
+- Lidar Daten umrechnen. Maarten
+- Lidar Karte erstellen. Maarten
+- Algoritmus um in Karte zu navigiren. 
+- Auf Position in der Karte fahren. 
+- Route abfahren.
+- Karte erkunden.
+- Karte darstellen. 
+- Shader für Karte schreiben.
+- StartScerren für App.
+
+TCP Syntax: Entfänger Befehl Argumente ...
+
+# 12.02.2021 
+
+App Logik:
+- TCP:
+    - Liste Send Event (Send String)
+    - Raises Recive Event (Recive String)
+
+- LidarController:
+    - State
+    - Data (List Points)
+    - Position
+
+    - Listen GetData Event
+    - Raises Send Event
+    - Raises NewPoint Event
+    - Listen Recive Event
+    
+- LidarMap: 
+    - Listen NewPoint
+
+- Controller UI
+    - Toggle AI / HI
+
+- Controller HI
+    - Raises Send Event
+    - Raises GetData Event
+
+- Controller AI
+    - Listen NewPoint Event
+    - Raises Send Event
+
+# Convention 
+
+TCP einheiten:
+- Länge cm
+- Geschwindikeit cm/ms
+- Zeit ms
+- Datentypen int
+
+1. Space (Ort Befehl Argument)
+2. , (Argumente ,..,..)
+3. ; ...
+4. :
+5. |
+
+roboter move 1,1,1
+roboter multi move,1;1;1,move,1;1;1,move,1;1;1
