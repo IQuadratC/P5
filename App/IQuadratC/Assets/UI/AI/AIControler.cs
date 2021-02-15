@@ -6,6 +6,7 @@ using Lidar;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utility;
 using Utility.Events;
 using Utility.Variables;
 
@@ -21,6 +22,7 @@ public class AIControler : MonoBehaviour
     [SerializeField]private Int2ListVariable path;
     [SerializeField]private int distanceToWalls;
     [SerializeField]private float speed;
+    public bool useRotation;
     private void Start()
     {
         circle = new List<int2>();
@@ -36,26 +38,42 @@ public class AIControler : MonoBehaviour
         }
     }
 
-    public void updatePath()
+    public void UpdatePath()
     {
         UpdateObsticals();
+
+        if (useRotation)
+        {
+            sendString.Value = WithRotation();
+        }
+        else
+        {
+            sendString.Value = NoRotation();
+        }
+
+        sendEvent.Raise();
+    }
+
+    private string WithRotation()
+    {
         path.Value = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int2 start = (int2) (position.Value.xy);
         foreach (int2 goal in goals.Value)
         {
-            int2 end = (int2) (goal);
+            int2 end = goal;
             path.Value.AddRange(finder.findPathBetweenInt2(start, end));
             start = end;
         }
         
-        String msg = "python multi,";
+        String msg = "roboter multi ";
         float2 old = position.Value.xy;
+        float2 oldRotation = mathAdditions.Rotate(new float2(0,1), position.Value.z);
         float2 move;
         for (int i = 0; i < path.Value.Count; i++)
         {
             if (i >= 1 && i < (path.Value.Count - 1) &&
-                 ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
+                ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(0, 2)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(-2, 0)).Equals(path.Value[i + 1]) ||
                  (path.Value[i - 1] + new int2(0, -2)).Equals(path.Value[i + 1]) ||
@@ -69,18 +87,63 @@ public class AIControler : MonoBehaviour
             move =  (path.Value[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move " + move.x + " " + move.y + " " + speed + ",";
+                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move);
+                msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
+                oldRotation = (path.Value[i]) - old;
             }
             old = (path.Value[i]);
         }
         move = old - (goals.Value[goals.Value.Count - 1].xy);
         if (!move.Equals(float2.zero))
         {
-            msg += "move " + move.x + " " + move.y + ",";
+            msg += "move," + move.x + ";" + move.y + ",";
+        }
+
+        return msg;
+    }
+    private string NoRotation()
+    {
+        path.Value = new List<int2>();
+        FindPath finder = new FindPath(obstacles);
+        int2 start = (int2) (position.Value.xy);
+        foreach (int2 goal in goals.Value)
+        {
+            int2 end = (int2) (goal);
+            path.Value.AddRange(finder.findPathBetweenInt2(start, end));
+            start = end;
         }
         
-        sendString.Value = msg;
-        sendEvent.Raise();
+        String msg = "roboter multi ";
+        float2 old = position.Value.xy;
+        float2 move;
+        for (int i = 0; i < path.Value.Count; i++)
+        {
+            if (i >= 1 && i < (path.Value.Count - 1) &&
+                ((path.Value[i - 1] + new int2(2, 0)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(0, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, 0)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(0, -2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(-2, -2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(2, 2)).Equals(path.Value[i + 1]) ||
+                 (path.Value[i - 1] + new int2(2, -2)).Equals(path.Value[i + 1])))
+            {
+                continue;
+            }
+            move =  (path.Value[i]) - old;
+            if (!move.Equals(float2.zero))
+            {
+                msg += "move," + move.y + ";" + move.x + ";" + speed + ",";
+            }
+            old = (path.Value[i]);
+        }
+        move = old - (goals.Value[goals.Value.Count - 1].xy);
+        if (!move.Equals(float2.zero))
+        {
+            msg += "move," + move.y + ";" + move.x + ",";
+        }
+
+        return msg;
     }
     private void UpdateObsticals()
     {
