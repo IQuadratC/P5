@@ -8,7 +8,6 @@ namespace Utility.Variables
     [CreateAssetMenu(fileName = "Int2List", menuName = "Utility/Varibles/Int2List")] 
     public class Int2ListVariable : ScriptableObject, ISerializationCallbackReceiver
     {
-        [NonSerialized]
         public List<int2> Value;
         public List<int2> InitialValue;
         

@@ -14,6 +14,7 @@ public class MainPage : MonoBehaviour
     {
         AI.SetActive(false);
         HI.SetActive(true);
+        sideMenue.SetActive(false);
     }
 
     public void setSideMenue(bool active)
