@@ -12,242 +12,59 @@ namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
-        private List<LidarPoint> lidarPointsProcessing;
-
-        public List<LidarPoint> LidarPoints { get; private set; }
         [SerializeField] private Vec2Variable position;
-
+        [SerializeField] private Int2ListVariable points;
+        
         public Dictionary<int2, int> Map { get; private set; }
         [SerializeField] private int mapScale = 10;
-        public int MapScale => mapScale;
-        
-        [SerializeField] private float maxDistance = 2f;
-        [SerializeField] private int minLineLength = 10;
-        [SerializeField] private int bounds = 500;
+
+        [SerializeField] private int meshBounds;
+        private MeshFilter meshFilter;
+        private Material meshMaterial;
 
         private void Awake()
         {
-            LidarPoints = new List<LidarPoint>();
-            lidarPointsProcessing = new List<LidarPoint>();
-            meshFilter = meshObject.GetComponent<MeshFilter>();
-            meshMaterial = meshObject.GetComponent<MeshRenderer>().material;
-        }
-
-        private void Start()
-        {
-            if (simulateData)
-            {
-                SimulateData();
-            }
-        }
-        
-        [SerializeField] private bool simulateData;
-        private string[] csvFiles =
-        {
-            "Testdata_gedreht_0.csv",
-            "Testdata_gedreht_1.csv",
-            "Testdata_gedreht_2.csv"
-        };
-        private void SimulateData()
-        {
-            foreach (string csvFile in csvFiles)
-            {
-                string[][] csvData = Csv.ParseCVSFile(
-                    File.ReadAllText(Application.dataPath + "\\" + csvFile));
-                csvData[csvData.Length - 1] = new []{"0.0","0"};
-                
-                List<int>[] distances = new List<int>[360];
-                for (int i = 0; i < distances.Length; i++)
-                {
-                    distances[i] = new List<int>();
-                }
-                
-                foreach (var line in csvData)
-                {
-                    int angle = (int) float.Parse(line[0]);
-                    int distance = int.Parse(line[1]);
-                    
-                    if(distance == 0) continue;
-                    
-                    distances[angle].Add(distance);
-                }
-                
-                List<int2> data = new List<int2>();
-                for (int i = 0; i < distances.Length; i++)
-                {
-                    int sum = 0;
-                    foreach (var distance in distances[i])
-                    {
-                        sum += distance;
-                    }
-                    if (sum > 0)
-                    {
-                        sum /= distances[i].Count;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                    if(sum == 0) continue;
-                    
-                    data.Add(new int2(i, sum));
-                }
-                
-                AddLidarData(data.ToArray());
-                PushLidarData();
-            }
-        }
-
-        private bool isAdding;
-        private void AddLidarData(int2[] data)
-        {
-            LidarPoint lidarPoint;
-            if (!isAdding)
-            {
-                isAdding = true;
-                lidarPoint = new LidarPoint(maxDistance, minLineLength, bounds);
-                lidarPointsProcessing.Add(lidarPoint);
-            }
-            else
-            {
-                lidarPoint = lidarPointsProcessing[lidarPointsProcessing.Count - 1];
-            }
-            lidarPoint.AddData(data);
-        }
-
-        private void PushLidarData()
-        {
-            isAdding = false;
-            lidarPointsProcessing[lidarPointsProcessing.Count - 1].State = LidarPointState.waitingForCalculation;
+            meshFilter = GetComponent<MeshFilter>();
+            meshMaterial = GetComponent<MeshRenderer>().material;
         }
 
         private void Update()
         {
-            for (int i = lidarPointsProcessing.Count - 1; i >= 0; i--)
-            {
-                LidarPoint lidarPoint = lidarPointsProcessing[i];
-                switch (lidarPoint.State)
-                {
-                    case LidarPointState.addingData:
+            meshMaterial.SetVector("Position",
+                new Vector4(position.Value.x, position.Value.y, 0,0));
                         
-                        break;
-                    
-                    case LidarPointState.waitingForCalculation:
-                        if (lidarPoint == lidarPointsProcessing[0])
-                        {
-                            lidarPoint.State = LidarPointState.readyForCalculation;
-                        }
-                        break;
-                    
-                    case LidarPointState.readyForCalculation:
-                        if (LidarPoints.Count > 0)
-                        {
-                            lidarPoint.Calculate(LidarPoints[0]);
-                        }
-                        else
-                        {
-                            lidarPoint.Calculate();
-                        }
-                        
-                        break;
-                    
-                    case LidarPointState.performingCalculation:
-                        lidarPoint.ParseOverlay();
-                        break;
-                    
-                    case LidarPointState.finished:
-                        lidarPointsProcessing.Remove(lidarPoint);
-                        LidarPoints.Add(lidarPoint);
-                        
-                        position.Value = new float2(lidarPoint.Overlay.xy);
-                        meshMaterial.SetVector("Position",
-                            new Vector4(position.Value.x, position.Value.y, 0,0));
-                        
-                        UpdateMap();
-                        if (showPoints)
-                        {
-                            ShowPoint(lidarPoint);
-                        }
-                        if (showMap)
-                        {
-                            UpdateMapMesh();
-                        }
-                        break;
-                }
-            }
-        }
-
-        [SerializeField] private bool showPoints;
-        private int counter;
-        [SerializeField] private GameObject[] pointPreFabs;
-        [SerializeField] private GameObject linePreFab;
-        private void ShowPoint(LidarPoint lidarPoint)
-        {
-            GameObject point = new GameObject("Point " + counter);
-            point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
-            point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
-
-            foreach (float2 lidarPointPosition in lidarPoint.Positions)
-            {
-                GameObject o = Instantiate(pointPreFabs[counter], 
-                    new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
-                o.transform.SetParent(point.transform, false);
-            }
-
-            foreach (float2[] line in lidarPoint.Lines)
-            {
-                foreach (float2 float2 in line)
-                {
-                    GameObject o = Instantiate(linePreFab, new Vector3(float2.x, float2.y, 0), Quaternion.identity);
-                    o.transform.SetParent(point.transform, false);
-                }
-            }
-            
-            foreach (Vector2 intersectionPoint in lidarPoint.Intersections)
-            {
-                GameObject o = Instantiate(linePreFab, intersectionPoint, Quaternion.identity);
-                o.transform.SetParent(point.transform, false);
-            }
-
-            counter++;
+            UpdateMap();
+            UpdateMapMesh();
         }
 
         private void UpdateMap()
         {
             Map = new Dictionary<int2, int>();
-            foreach (LidarPoint bigLidarPoint in LidarPoints)
+            foreach (float2 position in points.Value)
             {
-                foreach (float2 position in bigLidarPoint.Positions)
-                {
-                    if(position.Equals(int2.zero)) continue;
-                    int2 worldPos = new int2(LidarPoint.ApplyOverlay(position, bigLidarPoint.Overlay));
-                    int2 scaledPos = (worldPos / mapScale) * mapScale;
+                if(position.Equals(int2.zero)) continue;
+               
+                int2 scaledPos = ((int2)position / mapScale) * mapScale;
                     
-                    if (worldPos.x < 0)
-                    {
-                        scaledPos.x -= mapScale;
-                    }
-                    if (worldPos.y < 0)
-                    {
-                        scaledPos.y -= mapScale;
-                    }
-
-                    int value = 1;
-                    if (Map.ContainsKey(scaledPos))
-                    {
-                        value = Map[scaledPos] + 1;
-                    }
-                    Map[scaledPos] = value;
+                if (position.x < 0)
+                {
+                    scaledPos.x -= mapScale;
                 }
+                if (position.y < 0)
+                {
+                    scaledPos.y -= mapScale;
+                }
+
+                int value = 1;
+                if (Map.ContainsKey(scaledPos))
+                {
+                    value = Map[scaledPos] + 1;
+                }
+                Map[scaledPos] = value;
             }
         }
 
-        [SerializeField] private bool showMap;
-
-        [SerializeField] private int meshBounds;
-        [SerializeField] private GameObject meshObject;
-        private MeshFilter meshFilter;
-        private Material meshMaterial;
+        
         private void UpdateMapMesh()
         {
             bool[,] meshData = new bool[meshBounds * 2, meshBounds * 2];
@@ -334,41 +151,6 @@ namespace Lidar
             mesh.uv3 = uv2.ToArray();
             mesh.uv4 = uv3.ToArray();
             meshFilter.mesh = mesh;
-        }
-
-        [SerializeField] private GameEvent sendEvent;
-        [SerializeField] private StringVariable sendString;
-        public void ReqestData()
-        {
-            sendString.Value = "lidar sumdata 50";
-            sendEvent.Raise();
-        }
-        
-        [SerializeField] private StringVariable reciveString;
-        public void ReciveData()
-        {
-            string str = reciveString.Value;
-            string[] strs = str.Split(' ');
-            
-            if (!strs[0].Equals("lidarmap")) return;
-            
-            if (strs[1].Equals("data"))
-            {
-                int2[] data = new int2[strs.Length -2];
-                for (int i = 2; i < strs.Length; i++)
-                {
-                    string[] args = strs[i].Split(',');
-                    if(args.Length < 2) continue;
-                    
-                    data[i - 2].x = int.Parse(args[0]);
-                    data[i - 2].y = int.Parse(args[1]);
-                }
-                AddLidarData(data);
-            }
-            else if (strs[1].Equals("end"))
-            {
-                PushLidarData();
-            }
         }
     }
 }
