@@ -166,3 +166,23 @@ roboter move 1,1,1
 roboter multi move,1;1;1,move,1;1;1,move,1;1;1
 
 
+# UI Instpirationen:
+
+https://thumbs.dreamstime.com/z/hud-interface-elements-set-circles-loading-frames-web-applications-futuristic-ui-illustration-vector-hud-interface-elements-113938768.jpg
+
+Der Hintergrund von dem:
+https://www.google.com/search?q=ark+ui+barground&tbm=isch&ved=2ahUKEwjxl6jaiu_uAhVCP-wKHSCeB2wQ2-cCegQIABAA&oq=ark+ui+barground&gs_lcp=CgNpbWcQAzoCCAA6BAgAEB46BggAEAUQHjoGCAAQCBAeOgQIABAYUOIVWPMwYNIzaABwAHgAgAGKAYgB0gaSAQM3LjOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=gxUsYLHKL8L-sAegvJ7gBg&bih=938&biw=1920&client=firefox-b-d#imgrc=EQJ38rEdd16hsM
+
+https://images.squarespace-cdn.com/content/v1/51be3e56e4b09edc5f81e74c/1551795556726-AYCIRFK3Z8SAZQ11RRF5/ke17ZwdGBToddI8pDm48kFTEgwhRQcX9r3XtU0e50sUUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKc2PPwcWkLXq-DNe4zpT7he0M_zRUr6912vvtObYWjAW-pUdJURR5nHbHpk7AZw8X9/SciFi_LoaderBlue.gif?format=1500w
+
+Als Untergrund für Hologramm
+https://i.pinimg.com/originals/22/c8/87/22c887ab8cd375d078f0f2178e400374.gif
+
+Für Wechsel zwisch Pages
+https://i.pinimg.com/originals/a8/9a/e3/a89ae31a165ddd140618e2d2709a8c9b.gif
+
+https://i.pinimg.com/originals/f0/2f/5c/f02f5cf8169af4e54da28ed8ce69c96b.jpg
+
+Und wir brauchen paar Consolen Logs
+
+Virleich sollten wir auch eine Version mit weniger Effeckten mach um die Leherer nicht zu überfordern.
