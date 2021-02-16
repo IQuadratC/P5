@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Unity.Jobs;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using Utility;
-using Utility.Events;
 using Utility.Variables;
 
 namespace Lidar

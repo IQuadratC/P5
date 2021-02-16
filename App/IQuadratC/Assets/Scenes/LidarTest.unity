@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {fileID: 11400000, guid: 7e5aa4bea8f3b87418a17182aca80b14, type: 2}
   points: {fileID: 11400000, guid: bfd532456fe1e0949bc56b0898f14dc1, type: 2}
-  mapScale: 10
+  mapScale: 5
   meshBounds: 50
 --- !u!1 &762871141
 GameObject:
@@ -261,6 +261,8 @@ GameObject:
   m_Component:
   - component: {fileID: 762871143}
   - component: {fileID: 762871142}
+  - component: {fileID: 762871145}
+  - component: {fileID: 762871144}
   m_Layer: 0
   m_Name: Lidar
   m_TagString: Untagged
@@ -285,8 +287,9 @@ MonoBehaviour:
   maxDistance: 2
   minLineLength: 10
   bounds: 500
+  newPoints: {fileID: 11400000, guid: 86dd5dadd44f0684eb43331227032722, type: 2}
   simulateData: 1
-  showPoints: 0
+  showPoints: 1
   pointPreFabs:
   - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
   - {fileID: 4200935013765546722, guid: 41808abed9a029c4f98ceb110d573d48, type: 3}
@@ -299,9 +302,9 @@ MonoBehaviour:
   - {fileID: 6001117516407625843, guid: e8240bc07c126b54c81d68ed3d009484, type: 3}
   - {fileID: 2571736551218486326, guid: 42ec137c90e29094db5d6f0e818798d6, type: 3}
   linePreFab: {fileID: 3258567890575832606, guid: e2e64510524397c41951bff4563674d5, type: 3}
-  sendEvent: {fileID: 0}
-  sendString: {fileID: 0}
-  reciveString: {fileID: 0}
+  sendEvent: {fileID: 11400000, guid: dbd08270577b4fd4ea386e843242ee1d, type: 2}
+  sendString: {fileID: 11400000, guid: aaf90992d2b976f4ba373939bbbd10ae, type: 2}
+  reciveString: {fileID: 11400000, guid: 118e3a844776a5f4b8c6eb291fb12180, type: 2}
 --- !u!4 &762871143
 Transform:
   m_ObjectHideFlags: 0
@@ -317,6 +320,62 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &762871144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762871141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 3d1970d169736584281050bb4625d6d3, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 762871142}
+        m_TargetAssemblyTypeName: Lidar.LidarController, Assembly-CSharp
+        m_MethodName: ReqestData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &762871145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762871141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 50fab6b8adcad3c4a838880019abd33b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 762871142}
+        m_TargetAssemblyTypeName: Lidar.LidarController, Assembly-CSharp
+        m_MethodName: ReciveData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &987286814
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,10 +15,12 @@ namespace Lidar
         private List<LidarPoint> lidarPointsProcessing;
         private List<LidarPoint> lidarPoints;
         [SerializeField] private Int2ListVariable points;
-        
+
         [SerializeField] private float maxDistance = 2f;
         [SerializeField] private int minLineLength = 10;
         [SerializeField] private int bounds = 500;
+        
+        [SerializeField] private GameEvent newPoints;
 
         private void Awake()
         {
@@ -159,6 +161,8 @@ namespace Lidar
                         {
                             if(pointPosition.Equals(float2.zero)) continue;
                             points.Value.Add((int2)LidarPoint.ApplyOverlay(pointPosition, lidarPoint.Overlay));
+                            
+                            newPoints.Raise();
                         }
                         
                         if (showPoints)
@@ -205,7 +209,6 @@ namespace Lidar
             counter++;
         }
         
-
         [SerializeField] private GameEvent sendEvent;
         [SerializeField] private StringVariable sendString;
         public void ReqestData()
