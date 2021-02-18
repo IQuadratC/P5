@@ -5,39 +5,47 @@ using Utility.Events;
 
 namespace UI
 {
+    
+    
+    
     public class UI : MonoBehaviour
     {
-        [SerializeField] private GameObject startPage;
-        [SerializeField] private GameObject settingsPage;
-        [SerializeField] private GameObject mainPage;
-
+        [SerializeField] private GameObject[] pages;
+        [SerializeField] private GameObject[] cams;
+        
         [SerializeField] public GameEvent appOpenEvent;
         [SerializeField] public GameEvent appCloseEvent;
-
+        
         private void Start()
         {
+            foreach (GameObject page in pages)
+            {
+                page.SetActive(false);
+            }
+            foreach (GameObject cam in cams)
+            {
+                cam.SetActive(false);
+            }
+            pages[0].SetActive(true);
+            cams[0].SetActive(true);
+            
             appOpenEvent.Raise();
-            SwitchPage(startPage);
         }
 
-        public void SwitchPage(GameObject page)
+        private int currentPage;
+        public void SwitchPage(int page)
         {
-            startPage.SetActive(false);
-            settingsPage.SetActive(false);
-            mainPage.SetActive(false);
+            if(currentPage == page) return;
             
-            if (page == startPage)
-            {
-                startPage.SetActive(true);
-            }
-            else if (page == settingsPage)
-            {
-                settingsPage.SetActive(true);
-            }
-            else if (page == mainPage)
-            {
-                mainPage.SetActive(true);
-            }
+            pages[currentPage].SetActive(false);
+            cams[currentPage].SetActive(false);
+            
+            pages[page].SetActive(true);
+            cams[page].SetActive(true);
+
+            currentPage = page;
+            
+            
         }
 
         public void CloseApp()

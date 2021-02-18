@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class MainPage : MonoBehaviour
     [SerializeField] private GameObject HI;
     [SerializeField] private GameObject AI;
     [SerializeField] private GameObject sideMenue;
-    
+
     private void OnEnable()
     {
         AI.SetActive(false);
