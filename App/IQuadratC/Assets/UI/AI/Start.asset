@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c863543abb594c6cbb099454c3975288, type: 3}
   m_Name: Start
   m_EditorClassIdentifier: 
-  InitialValue:
-    x: 0
+  Value:
+    x: -100
     y: 0
-    z: -90
+    z: 0
+  InitialValue:
+    x: -100
+    y: 0
+    z: 0
