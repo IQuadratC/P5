@@ -1,151 +1,115 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Lidar.PreFabs;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 using Utility.Variables;
 
 namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
+        [SerializeField] private Camera cam;
         [SerializeField] private Vec2Variable position;
         [SerializeField] private Int2ListVariable points;
-        
-        public Dictionary<int2, int> Map { get; private set; }
-        [SerializeField] private int mapScale = 10;
 
-        [SerializeField] private int meshBounds;
-        private MeshFilter meshFilter;
-        private Material meshMaterial;
+        [SerializeField] private MeshFilter backgroundFilter;
+        [SerializeField] private int backgronudSize;
+
+        [SerializeField] private GameObject chunkPreFab;
+        private Dictionary<int2, LidarMapChunk> chunks;
 
         private void Awake()
         {
-            meshFilter = GetComponent<MeshFilter>();
-            meshMaterial = GetComponent<MeshRenderer>().material;
-        }
+            chunks = new Dictionary<int2, LidarMapChunk>();
 
-        private void Update()
-        {
-            meshMaterial.SetVector("Position",
-                new Vector4(position.Value.x, position.Value.y, 0,0));
-                        
-            UpdateMap();
-            UpdateMapMesh();
-        }
-
-        private void UpdateMap()
-        {
-            Map = new Dictionary<int2, int>();
-            foreach (float2 position in points.Value)
+            Vector3[] vertex = 
             {
-                if(position.Equals(int2.zero)) continue;
-               
-                int2 scaledPos = ((int2)position / mapScale) * mapScale;
-                    
-                if (position.x < 0)
+                new Vector3(-backgronudSize, -backgronudSize, 2),
+                new Vector3(backgronudSize, -backgronudSize, 2),
+                new Vector3(-backgronudSize, backgronudSize, 2),
+                new Vector3(backgronudSize, backgronudSize, 2)
+            };
+            int[] indices = {2, 1, 0, 3, 1, 2};
+            
+            Vector2[] uvoff = {Vector2.one, Vector2.one, Vector2.one, Vector2.one};
+            
+            Mesh mesh = new Mesh();
+            mesh.vertices = vertex;
+            mesh.triangles = indices;
+            mesh.uv = uvoff;
+            mesh.uv2 = uvoff;
+            mesh.uv3 = uvoff;
+            mesh.uv4 = uvoff;
+            backgroundFilter.mesh = mesh;
+        }
+
+        private int index;
+        [SerializeField] private int mapScale = 10;
+        [SerializeField] private int chunkBounds = 50;
+        public void UpdateMap()
+        {
+            int newIndex = points.Value.Count;
+
+            List<LidarMapChunk> touchedChunks = new List<LidarMapChunk>();
+            while (index < newIndex)
+            {
+                int2 scaledPos = points.Value[index] / mapScale * mapScale;
+                if (points.Value[index].x < 0)
                 {
                     scaledPos.x -= mapScale;
                 }
-                if (position.y < 0)
+                if (points.Value[index].y < 0)
                 {
                     scaledPos.y -= mapScale;
                 }
-
-                int value = 1;
-                if (Map.ContainsKey(scaledPos))
-                {
-                    value = Map[scaledPos] + 1;
-                }
-                Map[scaledPos] = value;
-            }
-        }
-
-        
-        private void UpdateMapMesh()
-        {
-            bool[,] meshData = new bool[meshBounds * 2, meshBounds * 2];
-            foreach (KeyValuePair<int2,int> keyValuePair in Map)
-            {
-                int x = keyValuePair.Key.x / mapScale;
-                int y = keyValuePair.Key.y / mapScale;
-                if(x < -meshBounds || x >= meshBounds || y < -meshBounds || y >= meshBounds) continue;
                 
-                meshData[x + meshBounds, y + meshBounds] = true;
-            }
-           
-            
-            List<Vector3> vertices = new List<Vector3>();
-            List<int> indices = new List<int>();
-            List<Vector2> uv = new List<Vector2>();
-            List<Vector2> uv1 = new List<Vector2>();
-            List<Vector2> uv2 = new List<Vector2>();
-            List<Vector2> uv3 = new List<Vector2>();
-            
-            Vector2[] uvoff = {Vector2.one, Vector2.one, Vector2.one, Vector2.one,};
-            Vector2[] uvon = {Vector2.zero, Vector2.one, Vector2.zero, Vector2.one,};
-            Vector2[] uv1on = {Vector2.one, Vector2.zero, Vector2.one, Vector2.zero,};
-            Vector2[] uv2on = {Vector2.zero, Vector2.zero, Vector2.one, Vector2.one,};
-            Vector2[] uv3on = {Vector2.one, Vector2.one, Vector2.zero, Vector2.zero,};
-
-            for (int i = 0; i < meshBounds * 2; i++)
-            {
-                for (int j = 0; j < meshBounds * 2; j++)
+                int2 chunkPos = points.Value[index] / (mapScale * chunkBounds) * (mapScale * chunkBounds);
+                if (points.Value[index].x < 0)
                 {
-                    int x = (i - meshBounds) * mapScale;
-                    int y = (j - meshBounds) * mapScale;
-                    int z = meshData[i, j] ? 1 : 0;
-
-                    vertices.Add(new Vector3(x, y, z));
-                    vertices.Add(new Vector3(x + mapScale, y, z));
-                    vertices.Add(new Vector3(x, y + mapScale, z));
-                    vertices.Add(new Vector3(x + mapScale, y + mapScale, z));
-                    
-                    int k = (i * meshBounds * 2 + j) * 4;
-                    indices.AddRange(new []{k + 2, k + 1, k, k + 1, k + 2, k + 3});
-
-                    if (meshData[i, j])
-                    {
-                        uv.AddRange(uvoff);
-                        uv1.AddRange(uvoff);
-                        uv2.AddRange(uvoff);
-                        uv3.AddRange(uvoff);
-                    }
-                    else
-                    {
-                        if (i > 0 && meshData[i - 1, j])
-                        {
-                            uv.AddRange(uvon);
-                        }
-                        else { uv.AddRange(uvoff); }
-                        
-                        if (i < meshBounds * 2 - 1 && meshData[i + 1, j])
-                        {
-                            uv1.AddRange(uv1on);
-                        }
-                        else { uv1.AddRange(uvoff); }
-                        
-                        if (j > 0 && meshData[i, j - 1])
-                        {
-                            uv2.AddRange(uv2on);
-                        }
-                        else { uv2.AddRange(uvoff); }
-                        
-                        if (j < meshBounds * 2 - 1 && meshData[i, j + 1])
-                        {
-                            uv3.AddRange(uv3on);
-                        }
-                        else { uv3.AddRange(uvoff); }
-                    }
-
+                    chunkPos.x -= (mapScale * chunkBounds);
                 }
+                if (points.Value[index].y < 0)
+                {
+                    chunkPos.y -= (mapScale * chunkBounds);
+                }
+
+                LidarMapChunk chunk;
+                if (chunks.ContainsKey(chunkPos))
+                {
+                    chunk = chunks[chunkPos];
+                }
+                else
+                {
+                    chunk = Instantiate(chunkPreFab,
+                        new Vector3(chunkPos.x, chunkPos.y, 0),
+                        Quaternion.identity).GetComponent<LidarMapChunk>();
+                    chunk.ChunkBounds = chunkBounds;
+                    chunk.MapScale = mapScale;
+                    chunk.Points = new bool[chunkBounds, chunkBounds];
+                    
+                    chunk.gameObject.transform.SetParent(gameObject.transform);
+                    chunks[chunkPos] = chunk;
+                }
+
+                chunk.Points[
+                    (scaledPos - chunkPos).x / mapScale, 
+                    (scaledPos - chunkPos).y / mapScale] = true;
+
+                if (!touchedChunks.Contains(chunk))
+                {
+                    touchedChunks.Add(chunk);
+                }
+                
+                index++;
             }
-            Mesh mesh = new Mesh();
-            mesh.vertices = vertices.ToArray();
-            mesh.triangles = indices.ToArray();
-            mesh.uv = uv.ToArray();
-            mesh.uv2 = uv1.ToArray();
-            mesh.uv3 = uv2.ToArray();
-            mesh.uv4 = uv3.ToArray();
-            meshFilter.mesh = mesh;
+
+            foreach (LidarMapChunk chunk in touchedChunks)
+            {
+                chunk.UpdateMesh();
+            }
         }
     }
 }

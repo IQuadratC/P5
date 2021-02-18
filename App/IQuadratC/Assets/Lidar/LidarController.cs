@@ -178,13 +178,12 @@ namespace Lidar
         private int counter;
         [SerializeField] private GameObject[] pointPreFabs;
         [SerializeField] private GameObject linePreFab;
-        [SerializeField] private GameObject pointParent;
         private void ShowPoint(LidarPoint lidarPoint)
         {
             GameObject point = new GameObject("Point " + counter);
             point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
-            point.transform.SetParent(pointParent.transform);
+            point.transform.SetParent(transform);
 
             foreach (float2 lidarPointPosition in lidarPoint.Positions)
             {
