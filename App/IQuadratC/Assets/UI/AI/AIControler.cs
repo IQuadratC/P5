@@ -28,8 +28,10 @@ public class AIControler : MonoBehaviour
     [SerializeField]private bool useRotation;
     private Dictionary<int2, int> obstacles;
     private List<int2> circle;
+    
     private void Awake()
     {
+        obstacles = new Dictionary<int2, int>();
         circle = new List<int2>();
         for (int i = -distanceToWalls; i < distanceToWalls; i++)
         {
@@ -195,6 +197,7 @@ public class AIControler : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
+        
         foreach (int2 point in pathOutput.Value)
         {
             Gizmos.DrawSphere(new Vector3(point.x, point.y), 1);
