@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a106c4dbaf47f0b60d272da14575ec, type: 3}
   m_Name: Path
   m_EditorClassIdentifier: 
-  InitialValue:
+  Value:
   - x: 0
     y: 0
-  - x: 10
+  InitialValue:
+  - x: 0
     y: 0
