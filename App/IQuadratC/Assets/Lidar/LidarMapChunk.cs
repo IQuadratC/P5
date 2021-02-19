@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Unity.Mathematics;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
-namespace Lidar.PreFabs
+namespace Lidar
 {
     public class LidarMapChunk : MonoBehaviour
     {
@@ -12,8 +11,15 @@ namespace Lidar.PreFabs
         public int MapScale { get; set; }
 
         [SerializeField] private MeshFilter meshFilter;
+        [SerializeField] private MeshRenderer meshRenderer;
+        public MeshRenderer MeshRenderer => meshRenderer;
+
+        public void OnNewPoints()
+        {
+            Threader.RunAsync(UpdateMesh);
+        }
         
-        public void UpdateMesh()
+        private void UpdateMesh()
         {
             List<Vector3> vertices = new List<Vector3>();
             List<int> indices = new List<int>();
@@ -80,14 +86,27 @@ namespace Lidar.PreFabs
 
                 }
             }
-            Mesh mesh = new Mesh();
-            mesh.vertices = vertices.ToArray();
-            mesh.triangles = indices.ToArray();
-            mesh.uv = uv.ToArray();
-            mesh.uv2 = uv1.ToArray();
-            mesh.uv3 = uv2.ToArray();
-            mesh.uv4 = uv3.ToArray();
-            meshFilter.mesh = mesh;
+
+            void OnMain()
+            {
+                Mesh mesh = new Mesh();
+                mesh.vertices = vertices.ToArray();
+                mesh.triangles = indices.ToArray();
+                mesh.uv = uv.ToArray();
+                mesh.uv2 = uv1.ToArray();
+                mesh.uv3 = uv2.ToArray();
+                mesh.uv4 = uv3.ToArray();
+                meshFilter.mesh = mesh;
+                
+                NewPointEffect();
+            }
+            Threader.RunOnMainThread(OnMain);
+        }
+
+        private static readonly int flashStartTimeId = Shader.PropertyToID("FlashStartTime");
+        private void NewPointEffect()
+        {
+            meshRenderer.material.SetFloat(flashStartTimeId, Time.time);
         }
     }
 }

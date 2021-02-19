@@ -6,8 +6,6 @@ using Utility.Events;
 namespace UI
 {
     
-    
-    
     public class UI : MonoBehaviour
     {
         [SerializeField] private GameObject[] pages;

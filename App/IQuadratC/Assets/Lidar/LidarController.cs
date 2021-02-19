@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
@@ -22,14 +23,11 @@ namespace Lidar
         
         [SerializeField] private GameEvent newPoints;
 
-        private void Awake()
+        private void OnEnable()
         {
             lidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
-        }
-
-        private void Start()
-        {
+            position.Value = new float2();
             points.Value.Clear();
             if (simulateData)
             {
@@ -161,14 +159,14 @@ namespace Lidar
                         {
                             if(pointPosition.Equals(float2.zero)) continue;
                             points.Value.Add((int2)LidarPoint.ApplyOverlay(pointPosition, lidarPoint.Overlay));
-                            
-                            newPoints.Raise();
                         }
                         
                         if (showPoints)
                         {
                             ShowPoint(lidarPoint);
                         }
+                        
+                        newPoints.Raise();
                         break;
                 }
             }

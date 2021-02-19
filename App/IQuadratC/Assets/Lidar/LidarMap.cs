@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using Lidar.PreFabs;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Serialization;
 using Utility.Variables;
 
 namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
-        [SerializeField] private Camera cam;
         [SerializeField] private Vec2Variable position;
         [SerializeField] private Int2ListVariable points;
 
-        [SerializeField] private MeshFilter backgroundFilter;
+        [SerializeField] private GameObject background;
+        private MeshFilter backgroundFilter;
+        private MeshRenderer backgroundRenderer;
         [SerializeField] private int backgronudSize;
 
         [SerializeField] private GameObject chunkPreFab;
         private Dictionary<int2, LidarMapChunk> chunks;
+        
 
         private void Awake()
         {
-            chunks = new Dictionary<int2, LidarMapChunk>();
-
+            backgroundFilter = background.GetComponent<MeshFilter>();
+            backgroundRenderer = background.GetComponent<MeshRenderer>();
+            
             Vector3[] vertex = 
             {
                 new Vector3(-backgronudSize, -backgronudSize, 2),
@@ -46,9 +45,16 @@ namespace Lidar
             backgroundFilter.mesh = mesh;
         }
 
+        private void OnEnable()
+        {
+            chunks = new Dictionary<int2, LidarMapChunk>();
+            index = 0;
+        }
+
         private int index;
         [SerializeField] private int mapScale = 10;
         [SerializeField] private int chunkBounds = 50;
+
         public void UpdateMap()
         {
             int newIndex = points.Value.Count;
@@ -108,7 +114,35 @@ namespace Lidar
 
             foreach (LidarMapChunk chunk in touchedChunks)
             {
-                chunk.UpdateMesh();
+                chunk.OnNewPoints();
+            }
+        }
+
+        private static readonly int positionId = Shader.PropertyToID("Position");
+        public void UpdatePosition()
+        {
+            foreach (LidarMapChunk chunk in chunks.Values)
+            {
+                chunk.MeshRenderer.material.SetVector(positionId, 
+                    new Vector4(position.Value.x, position.Value.y, 0, 0));
+            }
+        }
+        
+        private static readonly int ringStartTimeId = Shader.PropertyToID("RingStartTime");
+        public void SearchEffect()
+        {
+            foreach (LidarMapChunk chunk in chunks.Values)
+            {
+                chunk.MeshRenderer.material.SetFloat(ringStartTimeId, Time.time);
+            }
+            backgroundRenderer.material.SetFloat(ringStartTimeId, Time.time);
+        }
+
+        private void OnDisable()
+        {
+            foreach (KeyValuePair<int2,LidarMapChunk> lidarMapChunk in chunks)
+            {
+                Destroy(lidarMapChunk.Value.gameObject);
             }
         }
     }
