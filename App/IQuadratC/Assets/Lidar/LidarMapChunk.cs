@@ -50,40 +50,29 @@ namespace Lidar
                     int k = (i * ChunkBounds + j) * 4;
                     indices.AddRange(new []{k + 2, k + 1, k, k + 1, k + 2, k + 3});
 
-                    if (Points[i, j])
+                    if (i == 0 || Points[i,j] && !Points[i - 1, j])
                     {
-                        uv.AddRange(uvoff);
-                        uv1.AddRange(uvoff);
-                        uv2.AddRange(uvoff);
-                        uv3.AddRange(uvoff);
+                        uv.AddRange(uvon);
                     }
-                    else
+                    else { uv.AddRange(uvoff); }
+                        
+                    if (i == ChunkBounds - 1 || Points[i,j] && !Points[i + 1, j])
                     {
-                        if (i > 0 && Points[i - 1, j])
-                        {
-                            uv.AddRange(uvon);
-                        }
-                        else { uv.AddRange(uvoff); }
-                        
-                        if (i < ChunkBounds - 1 && Points[i + 1, j])
-                        {
-                            uv1.AddRange(uv1on);
-                        }
-                        else { uv1.AddRange(uvoff); }
-                        
-                        if (j > 0 && Points[i, j - 1])
-                        {
-                            uv2.AddRange(uv2on);
-                        }
-                        else { uv2.AddRange(uvoff); }
-                        
-                        if (j < ChunkBounds - 1 && Points[i, j + 1])
-                        {
-                            uv3.AddRange(uv3on);
-                        }
-                        else { uv3.AddRange(uvoff); }
+                        uv1.AddRange(uv1on);
                     }
-
+                    else { uv1.AddRange(uvoff); }
+                        
+                    if (j == 0 || Points[i,j] && !Points[i, j - 1])
+                    {
+                        uv2.AddRange(uv2on);
+                    }
+                    else { uv2.AddRange(uvoff); }
+                        
+                    if (j == ChunkBounds - 1 || Points[i,j] && !Points[i, j + 1])
+                    {
+                        uv3.AddRange(uv3on);
+                    }
+                    else { uv3.AddRange(uvoff); }
                 }
             }
 

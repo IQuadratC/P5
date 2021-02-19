@@ -32,8 +32,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - FlashStartTime: 0
-    - RingStartTime: 10
+    - FlashStartTime: -10
+    - RingStartTime: -10
     - Vector1_02c0b4e67fa14611bc914fd6bb3bcff6: -10
     - Vector1_05e5122995d14eaca5fa0446f5f14e2b: 0.1
     - Vector1_1e1d768601de4d3985599b116b441545: 0.125
@@ -45,6 +45,7 @@ Material:
     - Vector1_82795d8db28441fb9729447430539e0c: 10
     - Vector1_83216c7eb64b45b9bf22e4d2430f0205: 1.81
     - Vector1_b7c4a85b61c34767a89a8c75354c7f98: 0.1
+    - Vector1_c02e8fd722d54838b8bdd33da49e84c1: 0.3
     - Vector1_ffcd60ba00ca46d7893c5dd2da923557: 5.52
     - WaveIntensity: 1
     - WaveSize: 1000

@@ -25,17 +25,19 @@ namespace Lidar
 
         private void OnEnable()
         {
+            path = Application.dataPath;
             lidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
             position.Value = new float2();
             points.Value.Clear();
             if (simulateData)
             {
-                SimulateData();
+                Threader.RunAsync(SimulateData);
             }
         }
         
         [SerializeField] private bool simulateData;
+        private string path;
         private string[] csvFiles =
         {
             "Testdata_gedreht_0.csv",
@@ -47,7 +49,7 @@ namespace Lidar
             foreach (string csvFile in csvFiles)
             {
                 string[][] csvData = Csv.ParseCVSFile(
-                    File.ReadAllText(Application.dataPath + "\\" + csvFile));
+                    File.ReadAllText(path + "\\" + csvFile));
                 csvData[csvData.Length - 1] = new []{"0.0","0"};
                 
                 List<int>[] distances = new List<int>[360];
