@@ -7,19 +7,42 @@ namespace Utility
 {
     public class Threader : MonoBehaviour
     {
+        private static bool active = false;
         public static void RunAsync(Action action) {
-            ThreadPool.QueueUserWorkItem(o => action());
+            if (active)
+            {
+                ThreadPool.QueueUserWorkItem(o => action());
+            }
+            else
+            {
+                action();
+            }
+                
         }
  
         public static void RunAsync(Action<object> action, object state) {
-            ThreadPool.QueueUserWorkItem(o => action(o), state);
+            if (active)
+            {
+                ThreadPool.QueueUserWorkItem(o => action(o), state);
+            }
+            else
+            {
+                action(state);
+            }
         }
  
         public static void RunOnMainThread(Action action)
         {
-            lock(_backlog) {
-                _backlog.Add(action);
-                _queued = true;
+            if (active)
+            {
+                lock(_backlog) {
+                    _backlog.Add(action);
+                    _queued = true;
+                }
+            }
+            else
+            {
+                action();
             }
         }
  

@@ -49,6 +49,9 @@ namespace UI
         public void CloseApp()
         {
             appCloseEvent.Raise();
+            
+            if(Application.platform == RuntimePlatform.WebGLPlayer) return;
+            
             Application.Quit();
             
             #if UNITY_EDITOR
@@ -57,6 +60,7 @@ namespace UI
                     EditorApplication.isPlaying = false;
                 }
             #endif
+            
         }
 
     }

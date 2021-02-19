@@ -40,16 +40,16 @@ namespace Lidar
         private string path;
         private string[] csvFiles =
         {
-            "Testdata_gedreht_0.csv",
-            "Testdata_gedreht_1.csv",
-            "Testdata_gedreht_2.csv"
+            "Testdata_gedreht_0",
+            "Testdata_gedreht_1",
+            "Testdata_gedreht_2"
         };
         private void SimulateData()
         {
             foreach (string csvFile in csvFiles)
             {
-                string[][] csvData = Csv.ParseCVSFile(
-                    File.ReadAllText(path + "\\" + csvFile));
+                TextAsset text = Resources.Load(csvFile) as TextAsset;
+                string[][] csvData = Csv.ParseCVSFile(text.text);
                 csvData[csvData.Length - 1] = new []{"0.0","0"};
                 
                 List<int>[] distances = new List<int>[360];
