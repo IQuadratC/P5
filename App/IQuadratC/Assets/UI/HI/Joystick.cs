@@ -30,6 +30,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (pressed)
         {
+            float3 bas = basis.position;
             float3 point;
             if (Input.touches.Length > 0)
             {
@@ -41,15 +42,15 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
             
             // format point to maxDistance 
-            if (math.length(point.xy - ((float3) basis.position).xy) > maxDistance)
+            if (math.length(point.xy - bas.xy) > maxDistance)
             {
-                direction.Value = new float2((math.normalize(point.xy)));
-                stick.position = new float3((math.normalize(point.xy) * maxDistance), basis.position.z);
+                direction.Value = new float2((math.normalize(point.xy - bas.xy)));
+                stick.position = new float3((math.normalize(point.xy - bas.xy) * maxDistance) + bas.xy, bas.z);
             }
             else
             {
-                direction.Value = point.xy / maxDistance;
-                stick.position = new float3(point.x,point.y,basis.position.z);
+                direction.Value = (point.xy - bas.xy) / maxDistance;
+                stick.position = new float3(point.x,point.y,bas.z);
             }
             
         }
