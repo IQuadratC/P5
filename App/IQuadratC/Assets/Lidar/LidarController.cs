@@ -60,7 +60,7 @@ namespace Lidar
                 
                 foreach (var line in csvData)
                 {
-                    int angle = (int) float.Parse(line[0]);
+                    int angle = (int) float.Parse(line[0].Split('.')[0]);
                     int distance = int.Parse(line[1]);
                     
                     if(distance == 0) continue;

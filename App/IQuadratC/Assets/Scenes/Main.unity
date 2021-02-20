@@ -445,7 +445,7 @@ MonoBehaviour:
   stick: {fileID: 1985963426}
   basis: {fileID: 46122231}
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
-  cam: {fileID: 0}
+  cam: {fileID: 1937893170}
 --- !u!114 &46122233
 MonoBehaviour:
   m_ObjectHideFlags: 0
