@@ -14,6 +14,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Transform basis;
     [SerializeField] private Vec2Variable direction;
     [SerializeField] private Camera cam;
+    [SerializeField] private float maxDistance;
     
     private bool pressed;
     
@@ -38,9 +39,19 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 point = cam.ScreenToWorldPoint(Input.mousePosition);
             }
-
-            stick.localPosition = new float3(point.x,point.y,0);
-            direction.Value = new float2(basis.position.x - point.x, basis.position.y - point.y);
+            
+            // format point to maxDistance 
+            if (math.length(point.xy - ((float3) basis.position).xy) > maxDistance)
+            {
+                direction.Value = new float2((math.normalize(point.xy)));
+                stick.position = new float3((math.normalize(point.xy) * maxDistance), basis.position.z);
+            }
+            else
+            {
+                direction.Value = point.xy / maxDistance;
+                stick.position = new float3(point.x,point.y,basis.position.z);
+            }
+            
         }
         else
         {

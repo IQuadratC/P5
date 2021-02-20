@@ -8,7 +8,6 @@ using Utility.Variables;
 
 public class HIControler : MonoBehaviour
 {
-    [SerializeField]private float maxSpeedDirection;
     [SerializeField]private float speedDirection;
     [SerializeField]private float minDirectionChange;
     [SerializeField]private float speedRotation;
@@ -40,18 +39,10 @@ public class HIControler : MonoBehaviour
         }
         else if (math.abs(math.length(frameDirection - lastDirection)) > minDirectionChange && !frameDirection.Equals(float2.zero))
         {
-            if (math.length(frameDirection) < maxSpeedDirection)
-            {
-                sendString.Value = "move " + (math.normalize(frameDirection).x + 1000) + "," + (math.normalize(frameDirection).y * 1000) + "," + (math.length(frameDirection) * speedDirection);
-                sendEvent.Raise();
-                lastDirection = frameDirection;
-            }
-            else
-            {
-                sendString.Value = "move " + (math.normalize(frameDirection).x + 1000) + "," + (math.normalize(frameDirection).y * 1000) + "," + speedDirection;
-                sendEvent.Raise();
-                lastDirection = frameDirection;
-            }
+            sendString.Value = "move " + (int)(math.normalize(frameDirection).x * 1000) + "," + (int)(math.normalize(frameDirection).y * 1000) + "," + ((int)(math.length(frameDirection) * speedDirection)); 
+            sendEvent.Raise(); 
+            lastDirection = frameDirection;
+            
         }
         else if (!lastDirection.Equals(float2.zero) && frameDirection.Equals(float2.zero))
         {
