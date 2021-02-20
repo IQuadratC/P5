@@ -446,6 +446,7 @@ MonoBehaviour:
   basis: {fileID: 46122231}
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
   cam: {fileID: 1937893170}
+  maxDistance: 0
 --- !u!114 &46122233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5060,7 +5061,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1920, y: 100}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 1
@@ -5968,7 +5969,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985886b18adfa5049bbcd3e1ce7e9cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeedDirection: 1
   speedDirection: 10
   minDirectionChange: 0.1
   speedRotation: 10
