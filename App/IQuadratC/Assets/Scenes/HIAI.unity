@@ -261,6 +261,7 @@ MonoBehaviour:
   basis: {fileID: 57302796}
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
   cam: {fileID: 1745672916}
+  maxDistance: 2
 --- !u!1 &294427589
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +928,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985886b18adfa5049bbcd3e1ce7e9cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeedDirection: 1
   speedDirection: 10
   minDirectionChange: 0.1
   speedRotation: 10
@@ -1286,7 +1286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1619758220
 RectTransform:
   m_ObjectHideFlags: 0
