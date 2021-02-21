@@ -7,7 +7,7 @@ namespace Utility
 {
     public class Threader : MonoBehaviour
     {
-        private static bool active = true;
+        private static bool active = false;
         public static void RunAsync(Action action) {
             if (active)
             {
