@@ -10,9 +10,6 @@
             "m_Id": "5ad7cde0de0c453aade855ca5de3566a"
         },
         {
-            "m_Id": "b498289368c7471e9df3d1a69c64303a"
-        },
-        {
             "m_Id": "c02e1e5c20624bb697e74f3c5df5cfb2"
         }
     ],
@@ -1865,30 +1862,6 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
-}
-
-{
-    "m_SGVersion": 3,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
-    "m_ObjectId": "b498289368c7471e9df3d1a69c64303a",
-    "m_Guid": {
-        "m_GuidSerialized": "26bed6d5-3eaa-41a3-96ea-4ea776fe824f"
-    },
-    "m_Name": "GlowColor",
-    "m_DefaultReferenceName": "Color_b498289368c7471e9df3d1a69c64303a",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-    },
-    "m_ColorMode": 0
 }
 
 {

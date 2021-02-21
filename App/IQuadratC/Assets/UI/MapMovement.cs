@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class MapZoom : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+    public class MapMovement : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     {
         [SerializeField] private Camera cam;
         [SerializeField] private float scrollSpeed = 10;
