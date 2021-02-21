@@ -19,12 +19,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_437465eef83f43c5b99af02119e6db31:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: aaa87e757539f9e40912ab2efc6f9270, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_075949da53c1419ea4c8c105a6dbc325_Texture_1:
@@ -52,17 +48,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_0e287e00b0b840558ed0be82258c0f8f: 0.2
+    - Vector1_0e287e00b0b840558ed0be82258c0f8f: 0.1
     - Vector1_3ed3b6436f2c467cbbf07016affdafb7: 50
-    - Vector1_429ff713c5eb4ac497b3734cbfbc8542: 2
-    - Vector1_47426cf060354064ad2bc045dbeebc2c: 0
     - Vector1_7034daca35f74b61a826308080ff616e: 0.005
-    - Vector1_9fd6e7dd0f4c4adfa1f50788915b066e: 0.13
-    - Vector1_e1bb2704cd9f4516aec3f82eb32f44a9: 0.5
+    - Vector1_e1bb2704cd9f4516aec3f82eb32f44a9: 0.8
     m_Colors:
-    - Color_6a317a0c5188420e90352642b11831e6: {r: 0.15094337, g: 0.15094337, b: 0.15094337, a: 0}
-    - Color_726bb61d8bce42789b05b1611bf460c6: {r: 0.695, g: 1, b: 0.96112746, a: 0}
-    - Color_bb1e160b3f734ea59d56c2153941bb7d: {r: 0.4009434, g: 1, b: 0.97147346, a: 0}
-    - Color_bb1f001830f2404faf4e8590f1b70eb1: {r: 0.43942493, g: 0.8165532, b: 0.83699995, a: 0.05882353}
-    - Vector2_673a97b732e74a318796823f13c6f11e: {r: 1, g: 1, b: 0, a: 0}
+    - Color_0474beb2b23243b2b8788e11f8d3b412: {r: 0, g: 0.8773585, b: 0.7688193, a: 0.23921569}
+    - Color_726bb61d8bce42789b05b1611bf460c6: {r: 0.46099997, g: 1, b: 0.93528706, a: 1}
+    - Color_bb1e160b3f734ea59d56c2153941bb7d: {r: 0.3398006, g: 0.8679245, b: 0.79170996, a: 0.019607844}
+    - Color_bb1f001830f2404faf4e8590f1b70eb1: {r: 0.3147909, g: 0.727, b: 0.70344514, a: 0.015686275}
+    - Vector2_673a97b732e74a318796823f13c6f11e: {r: 4, g: 2.25, b: 0, a: 0}
   m_BuildTextureStacks: []
