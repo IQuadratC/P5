@@ -14,34 +14,44 @@ namespace TCP
         
         public GameEvent reciveEvent;
         public StringVariable reciveMessage;
+
+        [SerializeField] private StringVariable ip;
         
         TcpClient client;
         byte[] bytes = new byte[4096];
-        private void Awake()
+        
+        public void OnEnable()
         {
-            client = new TcpClient();
-        }
-
-        public void Start()
-        {
-            // Connect to the remote server. The IP address and port # could be
-            // picked up from a settings file.
-            try
+            void process()
             {
-                client.Connect("95.89.112.92", 54000);
-            }
-            catch (Exception e)
-            {
-                Debug.Log("Failed to Connect to Server!" + e);
-                throw;
+                client = new TcpClient();
+                // Connect to the remote server. The IP address and port # could be
+                // picked up from a settings file.
+                try
+                {
+                    client.Connect(ip.Value, 54000);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Failed to Connect to Server! Error: " + e);
+                    throw;
+                }
+            
+                // Start reading the socket and receive any incoming messages
+                client.GetStream().BeginRead(bytes,
+                    0,
+                    bytes.Length,
+                    MessageReceived,
+                    null);
             }
             
-            // Start reading the socket and receive any incoming messages
-            client.GetStream().BeginRead(bytes,
-                0,
-                bytes.Length,
-                MessageReceived,
-                null);
+            Threader.RunAsync(process);
+            
+        }
+
+        private void OnDisable()
+        {
+            client.Close();
         }
 
         private void MessageReceived(IAsyncResult ar)
@@ -49,6 +59,7 @@ namespace TCP
             if (!ar.IsCompleted) return;
             // End the stream read
             int bytesIn = client.GetStream().EndRead(ar);
+            string str = "";
             if (bytesIn > 0)
             {
                 // Create a string from the received data. For this server 
@@ -56,19 +67,9 @@ namespace TCP
                 // binary data or a JSON object. Payload is your choice.
                 byte[] tmp = new byte[bytesIn];
                 Array.Copy(bytes, 0, tmp, 0, bytesIn);
-                string str = Encoding.ASCII.GetString(tmp);
+                str = Encoding.ASCII.GetString(tmp);
                     
                 reciveMessage.Value = str;
-
-                void Action()
-                {
-                    Debug.Log(str);
-                    reciveEvent.Raise();
-                }
-
-                Threader.RunOnMainThread(Action);
-                
-                
             }
             // Clear the buffer and start listening again
             Array.Clear(bytes, 0, bytes.Length);
@@ -77,10 +78,19 @@ namespace TCP
                 bytes.Length,
                 MessageReceived,
                 null);
+            
+            void Action()
+            {
+                Debug.Log(str);
+                reciveEvent.Raise();
+            }
+            Threader.RunOnMainThread(Action);
+            
         }
 
         public void Send()
         {
+            Debug.Log(sendMessage.Value);
             // Encode the message and send it out to the server.
             byte[] msg = Encoding.UTF8.GetBytes(sendMessage.Value);
             client.GetStream().Write(msg, 0, msg.Length);

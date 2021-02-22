@@ -152,7 +152,7 @@ App Logik:
 
 TCP einheiten:
 - Länge cm
-- Geschwindikeit cm/ms
+- Geschwindikeit Prozent
 - Zeit ms
 - Datentypen int
 

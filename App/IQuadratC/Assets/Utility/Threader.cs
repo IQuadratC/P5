@@ -33,16 +33,9 @@ namespace Utility
  
         public static void RunOnMainThread(Action action)
         {
-            if (active)
-            {
-                lock(_backlog) {
-                    _backlog.Add(action);
-                    _queued = true;
-                }
-            }
-            else
-            {
-                action();
+            lock(_backlog) {
+                _backlog.Add(action);
+                _queued = true;
             }
         }
  

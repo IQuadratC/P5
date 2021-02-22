@@ -52,7 +52,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 direction.Value = (point.xy - bas.xy) / maxDistance;
                 stick.position = new float3(point.x,point.y,bas.z);
             }
-            
         }
         else
         {

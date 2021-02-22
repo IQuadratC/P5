@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using Utility;
@@ -32,7 +30,7 @@ namespace Lidar
             points.Value.Clear();
             if (simulateData)
             {
-                Threader.RunAsync(SimulateData);
+                SimulateData();
             }
         }
         
@@ -49,48 +47,53 @@ namespace Lidar
             foreach (string csvFile in csvFiles)
             {
                 TextAsset text = Resources.Load(csvFile) as TextAsset;
-                string[][] csvData = Csv.ParseCVSFile(text.text);
-                csvData[csvData.Length - 1] = new []{"0.0","0"};
-                
-                List<int>[] distances = new List<int>[360];
-                for (int i = 0; i < distances.Length; i++)
+
+                void process()
                 {
-                    distances[i] = new List<int>();
-                }
+                    string[][] csvData = Csv.ParseCVSFile(text.text);
+                    csvData[csvData.Length - 1] = new []{"0.0","0"};
                 
-                foreach (var line in csvData)
-                {
-                    int angle = (int) float.Parse(line[0].Split('.')[0]);
-                    int distance = int.Parse(line[1]);
-                    
-                    if(distance == 0) continue;
-                    
-                    distances[angle].Add(distance);
-                }
+                    List<int>[] distances = new List<int>[360];
+                    for (int i = 0; i < distances.Length; i++)
+                    {
+                        distances[i] = new List<int>();
+                    }
                 
-                List<int2> data = new List<int2>();
-                for (int i = 0; i < distances.Length; i++)
-                {
-                    int sum = 0;
-                    foreach (var distance in distances[i])
+                    foreach (var line in csvData)
                     {
-                        sum += distance;
-                    }
-                    if (sum > 0)
-                    {
-                        sum /= distances[i].Count;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                    if(sum == 0) continue;
+                        int angle = (int) float.Parse(line[0].Split('.')[0]);
+                        int distance = int.Parse(line[1]);
                     
-                    data.Add(new int2(i, sum));
-                }
+                        if(distance == 0) continue;
+                    
+                        distances[angle].Add(distance);
+                    }
                 
-                AddLidarData(data.ToArray());
-                PushLidarData();
+                    List<int2> data = new List<int2>();
+                    for (int i = 0; i < distances.Length; i++)
+                    {
+                        int sum = 0;
+                        foreach (var distance in distances[i])
+                        {
+                            sum += distance;
+                        }
+                        if (sum > 0)
+                        {
+                            sum /= distances[i].Count;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        if(sum == 0) continue;
+                    
+                        data.Add(new int2(i, sum));
+                    }
+                
+                    AddLidarData(data.ToArray());
+                    PushLidarData();
+                }
+                Threader.RunAsync(process);
             }
         }
 
@@ -228,14 +231,15 @@ namespace Lidar
             
             if (strs[1].Equals("data"))
             {
-                int2[] data = new int2[strs.Length -2];
-                for (int i = 2; i < strs.Length; i++)
+                string[] strs2 = strs[2].Split(',');
+                int2[] data = new int2[strs2.Length];
+                for (int i = 0; i < strs2.Length; i++)
                 {
-                    string[] args = strs[i].Split(',');
+                    string[] args = strs2[i].Split(';');
                     if(args.Length < 2) continue;
                     
-                    data[i - 2].x = int.Parse(args[0]);
-                    data[i - 2].y = int.Parse(args[1]);
+                    data[i].x = int.Parse(args[0]);
+                    data[i].y = int.Parse(args[1]);
                 }
                 AddLidarData(data);
             }
