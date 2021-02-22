@@ -186,3 +186,15 @@ https://i.pinimg.com/originals/f0/2f/5c/f02f5cf8169af4e54da28ed8ce69c96b.jpg
 Und wir brauchen paar Consolen Logs
 
 Virleich sollten wir auch eine Version mit weniger Effeckten mach um die Leherer nicht zu überfordern.
+
+# Colors
+
+Blau
+#0F4655
+#156075
+#229DBF
+#A0DDEE
+
+Rot
+#C81829
+#DB5461
