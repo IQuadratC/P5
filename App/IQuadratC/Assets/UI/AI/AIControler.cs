@@ -190,14 +190,25 @@ public class AIControler : MonoBehaviour
         {
             foreach (int2 p in circle)
             {
-                obstacles.Add(point + p, 1);
+                if (!obstacles.ContainsKey(point + p))
+                {
+                    obstacles.Add(point + p, 1);
+                }
             }
         }
 
     }
     private void OnDrawGizmos()
     {
-        
+        if (obstacles != null)
+        {
+            Gizmos.color = Color.red;
+            foreach (var point in obstacles)
+            {
+                Gizmos.DrawCube(new Vector3(point.Key.x, point.Key.y), new Vector3(1,1,1));
+            }
+        }
+        Gizmos.color = Color.green;
         foreach (int2 point in pathOutput.Value)
         {
             Gizmos.DrawSphere(new Vector3(point.x, point.y), 1);

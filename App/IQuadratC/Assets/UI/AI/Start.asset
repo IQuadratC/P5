@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Start
   m_EditorClassIdentifier: 
   Value:
-    x: -100
-    y: 0
+    x: -120
+    y: -110
     z: 0
   InitialValue:
-    x: -100
-    y: 0
+    x: -120
+    y: -110
     z: 0
