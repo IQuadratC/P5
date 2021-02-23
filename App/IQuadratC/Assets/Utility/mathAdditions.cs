@@ -6,13 +6,20 @@ namespace Utility
 {
     public static class mathAdditions
     {
-        public static float GetDistancetoLine(float2 line0Pos, float2 line1Pos, float2 testPos)
+        public static float GetDistancetoLine(float3 center, float3 vector, float3 testPos)
         {
-            float3 b = new float3(line0Pos - line1Pos, 0);
-            return math.length(math.cross(new float3(testPos - line0Pos, 0), b)) / math.length(b);
+            return math.length(math.cross(new float3(testPos - center), vector)) / math.length(vector);
         }
         
-        public static float4 FindLinearLeastSquaresFit(float2[] points)
+        public static float GetDistancetoLine(float2 center, float2 vector, float2 testPos)
+        {
+            return GetDistancetoLine(
+                new float3(center, 0),
+                new float3(vector, 0),
+                new float3(testPos, 0));
+        }
+        
+        public static float2 FindLinearLeastSquaresFit(float2[] points)
         {
             double s1 = points.Length;
             double sx = 0;
@@ -31,28 +38,12 @@ namespace Utility
             double m = (sxy * s1 - sx * sy) / (sxx * s1 - sx * sx);
             double b = (sxy * sx - sy * sxx) / (sx * sx - s1 * sxx);
             
-            return new float4(0, (float)b,1,(float)m);
+            return new float2((float)m, (float)b);
         }
         
-        public static float4 FindLinearLeastSquaresFit(List<float2> points)
+        public static float2 FindLinearLeastSquaresFit(List<float2> points)
         {
-            double s1 = points.Count;
-            double sx = 0;
-            double sy = 0;
-            double sxx = 0;
-            double sxy = 0;
-            foreach (float2 pt in points)
-            {
-                sx += pt.x;
-                sy += pt.y;
-                sxx += pt.x * pt.x;
-                sxy += pt.x * pt.y;
-            }
-            
-            double m = (sxy * s1 - sx * sy) / (sxx * s1 - sx * sx);
-            double b = (sxy * sx - sy * sxx) / (sx * sx - s1 * sxx);
-            
-            return new float4(0, (float)b,1,(float)m);
+            return FindLinearLeastSquaresFit(points.ToArray());
         }
         
         public static float2 FindIntersection(float2 p1, float2 p2, float2 p3, float2 p4)
@@ -100,10 +91,10 @@ namespace Utility
             return new float3(p5.x, p5.y, angle);
         }
 
-        public static float2 FindClosestPointInArray(float2 point, float2[] refference, bool itself)
+        public static float3 FindClosestPointInArray(float2 point, float2[] refference, bool itself)
         {
             float distance = float.MaxValue;
-            float2 bestPoint = float2.zero;
+            float3 bestPoint = float3.zero;
             foreach (float2 testPoint in refference)
             {
                 if(!itself && point.Equals(testPoint)) continue;
@@ -112,9 +103,57 @@ namespace Utility
 
                 if (newDistance >= distance) continue;
                 distance = newDistance;
-                bestPoint = testPoint;
+                bestPoint.xy = testPoint;
             }
+
+            bestPoint.z = distance;
             return bestPoint;
+        }
+
+        public static float3 PointBasedMatching(List<float4> neigborList)
+        {
+            float x_mean = 0;
+            float y_mean = 0;
+            float xp_mean = 0;
+            float yp_mean = 0;
+            int n = neigborList.Count;
+
+            if (n == 0)
+            {
+                return float3.zero;
+            }
+
+            foreach (float4 pair in neigborList)
+            {
+                x_mean += pair.x;
+                y_mean += pair.y;
+                xp_mean += pair.z;
+                yp_mean += pair.w;
+            }
+
+            x_mean /= n;
+            y_mean /= n;
+            xp_mean /= n;
+            yp_mean /= n;
+
+            float s_x_xp = 0;
+            float s_y_yp = 0;
+            float s_x_yp = 0;
+            float s_y_xp = 0;
+
+            foreach (float4 pair in neigborList)
+            {
+                s_x_xp += (pair.x - x_mean) * (pair.z - xp_mean);
+                s_y_yp += (pair.y - y_mean) * (pair.w - yp_mean);
+                s_x_yp += (pair.x - x_mean) * (pair.w - yp_mean);
+                s_y_xp += (pair.y - y_mean) * (pair.z - xp_mean);
+            }
+
+            float rot_angle = math.atan2(s_x_yp - s_y_xp, s_x_xp + s_y_yp);
+            float translation_x = xp_mean - (x_mean * math.cos(rot_angle) - y_mean * math.sin(rot_angle));
+            float translation_y = yp_mean - (x_mean * math.sin(rot_angle) + y_mean * math.cos(rot_angle));
+
+            return new float3(translation_x, translation_y, math.degrees(rot_angle));
         }
     }
 }

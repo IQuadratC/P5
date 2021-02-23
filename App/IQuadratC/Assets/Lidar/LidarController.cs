@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utility;
 using Utility.Events;
 using Utility.Variables;
@@ -15,10 +16,9 @@ namespace Lidar
         private List<LidarPoint> lidarPoints;
         [SerializeField] private Int2ListVariable points;
 
-        [SerializeField] private float maxDistance = 2f;
-        [SerializeField] private int icpRounds = 10;
-
         [SerializeField] private GameEvent newPoints;
+
+        [SerializeField] private LidarSettings lidarSettings;
 
         private void OnEnable()
         {
@@ -39,7 +39,9 @@ namespace Lidar
         {
             "Data",
             "Data_Move_1",
-            "Data_Move_2"
+            "Data_Move_Rotate_1",
+            "Data_Rotate_1"
+            
         };
         
         private void SimulateData()
@@ -65,7 +67,7 @@ namespace Lidar
             if (!isAdding)
             {
                 isAdding = true;
-                lidarPoint = new LidarPoint(maxDistance, icpRounds);
+                lidarPoint = new LidarPoint(lidarSettings);
                 lidarPointsProcessing.Add(lidarPoint);
             }
             else
@@ -110,6 +112,10 @@ namespace Lidar
                         }
                         
                         break;
+                    
+                    case LidarPointState.processingCalculation:
+                        //lidarPoint.ParseOverlay();
+                        break;
 
                     case LidarPointState.finished:
                         lidarPointsProcessing.Remove(lidarPoint);
@@ -117,7 +123,7 @@ namespace Lidar
                         
                         position.Value = new float2(lidarPoint.Overlay.xy);
 
-                        foreach (float2 pointPosition in lidarPoint.Positions)
+                        foreach (float2 pointPosition in lidarPoint.Points)
                         {
                             if(pointPosition.Equals(float2.zero)) continue;
                             points.Value.Add((int2)LidarPoint.ApplyOverlay(pointPosition, lidarPoint.Overlay));
@@ -131,43 +137,112 @@ namespace Lidar
         }
 
         [SerializeField] private bool showPoints;
-        [SerializeField] private bool showFiltertPoints;
-        
+        [SerializeField] private bool showLines;
+        [SerializeField] private bool showInteresctions;
+        [SerializeField] private bool showConers;
+
         private int pointIdcounter;
         [SerializeField] private GameObject[] pointPreFabs;
         [SerializeField] private GameObject linePreFab;
-        [SerializeField] private GameObject pointPartent;
+        [SerializeField] private GameObject showPartent;
         private void ShowPoint(LidarPoint lidarPoint)
         {
-            GameObject point = new GameObject("Point " + pointIdcounter);
-            point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
-            point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
-            point.transform.SetParent(pointPartent.transform);
-
             if (showPoints)
             {
-                foreach (float2 lidarPointPosition in lidarPoint.Positions)
+                GameObject pointO = new GameObject("Point " + pointIdcounter);
+                pointO.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
+                pointO.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
+                pointO.transform.SetParent(showPartent.transform);
+                
+                foreach (float2 point in lidarPoint.Points)
                 {
                     GameObject o = Instantiate(
                         pointPreFabs[pointIdcounter],
-                        new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), 
+                        new Vector3(point.x, point.y, 0), 
                         Quaternion.identity);
-                    o.transform.SetParent(point.transform, false);
+                    o.transform.SetParent(pointO.transform, false);
                 }
             }
             
-            if (showFiltertPoints)
+            if (showLines)
             {
-                foreach (int id in lidarPoint.FiltertPositionsIds)
+                GameObject linesO = new GameObject("Lines " + pointIdcounter);
+                linesO.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
+                linesO.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
+                linesO.transform.SetParent(showPartent.transform);
+
+                int id = 0;
+                foreach (LidarLine line in lidarPoint.Lines)
                 {
-                    GameObject o = Instantiate(
-                        pointPreFabs[pointIdcounter],
-                        new Vector3(lidarPoint.Positions[id].x, lidarPoint.Positions[id].y, 0), 
-                        Quaternion.identity);
-                    o.transform.SetParent(point.transform, false);
+                    GameObject lineO = new GameObject("Line " + id);
+                    lineO.transform.SetParent(linesO.transform, false);
+                    foreach (float2 point in line.points)
+                    {
+                        GameObject o = Instantiate(
+                            pointPreFabs[pointIdcounter],
+                            new Vector3(point.x, point.y, 0), 
+                            Quaternion.identity);
+                        o.transform.SetParent(lineO.transform, false);
+                    }
+
+                    id++;
                 }
             }
             
+            if (showInteresctions)
+            {
+                GameObject intersctionO = new GameObject("Intersctions " + pointIdcounter);
+                intersctionO.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
+                intersctionO.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
+                intersctionO.transform.SetParent(showPartent.transform);
+                
+                foreach (float2 intersection in lidarPoint.Intersections)
+                {
+                    GameObject o = Instantiate(
+                        pointPreFabs[pointIdcounter],
+                        new Vector3(intersection.x, intersection.y, 0), 
+                        Quaternion.identity);
+                    o.transform.SetParent(intersctionO.transform, false);
+                }
+            }
+            
+            if (showConers)
+            {
+                GameObject cornersO = new GameObject("Corners " + pointIdcounter);
+                cornersO.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
+                cornersO.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
+                cornersO.transform.SetParent(showPartent.transform);
+
+                int id = 0;
+                foreach (LidarCorner corner in lidarPoint.Corners)
+                {
+                    GameObject cornerO = new GameObject("Corner " + id);
+                    cornerO.transform.SetParent(cornersO.transform, false);
+                    
+                    foreach (float2 point in corner.line1.points)
+                    {
+                        GameObject o = Instantiate(
+                            pointPreFabs[pointIdcounter],
+                            new Vector3(point.x, point.y, 0), 
+                            Quaternion.identity);
+                        o.transform.SetParent(cornerO.transform, false);
+                    }
+                    
+                    foreach (float2 point in corner.line2.points)
+                    {
+                        GameObject o = Instantiate(
+                            pointPreFabs[pointIdcounter],
+                            new Vector3(point.x, point.y, 0), 
+                            Quaternion.identity);
+                        o.transform.SetParent(cornerO.transform, false);
+                    }
+
+                    id++;
+                }
+            }
+            
+            
+
             pointIdcounter++;
         }
         
