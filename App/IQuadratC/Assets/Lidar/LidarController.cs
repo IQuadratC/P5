@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,6 +28,8 @@ namespace Lidar
             lidarPointsProcessing = new List<LidarPoint>();
             position.Value = new float2();
             points.Value.Clear();
+            pointIdcounter = 0;
+            
             if (simulateData)
             {
                 SimulateData();
@@ -41,7 +44,6 @@ namespace Lidar
             "Data_Move_1",
             "Data_Move_Rotate_1",
             "Data_Rotate_1"
-            
         };
         
         private void SimulateData()
@@ -118,7 +120,10 @@ namespace Lidar
                     
                     case LidarPointState.dropped:
                         lidarPointsProcessing.Remove(lidarPoint);
-                        Debug.Log("LidarPoint Dropped");
+
+                        logString.Value = "Lidarpunkt hat zu wengig Ecken";
+                        logEvent.Raise();
+                        
                         break;
 
                     case LidarPointState.finished:
@@ -134,6 +139,10 @@ namespace Lidar
                         
                         ShowPoint(lidarPoint);
                         newPoints.Raise();
+                        
+                        logString.Value = "Lidarpunkt eingebunden";
+                        logEvent.Raise();
+                        
                         break;
                 }
             }
@@ -248,11 +257,14 @@ namespace Lidar
 
             pointIdcounter++;
         }
-        
+
         [SerializeField] private GameEvent sendEvent;
         [SerializeField] private StringVariable sendString;
         public void ReqestData()
         {
+            logString.Value = "Daten werden angefragt.";
+            logEvent.Raise();
+            
             sendString.Value = "lidar sumdata 50";
             sendEvent.Raise();
         }
@@ -267,6 +279,9 @@ namespace Lidar
             
             if (strs[1].Equals("data"))
             {
+                logString.Value = "Teildaten entfangen";
+                logEvent.Raise();
+                
                 string[] strs2 = strs[2].Split(',');
                 int2[] data = new int2[strs2.Length];
                 for (int i = 0; i < strs2.Length; i++)
@@ -281,8 +296,23 @@ namespace Lidar
             }
             else if (strs[1].Equals("end"))
             {
+                logString.Value = "Daten entfangen";
+                logEvent.Raise();
+                
                 PushLidarData();
             }
         }
+
+        private void OnDisable()
+        {
+            int childs = showPartent.transform.childCount;
+            for (int i = childs - 1; i >= 0; i--)
+            {
+                Destroy(showPartent.transform.GetChild(i).gameObject);
+            }
+        }
+
+        [SerializeField] private GameEvent logEvent;
+        [SerializeField] private StringVariable logString;
     }
 }
