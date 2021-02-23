@@ -36,64 +36,25 @@ namespace Lidar
         
         [SerializeField] private bool simulateData;
         private string path;
-        private string[] csvFiles =
+        private string[] files =
         {
-            "Testdata_gedreht_0",
-            "Testdata_gedreht_1",
-            "Testdata_gedreht_2"
+            "Data",
+            "Data_Move_1"
         };
+        
         private void SimulateData()
         {
-            foreach (string csvFile in csvFiles)
+            foreach (string file in files)
             {
-                TextAsset text = Resources.Load(csvFile) as TextAsset;
+                TextAsset text = Resources.Load(file) as TextAsset;
 
-                void process()
+                string[] commands = text.text.Split('\n');
+
+                foreach (string command in commands)
                 {
-                    string[][] csvData = Csv.ParseCVSFile(text.text);
-                    csvData[csvData.Length - 1] = new []{"0.0","0"};
-                
-                    List<int>[] distances = new List<int>[360];
-                    for (int i = 0; i < distances.Length; i++)
-                    {
-                        distances[i] = new List<int>();
-                    }
-                
-                    foreach (var line in csvData)
-                    {
-                        int angle = (int) float.Parse(line[0].Split('.')[0]);
-                        int distance = int.Parse(line[1]);
-                    
-                        if(distance == 0) continue;
-                    
-                        distances[angle].Add(distance);
-                    }
-                
-                    List<int2> data = new List<int2>();
-                    for (int i = 0; i < distances.Length; i++)
-                    {
-                        int sum = 0;
-                        foreach (var distance in distances[i])
-                        {
-                            sum += distance;
-                        }
-                        if (sum > 0)
-                        {
-                            sum /= distances[i].Count;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                        if(sum == 0) continue;
-                    
-                        data.Add(new int2(i, sum));
-                    }
-                
-                    AddLidarData(data.ToArray());
-                    PushLidarData();
+                    reciveString.Value = command;
+                    ReciveData();
                 }
-                Threader.RunAsync(process);
             }
         }
 
@@ -149,11 +110,7 @@ namespace Lidar
                         }
                         
                         break;
-                    
-                    case LidarPointState.performingCalculation:
-                        lidarPoint.ParseOverlay();
-                        break;
-                    
+
                     case LidarPointState.finished:
                         lidarPointsProcessing.Remove(lidarPoint);
                         lidarPoints.Add(lidarPoint);
@@ -194,22 +151,7 @@ namespace Lidar
                     new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
                 o.transform.SetParent(point.transform, false);
             }
-
-            foreach (float2[] line in lidarPoint.Lines)
-            {
-                foreach (float2 float2 in line)
-                {
-                    GameObject o = Instantiate(linePreFab, new Vector3(float2.x, float2.y, 0), Quaternion.identity);
-                    o.transform.SetParent(point.transform, false);
-                }
-            }
             
-            foreach (Vector2 intersectionPoint in lidarPoint.Intersections)
-            {
-                GameObject o = Instantiate(linePreFab, intersectionPoint, Quaternion.identity);
-                o.transform.SetParent(point.transform, false);
-            }
-
             counter++;
         }
         

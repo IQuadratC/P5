@@ -22,13 +22,13 @@ namespace Utility.PointMatcher
             reference.points = new DataPoint[points2.Length];
             for (int i = 0; i < points2.Length; i++)
             {
-                reading.points[i] = new DataPoint();
-                reading.points[i].point = new Vector3(points2[i].x, points2[i].y, points2[i].z);
+                reference.points[i] = new DataPoint();
+                reference.points[i].point = new Vector3(points2[i].x, points2[i].y, points2[i].z);
             }
             
             EuclideanTransform initialTransform = new EuclideanTransform(); // your initial guess at the transform from reading to reference
             initialTransform.translation = new Vector3(gussPosition.x, gussPosition.y, gussPosition.z);
-            initialTransform.rotation = new Quaternion(gussRotation.value.x, gussRotation.value.y, gussRotation.value.z, gussRotation.value.w);
+            initialTransform.rotation = Quaternion.Identity;
 
             ICP icp = new ICP();
             icp.ReadingDataPointsFilters = new RandomSamplingDataPointsFilter(prob: 0.1f);
@@ -40,6 +40,23 @@ namespace Utility.PointMatcher
             
             outRotation = new quaternion();
             outRotation.value = new float4(transform.rotation.X, transform.rotation.Y, transform.rotation.Z, transform.rotation.W);
+        }
+        
+        public static void perform(float2[] points1, float2[] points2, float3 gussPosition, quaternion gussRotation, out float3 outPosition, out quaternion outRotation)
+        {    
+            float3[] points1new = new float3[points1.Length];
+            for (int i = 0; i < points1.Length; i++)
+            {
+                points1new[i] = new float3(points1[i].xy, 0);
+            }
+            
+            float3[] points2new = new float3[points2.Length];
+            for (int i = 0; i < points2.Length; i++)
+            {
+                points2new[i] = new float3(points2[i].xy, 0);
+            }
+            
+            perform(points1new, points2new, gussPosition, gussRotation, out outPosition, out outRotation);
         }
     }
 }

@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 521503742}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
   m_Name: 
@@ -1101,7 +1101,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 521503742}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c81bf0186d7c9a4cbed0a22adafd141, type: 3}
   m_Name: 
@@ -3454,7 +3454,8 @@ MonoBehaviour:
   minLineLength: 10
   bounds: 500
   newPoints: {fileID: 11400000, guid: 86dd5dadd44f0684eb43331227032722, type: 2}
-  simulateData: 0
+  simulateData: 1
+  reciveEvent: {fileID: 11400000, guid: 50fab6b8adcad3c4a838880019abd33b, type: 2}
   showPoints: 1
   pointPreFabs:
   - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
