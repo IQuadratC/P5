@@ -14,13 +14,11 @@ public class AIControler : MonoBehaviour
 {
     [SerializeField]private GameEvent sendEvent;
     [SerializeField]private StringVariable sendString;
-    [FormerlySerializedAs("position")]
     [SerializeField]private Vec3Variable positionInput;
-    [FormerlySerializedAs("goals")]
     [SerializeField]private Int2ListVariable goalsInput;
-    [FormerlySerializedAs("obstaclesPoints")]
     [SerializeField]private Int2ListVariable obstaclesPointsInput;
     [SerializeField]private Int2ListVariable pathOutput;
+    [SerializeField]private FloatVariable radius;
     
     // don't change these after start
     [SerializeField]private int distanceToWalls; 
@@ -45,10 +43,28 @@ public class AIControler : MonoBehaviour
         }
     }
 
+    public void SetCircleGoals()
+    {
+        List<int2> goals = new List<int2>(); 
+        float2 pos = positionInput.Value.xy;
+        float2 goal = goalsInput.Value[0];
+        float2 vec = pos - goal;
+        float r = math.distance(goal, pos);
+        for (int i = 0; i < 8 * r; i++)
+        {
+            float2 newPos = mathAdditions.Rotate(vec, 360 * i / r);
+            if (!goals.LastOrDefault().Equals((int2)newPos))
+            {
+                goals.Add((int2)newPos);
+            }
+        }
+
+        pathOutput.Value = goals;
+    }
+    
     /**
      * Starts processing thread
      */
-    
     public void StartPath()
     {
         pos = positionInput.Value;

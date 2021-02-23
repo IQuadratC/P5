@@ -11,14 +11,14 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     
     [SerializeField] private Transform stick;
-    [SerializeField] private Transform basis;
     [SerializeField] private Vec2Variable direction;
-    [SerializeField] private Camera cam;
     [SerializeField] private float maxDistance;
     
     private bool pressed;
+    private float2 lastPos;
     
     public void OnPointerDown(PointerEventData eventData){
+        lastPos = float2.zero;
         pressed = true;
     }
      
@@ -30,33 +30,40 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (pressed)
         {
-            float3 bas = basis.position;
-            float3 point;
-            if (Input.touches.Length > 0)
+            float2 change;
+            float2 newPos;
+            if (Input.touchCount > 0)
             {
-                point = cam.ScreenToWorldPoint(Input.GetTouch(0).position);
+                change = Input.touches[0].deltaPosition;
+                newPos = new float2(stick.localPosition.x + change.x, stick.localPosition.y + change.y);;
+
             }
             else
             {
-                point = cam.ScreenToWorldPoint(Input.mousePosition);
+                float2 pos = new float2(Input.mousePosition.x, Input.mousePosition.y);
+                change = (lastPos - pos);;
+                lastPos = pos;
+                newPos = new float2(stick.localPosition.x - change.x, stick.localPosition.y - change.y);;
+
             }
-            
+
+
             // format point to maxDistance 
-            if (math.length(point.xy - bas.xy) > maxDistance)
+            if (math.length(newPos.xy) > maxDistance)
             {
-                direction.Value = new float2((math.normalize(point.xy - bas.xy)));
-                stick.position = new float3((math.normalize(point.xy - bas.xy) * maxDistance) + bas.xy, bas.z);
+                direction.Value = math.normalize(newPos);
+                stick.localPosition = new float3(math.normalize(newPos), 0) * maxDistance;
             }
             else
             {
-                direction.Value = (point.xy - bas.xy) / maxDistance;
-                stick.position = new float3(point.x,point.y,bas.z);
+                direction.Value = (newPos) / maxDistance;
+                stick.localPosition = new float3(newPos, 0);
             }
         }
         else
         {
             direction.Value = float2.zero;
-            stick.localPosition = float3.zero;
+            stick.localPosition = Vector3.zero;
         }
     }
 }
