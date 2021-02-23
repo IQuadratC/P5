@@ -16,9 +16,8 @@ namespace Lidar
         [SerializeField] private Int2ListVariable points;
 
         [SerializeField] private float maxDistance = 2f;
-        [SerializeField] private int minLineLength = 10;
-        [SerializeField] private int bounds = 500;
-        
+        [SerializeField] private int icpRounds = 10;
+
         [SerializeField] private GameEvent newPoints;
 
         private void OnEnable()
@@ -39,7 +38,8 @@ namespace Lidar
         private string[] files =
         {
             "Data",
-            "Data_Move_1"
+            "Data_Move_1",
+            "Data_Move_2"
         };
         
         private void SimulateData()
@@ -65,7 +65,7 @@ namespace Lidar
             if (!isAdding)
             {
                 isAdding = true;
-                lidarPoint = new LidarPoint(maxDistance, minLineLength, bounds);
+                lidarPoint = new LidarPoint(maxDistance, icpRounds);
                 lidarPointsProcessing.Add(lidarPoint);
             }
             else
@@ -123,11 +123,7 @@ namespace Lidar
                             points.Value.Add((int2)LidarPoint.ApplyOverlay(pointPosition, lidarPoint.Overlay));
                         }
                         
-                        if (showPoints)
-                        {
-                            ShowPoint(lidarPoint);
-                        }
-                        
+                        ShowPoint(lidarPoint);
                         newPoints.Raise();
                         break;
                 }
@@ -135,24 +131,44 @@ namespace Lidar
         }
 
         [SerializeField] private bool showPoints;
-        private int counter;
+        [SerializeField] private bool showFiltertPoints;
+        
+        private int pointIdcounter;
         [SerializeField] private GameObject[] pointPreFabs;
         [SerializeField] private GameObject linePreFab;
+        [SerializeField] private GameObject pointPartent;
         private void ShowPoint(LidarPoint lidarPoint)
         {
-            GameObject point = new GameObject("Point " + counter);
+            GameObject point = new GameObject("Point " + pointIdcounter);
             point.transform.position = new Vector3(lidarPoint.Overlay.x, lidarPoint.Overlay.y, 0);
             point.transform.eulerAngles = new Vector3(0,0,lidarPoint.Overlay.z);
-            point.transform.SetParent(transform);
+            point.transform.SetParent(pointPartent.transform);
 
-            foreach (float2 lidarPointPosition in lidarPoint.Positions)
+            if (showPoints)
             {
-                GameObject o = Instantiate(pointPreFabs[counter],
-                    new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), Quaternion.identity);
-                o.transform.SetParent(point.transform, false);
+                foreach (float2 lidarPointPosition in lidarPoint.Positions)
+                {
+                    GameObject o = Instantiate(
+                        pointPreFabs[pointIdcounter],
+                        new Vector3(lidarPointPosition.x, lidarPointPosition.y, 0), 
+                        Quaternion.identity);
+                    o.transform.SetParent(point.transform, false);
+                }
             }
             
-            counter++;
+            if (showFiltertPoints)
+            {
+                foreach (int id in lidarPoint.FiltertPositionsIds)
+                {
+                    GameObject o = Instantiate(
+                        pointPreFabs[pointIdcounter],
+                        new Vector3(lidarPoint.Positions[id].x, lidarPoint.Positions[id].y, 0), 
+                        Quaternion.identity);
+                    o.transform.SetParent(point.transform, false);
+                }
+            }
+            
+            pointIdcounter++;
         }
         
         [SerializeField] private GameEvent sendEvent;

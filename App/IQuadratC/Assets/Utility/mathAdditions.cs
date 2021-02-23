@@ -99,5 +99,22 @@ namespace Utility
             
             return new float3(p5.x, p5.y, angle);
         }
+
+        public static float2 FindClosestPointInArray(float2 point, float2[] refference, bool itself)
+        {
+            float distance = float.MaxValue;
+            float2 bestPoint = float2.zero;
+            foreach (float2 testPoint in refference)
+            {
+                if(!itself && point.Equals(testPoint)) continue;
+                
+                float newDistance = math.distance(point, testPoint);
+
+                if (newDistance >= distance) continue;
+                distance = newDistance;
+                bestPoint = testPoint;
+            }
+            return bestPoint;
+        }
     }
 }
