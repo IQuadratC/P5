@@ -12,7 +12,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     
     [SerializeField] private Transform stick;
     [SerializeField] private Vec2Variable direction;
-    [SerializeField] private Camera cam;
     [SerializeField] private float maxDistance;
     
     private bool pressed;
