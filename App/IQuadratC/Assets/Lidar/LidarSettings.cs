@@ -17,5 +17,8 @@ namespace Lidar
         public float minCornerAngle = 20;
         public float maxCornerAngle = 20;
         public int minCornerAmmount = 2;
+
+        public float minOverlayCornerAngleDiffernce = 5;
+        public float overlayRayVectorMultiplyer = 100;
     }
 }

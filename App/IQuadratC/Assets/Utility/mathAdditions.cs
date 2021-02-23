@@ -84,9 +84,9 @@ namespace Utility
         {
             float2 dir1 = p1 - p2;
             float2 dir2 = p3 - p4;
-            float angle = -Angle(dir1, dir2);
+            float angle = Angle(dir1, dir2);
 
-            float2 p5 = p1 - Rotate(p3, angle);
+            float2 p5 = p3 - Rotate(p1, angle);
             
             return new float3(p5.x, p5.y, angle);
         }

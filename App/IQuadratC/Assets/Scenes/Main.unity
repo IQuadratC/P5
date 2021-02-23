@@ -1815,7 +1815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &858940987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3456,7 +3456,7 @@ MonoBehaviour:
   showPoints: 1
   showLines: 0
   showInteresctions: 0
-  showConers: 1
+  showConers: 0
   pointPreFabs:
   - {fileID: 975019369897141923, guid: 6c0614c99b94196409075eaeeae8ccc6, type: 3}
   - {fileID: 4200935013765546722, guid: 41808abed9a029c4f98ceb110d573d48, type: 3}

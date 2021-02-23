@@ -15,7 +15,8 @@ namespace Lidar
         waitingForCalculation = 2,
         readyForCalculation = 3,
         processingCalculation = 4,
-        finished = 5
+        dropped = 5,
+        finished = 6
     }
 
     public struct LidarLine
@@ -73,30 +74,42 @@ namespace Lidar
         }
         
         private LidarPoint otherLidarPoint;
-        public void Calculate(LidarPoint otherLidarPoint)
+        public void StartCalculate(LidarPoint otherLidarPoint)
         {
-            State = LidarPointState.processingCalculation;
             this.otherLidarPoint = otherLidarPoint;
-            InitalCalculation();
-            State = LidarPointState.finished;
+            StartCalculate();
         }
         
-        public void Calculate()
+        public void StartCalculate()
         {
             State = LidarPointState.processingCalculation;
-            InitalCalculation();
-            State = LidarPointState.finished;
+            Threader.RunAsync(Calculate);
         }
-
-        private void InitalCalculation()
+        
+        private void Calculate()
         {
             CalculatePoints();
             CalculateLines();
             CalculateIntersections();
             CalculateCorners();
             CheckQuality();
+            
+            if (DropLidarPoint)
+            {
+                State = LidarPointState.dropped;
+                return;
+            }
+
+            if (otherLidarPoint != null)
+            {
+                CalculateOverlay();
+            }
+            
+            CalculateWorldPositions();
+            
+            State = LidarPointState.finished;
         }
-        
+
         private void CalculatePoints()
         {
             List<float2> positionList = new List<float2>();
@@ -367,9 +380,9 @@ namespace Lidar
                     }
                 }
 
-                corner.angle = mathAdditions.Angle(corner.line1.rayVector, corner.line2.rayVector);
-                if(math.abs(corner.angle) < lidarSettings.minCornerAngle || 
-                   math.abs(corner.angle) > lidarSettings.maxCornerAngle) continue;
+                corner.angle = math.abs(mathAdditions.Angle(corner.line1.rayVector, corner.line2.rayVector));
+                if(corner.angle < lidarSettings.minCornerAngle || 
+                   corner.angle > lidarSettings.maxCornerAngle) continue;
                 
                 bool isTheSame = false;
                 foreach (LidarCorner testcorner in corners)
@@ -394,120 +407,174 @@ namespace Lidar
             Corners = corners.ToArray();
         }
         
-        
         private void CheckQuality()
         {
             DropLidarPoint = Corners.Length < lidarSettings.minCornerAmmount;
         }
         
-        private float4[] overlays;
-        private int finschedCounter;
         private void CalculateOverlay()
         {
-            int length = Corners.Length;
-            overlays = new float4[length];
-            finschedCounter = -length;
-
-            for (int i = 0; i < length; i++)
+            float4[] overlays = new float4[Corners.Length];
+            for (int i = 0; i < Corners.Length; i++)
             {
-                Threader.RunAsync(ProcessOverlay, i);
-            }
-        }
-        private void ProcessOverlay(object indexValue)
-        {
-            int index = (int) indexValue;
-            float4 finalOverlay = new float4(0,0,0,float.MaxValue); 
-            
-            float2 corner1 = Intersections[CornerIds[index][0]];
-            float2 corner2 = float2.zero;
-            float2 corner3 = float2.zero;
-            float2 corner4 = float2.zero;
-            float bestDelta = float.MaxValue;
-            for (int i = 0; i < CornerIds.Length; i++)
-            {
-                corner2 = Intersections[CornerIds[i][0]];
-                if(corner1.Equals(corner2)) continue;
-
-                float distance = math.distance(corner1, corner2);
-                for (int j = 0; j < otherLidarPoint.CornerIds.Length; j++)
+                LidarCorner corner1 = Corners[i];
+                
+                List<LidarCorner> possibleCorners = new List<LidarCorner>();
+                foreach (LidarCorner testCorner in otherLidarPoint.Corners)
                 {
-                    float2 testCorner1 = otherLidarPoint.Intersections[otherLidarPoint.CornerIds[j][0]];
-                    for (int k = 0; k < otherLidarPoint.CornerIds.Length; k++)
-                    {
-                        float2 testCorner2 = otherLidarPoint.Intersections[otherLidarPoint.CornerIds[k][0]];
-                        if(testCorner1.Equals(testCorner2)) continue;
-                        
-                        float testDistance = math.distance(testCorner1, testCorner2);
-                        float delta = math.abs(distance - testDistance);
-                        
-                        if(delta >= bestDelta) continue;
-
-                        bestDelta = delta;
-                        corner3 = testCorner1;
-                        corner4 = testCorner2;
-                    }
+                    if(math.abs(corner1.angle - testCorner.angle) > 
+                       lidarSettings.minOverlayCornerAngleDiffernce) continue;
+                    possibleCorners.Add(testCorner);
                 }
-            }
-            
-            float4 overlay = new float4(0,0,0, float.MaxValue);
-            void FindBestOverlay(float2 p1, float2 p2, float2 p3, float2 p4)
-            {
-                float3 result = mathAdditions.LayTowlinesOverEachother(p1,p2,p3,p4);
-
-                float2 testVector = mathAdditions.Rotate(p4, result.z) + new float2(result.x, result.y);
-                float testdistance = math.distance(testVector, p2);
-
-                if (testdistance >= overlay.w) return;
-                overlay.w = testdistance;
-                overlay = new float4(result.x, result.y, result.z, overlay.w);
-            }
                 
-            FindBestOverlay(corner1, corner2, corner3, corner4);
-            FindBestOverlay(corner1, corner2, corner4, corner3);
-            FindBestOverlay(corner2, corner1, corner3, corner4);
-            FindBestOverlay(corner2, corner1, corner4, corner3);
-                
-            overlay.w = 0;
-            for (int j = 0; j < CornerIds.Length; j++)
-            {
-                for (int k = 0; k < CornerIds[j].Length; k++)
+                if (possibleCorners.Count == 0)
                 {
-                    float2 testPoint = CornerIds[j][k];
+                    overlays[i] = new float4(0,0,0, float.MaxValue);
+                    continue;
+                }
 
-                    float bestDistance = float.MaxValue;
-                    for (int l = 0; l < otherLidarPoint.Points.Length; l++)
+                LidarCorner corner2 = new LidarCorner();
+                LidarCorner corner3 = new LidarCorner();
+                LidarCorner corner4 = new LidarCorner();
+                
+                float bestDelta = float.MaxValue;
+                foreach (LidarCorner testcorner2 in Corners)
+                {
+                    if(corner1.Equals(testcorner2)) continue;
+                    
+                    List<LidarCorner> possibleCorners1 = new List<LidarCorner>();
+                    foreach (LidarCorner testCorner in otherLidarPoint.Corners)
                     {
-                        float distance = math.distance(testPoint, otherLidarPoint.Points[l]);
+                        if(math.abs(testcorner2.angle - testCorner.angle) > 
+                           lidarSettings.minOverlayCornerAngleDiffernce) continue;
+                        possibleCorners1.Add(testCorner);
+                    }
+                    
+                    float distance1 = math.distance(corner1.centerPoint, testcorner2.centerPoint);
+                    
+                    foreach (LidarCorner testcorner3 in possibleCorners)
+                    {
+                        foreach (LidarCorner testcorner4 in possibleCorners1)
+                        {
+                            if(testcorner3.Equals(testcorner4)) continue;
                             
-                        if(distance >= bestDistance) continue;
+                            float distance2 = math.distance(testcorner3.centerPoint, testcorner4.centerPoint);
+                            float delta = math.abs(distance1 - distance2);
+                            
+                            if(delta >= bestDelta) continue;
+                            bestDelta = delta;
 
-                        bestDistance = distance;
+                            corner2 = testcorner2;
+                            corner3 = testcorner3;
+                            corner4 = testcorner4;
+                        }
                     }
-                    overlay.w += bestDistance;
                 }
-            }
-            overlays[index] = overlay;
-            
-            Interlocked.Increment(ref finschedCounter);
-        }
-        
-        public void ParseOverlay()
-        {
-            if(finschedCounter < 0) return;
 
-            float4 finalOverlay = new float4(0,0,0,float.MaxValue);
+                if (corner2.centerPoint.Equals(float2.zero) ||
+                    corner3.centerPoint.Equals(float2.zero) ||
+                    corner4.centerPoint.Equals(float2.zero))
+                {
+                    overlays[i] = new float4(0,0,0, float.MaxValue);
+                    continue;
+                }
+                
+                float3 overlay1 = mathAdditions.LayTowlinesOverEachother(
+                    corner1.centerPoint, corner2.centerPoint, 
+                    corner3.centerPoint, corner4.centerPoint);
+                
+                float3 overlay2 = mathAdditions.LayTowlinesOverEachother(
+                    corner1.centerPoint, corner2.centerPoint, 
+                    corner4.centerPoint, corner3.centerPoint);
+
+                float2 v21 = corner2.line1.rayVector * lidarSettings.overlayRayVectorMultiplyer;
+                float2 v22 = corner2.line2.rayVector * lidarSettings.overlayRayVectorMultiplyer;
+                float2 v41 = corner4.line1.rayVector * lidarSettings.overlayRayVectorMultiplyer;
+                float2 v42 = corner4.line2.rayVector * lidarSettings.overlayRayVectorMultiplyer;
+
+                float2 testPos1 = ApplyOverlay(corner2.centerPoint, overlay1) + v21;
+                float2 testPos2 = ApplyOverlay(corner2.centerPoint, overlay2) + v22;
+                float2 refPos1 = corner4.centerPoint + v41;
+                float2 refPos2 = corner4.centerPoint + v42;
+
+                float testDistance1 = math.distance(testPos1, refPos1);
+                float testDistance2 = math.distance(testPos2, refPos2);
+
+                float3 newOverlay = testDistance1 < testDistance2 ? overlay1 : overlay2;
+                
+                float accuacy = 0;
+                foreach (LidarCorner corner in Corners)
+                {
+                    float bestDistance = float.MaxValue;
+                    foreach (float2 point in corner.line1.points)
+                    {
+                        float2 movetPoint = ApplyOverlay(point, newOverlay);
+                        
+                        foreach (LidarCorner otherCorner in otherLidarPoint.Corners)
+                        {
+                            foreach (float2 otherPoint in otherCorner.line1.points)
+                            {
+                                float distance = math.distance(movetPoint, otherPoint);
+                                
+                                if(distance >= bestDistance) continue;
+                                bestDistance = distance;
+                            }
+                            
+                            foreach (float2 otherPoint in otherCorner.line2.points)
+                            {
+                                float distance = math.distance(movetPoint, otherPoint);
+                                
+                                if(distance >= bestDistance) continue;
+                                bestDistance = distance;
+                            }
+                            
+                        }
+                    }
+                    accuacy += bestDistance;
+                    
+                    bestDistance = float.MaxValue;
+                    foreach (float2 point in corner.line2.points)
+                    {
+                        float2 movetPoint = ApplyOverlay(point, newOverlay);
+                        
+                        foreach (LidarCorner otherCorner in otherLidarPoint.Corners)
+                        {
+                            foreach (float2 otherPoint in otherCorner.line1.points)
+                            {
+                                float distance = math.distance(movetPoint, otherPoint);
+                                
+                                if(distance >= bestDistance) continue;
+                                bestDistance = distance;
+                            }
+                            
+                            foreach (float2 otherPoint in otherCorner.line2.points)
+                            {
+                                float distance = math.distance(movetPoint, otherPoint);
+                                
+                                if(distance >= bestDistance) continue;
+                                bestDistance = distance;
+                            }
+                            
+                        }
+                    }
+                    accuacy += bestDistance;
+                }
+                
+                overlays[i] = new float4(newOverlay, accuacy);
+            }
+            
+            overlay = new float3(0,0,0);
+            float bestAccuacy = float.MaxValue;
             for (int i = 0; i < overlays.Length; i++)
             {
-                if(overlays[i].w >= finalOverlay.w) continue;
-                finalOverlay = overlays[i];
+                if(overlays[i].w >= bestAccuacy) continue;
+                bestAccuacy = overlays[i].w;
+                overlay = overlays[i].xyz;
             }
-
-            overlay = finalOverlay.xyz;
-            overlay.xyz += otherLidarPoint.overlay.xyz;
             
-            State = LidarPointState.finished;
+            overlay += otherLidarPoint.overlay;
         }
-
+        
         private void CalculateWorldPositions()
         {
             WorldPoints = new float2[Points.Length];
@@ -516,11 +583,10 @@ namespace Lidar
                 WorldPoints[i] = ApplyOverlay(Points[i], overlay);
             }
         }
-        */
-        public static float2 ApplyOverlay(float2 pos, float3 overlay)
+
+        private static float2 ApplyOverlay(float2 pos, float3 overlay)
         {
             return mathAdditions.Rotate(pos, overlay.z) + overlay.xy;
         }
-        
     }
 }

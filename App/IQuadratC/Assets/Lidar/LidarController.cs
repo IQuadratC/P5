@@ -104,17 +104,21 @@ namespace Lidar
                     case LidarPointState.readyForCalculation:
                         if (lidarPoints.Count > 0)
                         {
-                            lidarPoint.Calculate(lidarPoints[0]);
+                            lidarPoint.StartCalculate(lidarPoints[0]);
                         }
                         else
                         {
-                            lidarPoint.Calculate();
+                            lidarPoint.StartCalculate();
                         }
                         
                         break;
                     
                     case LidarPointState.processingCalculation:
-                        //lidarPoint.ParseOverlay();
+                        break;
+                    
+                    case LidarPointState.dropped:
+                        lidarPointsProcessing.Remove(lidarPoint);
+                        Debug.Log("LidarPoint Dropped");
                         break;
 
                     case LidarPointState.finished:
@@ -123,10 +127,9 @@ namespace Lidar
                         
                         position.Value = new float2(lidarPoint.Overlay.xy);
 
-                        foreach (float2 pointPosition in lidarPoint.Points)
+                        foreach (float2 worldPoint in lidarPoint.WorldPoints)
                         {
-                            if(pointPosition.Equals(float2.zero)) continue;
-                            points.Value.Add((int2)LidarPoint.ApplyOverlay(pointPosition, lidarPoint.Overlay));
+                            points.Value.Add((int2)worldPoint);
                         }
                         
                         ShowPoint(lidarPoint);

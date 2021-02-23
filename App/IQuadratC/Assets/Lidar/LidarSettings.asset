@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LidarSettings
   m_EditorClassIdentifier: 
   maxLineDistance: 2
-  minLineLength: 5
+  minLineLength: 3
   minLinePoints: 3
   interscetionBounds: 500
   sameIntersectionRadius: 1
@@ -21,3 +21,5 @@ MonoBehaviour:
   minCornerAngle: 20
   maxCornerAngle: 160
   minCornerAmmount: 2
+  minOverlayCornerAngleDiffernce: 5
+  overlayRayVectorMultiplyer: 100
