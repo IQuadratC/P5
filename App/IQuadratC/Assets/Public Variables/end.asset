@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: end
   m_EditorClassIdentifier: 
   Value:
-  - x: -200
-    y: 0
+  - x: 20
+    y: -118
   InitialValue:
-  - x: -200
-    y: 0
+  - x: 20
+    y: -118
