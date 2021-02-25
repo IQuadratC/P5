@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Value:
   - x: 20
-    y: -118
+    y: 20
   InitialValue:
   - x: 20
-    y: -118
+    y: 20

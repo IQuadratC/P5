@@ -18,6 +18,7 @@ public class AIControler : MonoBehaviour
     [SerializeField]private Int2ListVariable goalsInput;
     [SerializeField]private Int2ListVariable obstaclesPointsInput;
     [SerializeField]private Int2ListVariable pathOutput;
+    [SerializeField]private float minDistanceToGoal;
     
     // don't change these after start
     [SerializeField]private int distanceToWalls; 
@@ -49,6 +50,10 @@ public class AIControler : MonoBehaviour
     public void StartPath()
     {
         pos = positionInput.Value;
+        while (math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
+        {
+            goalsInput.Value.RemoveAt(0);
+        }
         goals = goalsInput.Value;
         obstaclesPoints = obstaclesPointsInput.Value;
         path = new List<int2>();
