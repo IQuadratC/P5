@@ -16,6 +16,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     
     private bool pressed;
     private float2 lastPos;
+    private float2 fingerPos;
     
     public void OnPointerDown(PointerEventData eventData){
         lastPos = float2.zero;
@@ -30,40 +31,36 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (pressed)
         {
-            float2 change;
-            float2 newPos;
+            // calculate finger position
             if (Input.touchCount > 0)
             {
-                change = Input.touches[0].deltaPosition;
-                newPos = new float2(stick.localPosition.x + change.x, stick.localPosition.y + change.y);;
-
+                fingerPos += (float2)Input.touches[0].deltaPosition;
             }
             else
             {
-                float2 pos = new float2(Input.mousePosition.x, Input.mousePosition.y);
-                change = (lastPos - pos);;
-                lastPos = pos;
-                newPos = new float2(stick.localPosition.x - change.x, stick.localPosition.y - change.y);;
-
+                float3 pos = Input.mousePosition;
+                fingerPos += (lastPos - pos.xy);;
+                lastPos = pos.xy;
             }
 
 
             // format point to maxDistance 
-            if (math.length(newPos.xy) > maxDistance)
+            if (math.length(fingerPos.xy) > maxDistance)
             {
-                direction.Value = math.normalize(newPos);
-                stick.localPosition = new float3(math.normalize(newPos), 0) * maxDistance;
+                direction.Value = math.normalize(fingerPos);
+                stick.localPosition = new float3(math.normalize(fingerPos), 0) * maxDistance;
             }
             else
             {
-                direction.Value = (newPos) / maxDistance;
-                stick.localPosition = new float3(newPos, 0);
+                direction.Value = (fingerPos) / maxDistance;
+                stick.localPosition = new float3(fingerPos, 0);
             }
         }
         else
         {
             direction.Value = float2.zero;
             stick.localPosition = Vector3.zero;
+            fingerPos = float2.zero;
         }
     }
 }
