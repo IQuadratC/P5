@@ -58,6 +58,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else
         {
+            // resets the stick position
             direction.Value = float2.zero;
             stick.localPosition = Vector3.zero;
             fingerPos = float2.zero;
