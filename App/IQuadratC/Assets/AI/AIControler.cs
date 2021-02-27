@@ -30,6 +30,7 @@ public class AIControler : MonoBehaviour
     
     private void Awake()
     {
+        // set some variables
         obstacles = new Dictionary<int2, int>();
         circle = new List<int2>();
         for (int i = -distanceToWalls; i < distanceToWalls; i++)
@@ -49,6 +50,7 @@ public class AIControler : MonoBehaviour
      */
     public void StartPath()
     {
+        // set variables needed in ProsesPath thread 
         pos = positionInput.Value;
         while (math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
         {
@@ -57,7 +59,7 @@ public class AIControler : MonoBehaviour
         goals = goalsInput.Value;
         obstaclesPoints = obstaclesPointsInput.Value;
         path = new List<int2>();
-        Threader.RunAsync(ProsesPath);
+        Threader.RunAsync(ProsesPath); // starts ProsesPath tread
     }
 
     /**
@@ -90,6 +92,7 @@ public class AIControler : MonoBehaviour
             return;
         }
         Threader.RunOnMainThread(ParsePath);
+        //sends the path
         void ParsePath()
         {
             pathOutput.Value = path;
@@ -98,28 +101,26 @@ public class AIControler : MonoBehaviour
         }
     }
 
-    /**
-     * sends the path
-     */
-
     private string WithRotation()
     {
         path = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int2 start = (int2) (pos.xy);
-        foreach (int2 goal in goals)
+        foreach (int2 goal in goals) // append each path between the goals to the path
         {
             int2 end = goal;
             path.AddRange(finder.findPathBetweenInt2(start, end));
             start = end;
         }
         
+        // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 oldRotation = mathAdditions.Rotate(new float2(0,1), pos.z);
         float2 move;
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < path.Count; i++) // append a string to msg for each move in path
         {
+            // don't add if the position is in a line with the position before and after 
             if (i >= 1 && i < (path.Count - 1) &&
                 ((path[i - 1] + new int2(2, 0)).Equals(path[i + 1]) ||
                  (path[i - 1] + new int2(0, 2)).Equals(path[i + 1]) ||
@@ -154,18 +155,20 @@ public class AIControler : MonoBehaviour
         path = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int2 start = (int2) (pos.xy);
-        foreach (int2 goal in goals)
+        foreach (int2 goal in goals) // append each path between the goals to the path
         {
             int2 end = (int2) (goal);
             path.AddRange(finder.findPathBetweenInt2(start, end));
             start = end;
         }
         
+        // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 move;
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < path.Count; i++) // append a string to msg for each move in path
         {
+            // don't add if the position is in a line with the position before and after 
             if (i >= 1 && i < (path.Count - 1) &&
                 ((path[i - 1] + new int2(2, 0)).Equals(path[i + 1]) ||
                  (path[i - 1] + new int2(0, 2)).Equals(path[i + 1]) ||
@@ -199,9 +202,10 @@ public class AIControler : MonoBehaviour
         float2 goal = goals[0];
         float2 vec = pos.xy - goal;
         float r = math.distance(goal, pos.xy);
-        for (int i = 0; i < 8 * r; i++)
+        for (int i = 0; i < 8 * r; i++) // loop the circumference in 1cm parts 
         {
-            float2 newPos = mathAdditions.Rotate(vec, 360 * i / r);
+            float2 newPos = mathAdditions.Rotate(vec, 360 * i / (8 * r));
+            // add the possition to the path if not alreay there
             if (!path.LastOrDefault().Equals((int2)newPos))
             {
                 path.Add((int2)(newPos + pos.xy));
@@ -209,15 +213,15 @@ public class AIControler : MonoBehaviour
                 if (obstacles.ContainsKey((int2)(newPos + pos.xy))) {path = new List<int2>(); return null;}
             }
         }
-
-        pathOutput.Value = path;
-        
+    
+        // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 oldRotation = mathAdditions.Rotate(new float2(0,1), pos.z);
         float2 move;
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < path.Count; i++) // append a string to msg for each move in path
         {
+            // don't add if the position is in a line with the position before and after 
             if (i >= 1 && i < (path.Count - 1) &&
                 ((path[i - 1] + new int2(2, 0)).Equals(path[i + 1]) ||
                  (path[i - 1] + new int2(0, 2)).Equals(path[i + 1]) ||
@@ -250,6 +254,7 @@ public class AIControler : MonoBehaviour
     private void UpdateObsticals()
     {
         obstacles = new Dictionary<int2, int>();
+        // add circles around all obstaclesPoints 
         foreach (int2 point in obstaclesPoints)
         {
             foreach (int2 p in circle)
