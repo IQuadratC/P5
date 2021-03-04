@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.08235294, g: 0.37647063, b: 0.45882356, a: 0.7019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -259,6 +259,18 @@ PrefabInstance:
       value: "\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4293844384
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
       objectReference: {fileID: 0}
@@ -380,24 +392,32 @@ PrefabInstance:
       value: Text eingeben
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_fontStyle
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_fontColor.b
-      value: 0.3773585
+      value: 0.9333334
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.3773585
+      value: 0.86666673
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_fontColor.r
-      value: 0.3773585
+      value: 0.627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4284506208
+      value: 4293844384
       objectReference: {fileID: 0}
     - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_HorizontalAlignment

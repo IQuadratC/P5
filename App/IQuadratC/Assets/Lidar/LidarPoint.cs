@@ -41,7 +41,7 @@ namespace Lidar
     public class LidarPoint
     {
         public LidarPointState State { get; set; }
-        public float[] Distances { get; private set; }
+        public float[] Distances { get; }
         public float2[] Points { get; private set; }
         
         public float2[] WorldPoints { get; private set; }

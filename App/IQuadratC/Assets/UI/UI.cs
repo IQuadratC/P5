@@ -9,6 +9,7 @@ namespace UI
     public class UI : MonoBehaviour
     {
         [SerializeField] private GameObject[] pages;
+        [SerializeField] private GameObject startPage;
         
         [SerializeField] public GameEvent appOpenEvent;
         [SerializeField] public GameEvent appCloseEvent;
@@ -21,6 +22,7 @@ namespace UI
             }
             
             pages[0].SetActive(true);
+            startPage.SetActive(true);
 
             appOpenEvent.Raise();
         }
@@ -35,6 +37,8 @@ namespace UI
             pages[page].SetActive(true);
 
             currentPage = page;
+            
+            startPage.SetActive(currentPage < 2);
         }
 
         public void CloseApp()
