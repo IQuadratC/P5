@@ -33,19 +33,19 @@ public class HIControler : MonoBehaviour
         }
         else if (!lastRotation.Equals(0f) && frameRotation.Equals(0f))
         {
-            sendString.Value = "stop";
+            sendString.Value = "roboter stop";
             sendEvent.Raise();
             lastRotation = frameRotation;
         }
         else if (math.abs(math.length(frameDirection - lastDirection)) > minDirectionChange && !frameDirection.Equals(float2.zero))
         {
-            sendString.Value = "move " + (int)(math.normalize(frameDirection).x * 1000) + "," + (int)(math.normalize(frameDirection).y * 1000) + "," + ((int)(math.length(frameDirection) * speedDirection)); 
+            sendString.Value = "roboter move " + (int)(math.normalize(frameDirection).x * 1000) + "," + (int)(math.normalize(frameDirection).y * 1000) + "," + ((int)(math.length(frameDirection) * speedDirection)); 
             sendEvent.Raise(); 
             lastDirection = frameDirection;
         }
         else if (!lastDirection.Equals(float2.zero) && frameDirection.Equals(float2.zero))
         {
-            sendString.Value = "stop";
+            sendString.Value = "roboter stop";
             sendEvent.Raise();
             lastDirection = frameDirection;
         }
