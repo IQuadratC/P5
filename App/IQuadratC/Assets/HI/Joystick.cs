@@ -15,11 +15,11 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private float maxDistance;
     
     private bool pressed;
-    private float2 lastPos;
+    private float3 lastPos;
     private float2 fingerPos;
     
     public void OnPointerDown(PointerEventData eventData){
-        lastPos = float2.zero;
+        lastPos = Input.mousePosition;
         pressed = true;
     }
      
@@ -39,8 +39,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             else
             {
                 float3 pos = Input.mousePosition;
-                fingerPos += (lastPos - pos.xy);;
-                lastPos = pos.xy;
+                fingerPos += (pos.xy - lastPos.xy);;
+                lastPos = pos;
             }
 
 
