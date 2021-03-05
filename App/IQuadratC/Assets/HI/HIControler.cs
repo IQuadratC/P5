@@ -27,7 +27,7 @@ public class HIControler : MonoBehaviour
         // send new message when the rotation or direction Value has changed 
         if (math.abs(frameRotation - lastRotation) > minRotationChange)
         {
-            sendString.Value = "roboter rotate " + math.sign(frameRotation) * 180 + "," + (math.abs(frameRotation) * speedRotation);
+            sendString.Value = "roboter rotate " + math.sign(frameRotation) * 180 + "," + (int)(math.abs(frameRotation) * speedRotation);
             sendEvent.Raise();
             lastRotation = frameRotation;
         }
@@ -39,7 +39,9 @@ public class HIControler : MonoBehaviour
         }
         else if (math.abs(math.length(frameDirection - lastDirection)) > minDirectionChange && !frameDirection.Equals(float2.zero))
         {
-            sendString.Value = "roboter move " + (int)(math.normalize(frameDirection).x * 1000) + "," + (int)(math.normalize(frameDirection).y * 1000) + "," + ((int)(math.length(frameDirection) * speedDirection)); 
+            sendString.Value = "roboter move " + (int)(math.normalize(frameDirection).y * 1000) + "," + 
+                               (int)(math.normalize(frameDirection).x * 1000) + "," + 
+                               ((int)(math.length(frameDirection) * speedDirection)); 
             sendEvent.Raise(); 
             lastDirection = frameDirection;
         }

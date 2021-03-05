@@ -59,6 +59,7 @@ namespace TCP
             client.Close();
         }
 
+        [SerializeField] private UI.UI ui;
         private void MessageReceived(IAsyncResult ar)
         {
             if (!ar.IsCompleted) return;
@@ -84,6 +85,11 @@ namespace TCP
             
             void Action()
             {
+                if (str == "")
+                {
+                    ui.SwitchPage(0);
+                }
+                
                 Debug.Log(str);
                 reciveMessage.Value = str;
                 reciveEvent.Raise();
