@@ -27,6 +27,8 @@ public class AIControler : MonoBehaviour
     [SerializeField]private bool driveCircle;
     private Dictionary<int2, int> obstacles;
     private List<int2> circle;
+    [SerializeField]private StringVariable logMessage;
+    [SerializeField]private GameEvent logEvent;
     
     private void Awake()
     {
@@ -89,6 +91,7 @@ public class AIControler : MonoBehaviour
 
         if (msg == null)
         {
+            Threader.RunOnMainThread(NoPathFound);
             return;
         }
         Threader.RunOnMainThread(ParsePath);
@@ -98,6 +101,12 @@ public class AIControler : MonoBehaviour
             pathOutput.Value = path;
             sendString.Value = msg;
             sendEvent.Raise();
+        }
+
+        void NoPathFound()
+        {
+            logMessage.Value = "no Path found";
+            logEvent.Raise();
         }
     }
 
