@@ -4,5 +4,5 @@ Alle Icons als png hohe Auflösung weiß auf durchsictig.
 [ ] Schibeschalter
 [ ] Joystick
 [ ] Home Button
-[ ] Weißer Punkt
-[ ] Weißer Strich
+[x] Weißer Punkt
+[x] Weißer Strich
