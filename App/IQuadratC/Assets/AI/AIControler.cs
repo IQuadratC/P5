@@ -103,15 +103,11 @@ public class AIControler : MonoBehaviour
         //sends the path
         void ParsePath()
         {
+            logMessage.Value = "Finished calculation";
+            logEvent.Raise();
             pathOutput.Value = path;
             sendString.Value = msg;
             sendEvent.Raise();
-        }
-        
-        void PathFound()
-        {
-            logMessage.Value = "Finished calculation";
-            logEvent.Raise();
         }
         
         void NoPathFound()
