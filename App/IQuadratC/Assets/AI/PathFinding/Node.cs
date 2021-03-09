@@ -4,8 +4,14 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Node
+public class Node : IHeapItem<Node>
 {
+    public int HeapIndex { get; set; }
+
+    public int CompareTo(Node other)
+    {
+        return other.FScore - this.FScore;
+    }
     public int2 pos;
     public bool walkable;
     public bool completed = false;

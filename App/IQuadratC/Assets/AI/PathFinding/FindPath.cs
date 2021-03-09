@@ -8,25 +8,26 @@ public class FindPath
 {
     private Dictionary<int2, Node> grid = new Dictionary<int2, Node>();
     private Dictionary<int2,int> obstacles;
+    private Heap<Node> heap;
 
     public FindPath(Dictionary<int2,int> obstacles)
     {
         this.obstacles = obstacles;
+        heap = new Heap<Node>(1000);
     }
     public Node findPathBetweneNodes(Node start, Node end)
     {
-        grid = new Dictionary<int2, Node>();
         Node current = start;
-        start.setGScore(current);
-        start.setHScore(end);
+        current.setGScore(current);
+        current.setHScore(end);
         grid[start.pos] = start;
+        heap.Add(current);
         
         int security = 0;
-        while(security < 100000 && current != null)
+        while(security < 1000 && current != null)
         {
             security++;
-            current = findLowest();
-            current.completed = true;
+            current = heap.RemoveFirst();
             if (current.pos.Equals(end.pos))
             {
                 return current;
@@ -38,6 +39,7 @@ public class FindPath
                 {
                     grid[neigbor].setGScore(current);
                     grid[neigbor].setHScore(end);
+                    heap.UpdateItem(grid[neigbor]);
                 }
             }
         }
@@ -90,6 +92,7 @@ public class FindPath
             if (!grid.ContainsKey(neighbor))
             {
                 grid[neighbor] = new Node(neighbor, !obstacles.ContainsKey(neighbor) || obstacles[neighbor] < 1);
+                heap.Add(grid[neighbor]);
             }
         }
         
