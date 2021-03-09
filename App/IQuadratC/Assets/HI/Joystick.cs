@@ -13,6 +13,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Transform stick;
     [SerializeField] private Vec2Variable direction;
     [SerializeField] private float maxDistance;
+    [SerializeField] private StringVariable logMessage;
+    [SerializeField] private GameEvent logEvent;
     
     private bool pressed;
     private float3 lastPos;
@@ -21,10 +23,14 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData){
         lastPos = Input.mousePosition;
         pressed = true;
+        logMessage.Value = "Graped Joystick";
+        logEvent.Raise();
     }
      
     public void OnPointerUp(PointerEventData eventData){
         pressed = false;
+        logMessage.Value = "Released Joystick";
+        logEvent.Raise();
     }
 
     public void Update()
