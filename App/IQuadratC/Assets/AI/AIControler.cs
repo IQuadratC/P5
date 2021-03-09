@@ -76,24 +76,27 @@ public class AIControler : MonoBehaviour
         UpdateObsticals();
     
         string msg;
-        if (driveCircle)
+        try
         {
-            msg = Circle();
+            if (driveCircle)
+            {
+                msg = Circle();
+            }
+            else if (useRotation)
+            {
+                msg = WithRotation();
+            }
+            else
+            {
+                msg = NoRotation();
+            }
         }
-        else if (useRotation)
-        {
-            msg = WithRotation();
-        }
-        else
-        {
-            msg = NoRotation();
-        }
-
-        if (msg == null)
+        catch (NoPathExists e)
         {
             Threader.RunOnMainThread(NoPathFound);
             return;
         }
+        
         Threader.RunOnMainThread(ParsePath);
         //sends the path
         void ParsePath()
@@ -105,7 +108,7 @@ public class AIControler : MonoBehaviour
 
         void NoPathFound()
         {
-            logMessage.Value = "no Path found";
+            logMessage.Value = "No path exists betwene the goals";
             logEvent.Raise();
         }
     }
@@ -219,7 +222,7 @@ public class AIControler : MonoBehaviour
             {
                 path.Add((int2)(newPos + pos.xy));
                 
-                if (obstacles.ContainsKey((int2)(newPos + pos.xy))) {path = new List<int2>(); return null;}
+                if (obstacles.ContainsKey((int2)(newPos + pos.xy))) {path = new List<int2>(); throw new NoPathExists();}
             }
         }
     

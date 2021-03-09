@@ -46,7 +46,7 @@ public class FindPath
                 }
             }
         }
-        return null;
+        throw new Exception("didn't return inside Loop");
     }
     
     private int2[] getNeigbors(Node self)
@@ -82,4 +82,14 @@ public class FindPath
         return Node.getPath(findPathBetweneNodes(new Node(start, true),
             new Node(end, true)));
     }
+}
+
+[Serializable]
+public class NoPathExists : Exception
+{
+    public NoPathExists () {}
+
+    public NoPathExists (string message) : base(message) {}
+
+    public NoPathExists (string message, Exception innerException) : base(message, innerException) {}    
 }

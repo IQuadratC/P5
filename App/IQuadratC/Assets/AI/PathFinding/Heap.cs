@@ -25,6 +25,7 @@ public class Heap<T> where T : IHeapItem<T> {
     public T RemoveFirst() {
         T firstItem = items[0];
         currentItemCount--;
+        if (currentItemCount < 0){throw new NoPathExists();}
         items[0] = items[currentItemCount];
         items[0].HeapIndex = 0;
         SortDown(items[0]);
