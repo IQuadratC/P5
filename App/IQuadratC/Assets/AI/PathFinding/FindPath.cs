@@ -9,11 +9,36 @@ public class FindPath
     private Dictionary<int2, Node> grid = new Dictionary<int2, Node>();
     private Dictionary<int2,int> obstacles;
     private Heap<Node> heap;
+    private int maxLoops;
 
     public FindPath(Dictionary<int2,int> obstacles)
     {
         this.obstacles = obstacles;
-        heap = new Heap<Node>(100000);
+        int minX = 0;
+        int minY = 0;
+        int maxX = 0;
+        int maxY = 0;
+        foreach (int2 obstacle in obstacles.Keys)
+        {
+            if (obstacle.x < minX)
+            {
+                minX = obstacle.x;
+            }
+            if (obstacle.y < minY)
+            {
+                minY = obstacle.y;
+            }
+            if (obstacle.x > maxX)
+            {
+                maxX = obstacle.x;
+            }
+            if (obstacle.x > maxY)
+            {
+                maxY = obstacle.y;
+            }
+        }
+        maxLoops = (maxX - minX) * (maxY - minY) + 10;
+        heap = new Heap<Node>(maxLoops);
     }
     public Node findPathBetweneNodes(Node start, Node end)
     {
@@ -26,7 +51,7 @@ public class FindPath
         heap.Add(current);
         
         int security = 0;
-        while(security < 100000 && current != null)
+        while(security < maxLoops)
         {
             security++;
             current = heap.RemoveFirst();
