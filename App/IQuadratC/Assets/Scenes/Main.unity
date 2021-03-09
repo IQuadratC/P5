@@ -279,6 +279,8 @@ MonoBehaviour:
   stick: {fileID: 1985963426}
   direction: {fileID: 11400000, guid: 2d8dfebb71f5c064dbfd3ad5bc5ef16a, type: 2}
   maxDistance: 100
+  logMessage: {fileID: 11400000, guid: 813c63be41e66d641af60da25ac60679, type: 2}
+  logEvent: {fileID: 11400000, guid: 689431be580d5324d80aa63ca26b3750, type: 2}
 --- !u!114 &46122233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,8 +904,8 @@ MonoBehaviour:
   speed: 10
   useRotation: 0
   driveCircle: 0
-  logMessage: {fileID: 0}
-  logEvent: {fileID: 0}
+  logMessage: {fileID: 11400000, guid: 813c63be41e66d641af60da25ac60679, type: 2}
+  logEvent: {fileID: 11400000, guid: 689431be580d5324d80aa63ca26b3750, type: 2}
 --- !u!114 &455020694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,7 +924,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 455020693}
         m_TargetAssemblyTypeName: AIControler, Assembly-CSharp
-        m_MethodName: SetCircleGoals
+        m_MethodName: StartPath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3456,7 +3458,7 @@ MonoBehaviour:
   points: {fileID: 11400000, guid: bfd532456fe1e0949bc56b0898f14dc1, type: 2}
   newPoints: {fileID: 11400000, guid: 86dd5dadd44f0684eb43331227032722, type: 2}
   lidarSettings: {fileID: 11400000, guid: bb10cb419e8641a589dbac5e6e04e263, type: 2}
-  simulateData: 0
+  simulateData: 1
   showPoints: 0
   showLines: 0
   showInteresctions: 0
@@ -4446,6 +4448,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainSlider: {fileID: 1720777118}
   rotation: {fileID: 11400000, guid: aab1c7b6846de8f4a821ec3fc4ba041d, type: 2}
+  logMessage: {fileID: 11400000, guid: 813c63be41e66d641af60da25ac60679, type: 2}
+  logEvent: {fileID: 11400000, guid: 689431be580d5324d80aa63ca26b3750, type: 2}
 --- !u!114 &1720777118
 MonoBehaviour:
   m_ObjectHideFlags: 0
