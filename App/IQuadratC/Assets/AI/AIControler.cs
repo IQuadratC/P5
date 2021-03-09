@@ -30,10 +30,15 @@ public class AIControler : MonoBehaviour
     [SerializeField]private StringVariable logMessage;
     [SerializeField]private GameEvent logEvent;
     
+    // nedded for exploration of the world
+    private List<int2> reachedPoints;
+    private int gridSize;
+    
     private void Awake()
     {
         // set some variables
         obstacles = new Dictionary<int2, int>();
+        reachedPoints = new List<int2>();
         circle = new List<int2>();
         for (int i = -distanceToWalls; i < distanceToWalls; i++)
         {
@@ -54,6 +59,7 @@ public class AIControler : MonoBehaviour
     {
         // set variables needed in ProsesPath thread 
         pos = positionInput.Value;
+        reachedPoints.Add((int2)(pos.xy/gridSize));
         while (math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
         {
             goalsInput.Value.RemoveAt(0);
