@@ -62,6 +62,8 @@ public class AIControler : MonoBehaviour
         obstaclesPoints = obstaclesPointsInput.Value;
         path = new List<int2>();
         Threader.RunAsync(ProsesPath); // starts ProsesPath tread
+        logMessage.Value = "Started calculation";
+        logEvent.Raise();
     }
 
     /**
@@ -105,7 +107,13 @@ public class AIControler : MonoBehaviour
             sendString.Value = msg;
             sendEvent.Raise();
         }
-
+        
+        void PathFound()
+        {
+            logMessage.Value = "Finished calculation";
+            logEvent.Raise();
+        }
+        
         void NoPathFound()
         {
             logMessage.Value = "No path exists betwene the goals";
