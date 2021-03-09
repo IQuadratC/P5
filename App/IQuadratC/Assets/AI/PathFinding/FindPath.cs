@@ -26,7 +26,7 @@ public class FindPath
         heap.Add(current);
         
         int security = 0;
-        while(security < 10000 && current != null)
+        while(security < 100000 && current != null)
         {
             security++;
             current = heap.RemoveFirst();
