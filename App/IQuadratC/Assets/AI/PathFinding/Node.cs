@@ -37,7 +37,7 @@ public class Node : IHeapItem<Node>
     
     public void setGScore(Node newParent)
     {
-        int score = getDistanse(this, newParent);
+        int score = newParent.gScore + getDistanse(this, newParent);
         if (score < gScore)
         {
             gScore = score;

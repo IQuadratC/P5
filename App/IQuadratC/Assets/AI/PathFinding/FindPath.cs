@@ -13,21 +13,24 @@ public class FindPath
     public FindPath(Dictionary<int2,int> obstacles)
     {
         this.obstacles = obstacles;
-        heap = new Heap<Node>(1000);
+        heap = new Heap<Node>(100000);
     }
     public Node findPathBetweneNodes(Node start, Node end)
     {
         Node current = start;
-        current.setGScore(current);
+        current.parent = current;
+        current.gScore = 0;
         current.setHScore(end);
+        current.completed = true;
         grid[start.pos] = start;
         heap.Add(current);
         
         int security = 0;
-        while(security < 1000 && current != null)
+        while(security < 10000 && current != null)
         {
             security++;
             current = heap.RemoveFirst();
+            current.completed = true;
             if (current.pos.Equals(end.pos))
             {
                 return current;
@@ -45,58 +48,33 @@ public class FindPath
         }
         return null;
     }
-
-    private Node findLowest()
-    {
-        Node lowest = null;
-        int fscore = int.MaxValue;
-        int hscore = int.MaxValue;
-        foreach (var node in grid)
-        {
-            if (!node.Value.completed && node.Value.FScore < fscore && node.Value.walkable)
-            {
-                lowest = node.Value;
-                fscore = node.Value.FScore;
-            }
-            else if (!node.Value.completed && node.Value.FScore == fscore && node.Value.FScore < hscore && node.Value.walkable)
-            {
-                lowest = node.Value;
-                fscore = node.Value.FScore;
-                hscore = node.Value.hScore;
-            }
-
-        }
-        return lowest;
-    }
     
     private int2[] getNeigbors(Node self)
     {
-        int2[] neigbors = new int2[8];
+        List<int2> neigbors = new List<int2>();
         int2 pos;
-        int k = 0;
         for (int i = -1; i < 2; i++)
         {
             for (int j = -1; j < 2; j++)
             {
-                if (i == j && j == 0){continue;}
-
+                if (i == 0 && j == 0){continue;}
                 pos.x = i;
                 pos.y = j;
-                neigbors[k] = self.pos + pos;
-                k++;
+                pos += self.pos;
+                if (!grid.ContainsKey(pos))
+                {
+                    grid[pos] = new Node(pos, !(obstacles.ContainsKey(pos)) || obstacles[pos] < 1);
+                    if (grid[pos].walkable)
+                    {
+                        heap.Add(grid[pos]);
+                    }
+                }
+                
+                neigbors.Add(pos);
             }
         }
 
-        foreach (int2 neighbor in neigbors)
-        {
-            if (!grid.ContainsKey(neighbor))
-            {
-                grid[neighbor] = new Node(neighbor, !obstacles.ContainsKey(neighbor) || obstacles[neighbor] < 1);
-                heap.Add(grid[neighbor]);
-            }
-        }
-        
-        return neigbors;
+        return neigbors.ToArray();
     }
 
     public List<int2> findPathBetweenInt2(int2 start, int2 end)
