@@ -355,10 +355,17 @@ public class AIControler : MonoBehaviour
 
             bool b = !obstacles.ContainsKey(pos) &&
                      !reachedPoints.Contains(pos);
-            if (finder.findPathBetweenInt2((int2) this.pos.xy, pos) == null && b)
+            if (b)
             {
-                reachedPoints.Add(pos);
-                return false;
+                try
+                {
+                    finder.findPathBetweenInt2((int2) this.pos.xy, pos);
+                }
+                catch (NoPathExists e)
+                {
+                    reachedPoints.Add(pos);
+                    return false;
+                }
             }
             return b;
         }
