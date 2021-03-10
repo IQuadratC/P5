@@ -33,6 +33,7 @@ public class AIControler : MonoBehaviour
     // nedded for exploration of the world
     private List<int2> reachedPoints;
     private int gridSize;
+    private bool explore;
     
     private void Awake()
     {
@@ -82,6 +83,11 @@ public class AIControler : MonoBehaviour
     void ProsesPath()
     {
         UpdateObsticals();
+        
+        if (explore)
+        {
+            Explore();
+        }
     
         string msg;
         try
@@ -272,6 +278,90 @@ public class AIControler : MonoBehaviour
         }
 
         return msg;
+    }
+
+    private void Explore(){
+        if (goals.Any()) {return;}
+        FindPath finder = new FindPath(obstacles);
+        int minX = 0;
+        int minY = 0;
+        int maxX = 0;
+        int maxY = 0;
+        foreach (int2 obstacle in obstacles.Keys)
+        {
+            if (obstacle.x < minX)
+            {
+                minX = obstacle.x;
+            }
+            if (obstacle.y < minY)
+            {
+                minY = obstacle.y;
+            }
+            if (obstacle.x > maxX)
+            {
+                maxX = obstacle.x;
+            }
+            if (obstacle.x > maxY)
+            {
+                maxY = obstacle.y;
+            }
+        }
+
+        int2 pos;
+        for (int r = 0; r < math.max(maxX-minX, maxY-minY); r++)
+        {
+            pos = new int2(-r, r);
+            while (pos.x <= r)
+            {
+                pos.x++;
+                if (CheckPos(pos))
+                {
+                    goals = new List<int2>();
+                    goals.Add(pos);
+                    return;
+                }
+            }
+            while (pos.y >= -r)
+            {
+                pos.y--;
+                if (CheckPos(pos))
+                {
+                    goals.Add(pos);
+                    return;
+                }
+            }
+            while (pos.x >= -r)
+            {
+                pos.x--;
+                if (CheckPos(pos))
+                {
+                    goals.Add(pos);
+                    return;
+                }
+            }
+            while (pos.y <= r)
+            {
+                pos.y++;
+                if (CheckPos(pos))
+                {
+                    goals.Add(pos);
+                    return;
+                }
+            }
+        }
+
+        bool CheckPos(int2 pos)
+        {
+
+            bool b = !obstacles.ContainsKey(pos) &&
+                     !reachedPoints.Contains(pos);
+            if (finder.findPathBetweenInt2((int2) this.pos.xy, pos) == null && b)
+            {
+                reachedPoints.Add(pos);
+                return false;
+            }
+            return b;
+        }
     }
     private void UpdateObsticals()
     {
