@@ -353,7 +353,9 @@ public class AIControler : MonoBehaviour
         bool CheckPos(int2 pos)
         {
 
-            bool b = !obstacles.ContainsKey(pos) &&
+            bool b = (minX - 1) < pos.x && pos.x < (maxX + 1) &&
+                     (minY - 1) < pos.y && pos.y < (maxY + 1) &&
+                     !obstacles.ContainsKey(pos) &&
                      !reachedPoints.Contains(pos);
             if (b)
             {
