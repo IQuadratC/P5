@@ -32,8 +32,8 @@ public class AIControler : MonoBehaviour
     
     // nedded for exploration of the world
     private List<int2> reachedPoints;
-    private int gridSize;
-    private bool explore;
+    [SerializeField]private int gridSize;
+    [SerializeField]private bool explore;
     
     private void Awake()
     {
@@ -61,7 +61,7 @@ public class AIControler : MonoBehaviour
         // set variables needed in ProsesPath thread 
         pos = positionInput.Value;
         reachedPoints.Add((int2)(pos.xy/gridSize));
-        while (math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
+        while (goalsInput.Value.Count > 0 && math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
         {
             goalsInput.Value.RemoveAt(0);
         }
@@ -88,7 +88,6 @@ public class AIControler : MonoBehaviour
         {
             Explore();
         }
-    
         string msg;
         try
         {
@@ -105,7 +104,7 @@ public class AIControler : MonoBehaviour
                 msg = NoRotation();
             }
         }
-        catch (NoPathExists e)
+        catch (Exception e)
         {
             Threader.RunOnMainThread(NoPathFound);
             return;
@@ -280,8 +279,9 @@ public class AIControler : MonoBehaviour
         return msg;
     }
 
-    private void Explore(){
-        if (goals.Any()) {return;}
+    private void Explore()
+    {
+        goals = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int minX = 0;
         int minY = 0;
@@ -308,55 +308,53 @@ public class AIControler : MonoBehaviour
         }
 
         int2 pos;
-        for (int r = 0; r < math.max(maxX-minX, maxY-minY); r++)
+        for (int r = 0; r < math.max(maxX-minX, maxY-minY) / gridSize + 2; r++)
         {
             pos = new int2(-r, r);
             while (pos.x <= r)
             {
                 pos.x++;
-                if (CheckPos(pos))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals = new List<int2>();
-                    goals.Add(pos);
+                    goals.Add((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
             while (pos.y >= -r)
             {
                 pos.y--;
-                if (CheckPos(pos))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add(pos);
+                    goals.Add((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
             while (pos.x >= -r)
             {
                 pos.x--;
-                if (CheckPos(pos))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add(pos);
+                    goals.Add((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
             while (pos.y <= r)
             {
                 pos.y++;
-                if (CheckPos(pos))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add(pos);
+                    goals.Add((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
         }
-
         bool CheckPos(int2 pos)
         {
 
             bool b = (minX - 1) < pos.x && pos.x < (maxX + 1) &&
                      (minY - 1) < pos.y && pos.y < (maxY + 1) &&
                      !obstacles.ContainsKey(pos) &&
-                     !reachedPoints.Contains(pos);
+                     !reachedPoints.Contains(pos/gridSize);
             if (b)
             {
                 try

@@ -37,7 +37,7 @@ public class FindPath
                 maxY = obstacle.y;
             }
         }
-        maxLoops = (maxX - minX) * (maxY - minY) + 10;
+        maxLoops = (maxX - minX + 2) * (maxY - minY + 2) + 10;
         heap = new Heap<Node>(maxLoops);
     }
     public Node findPathBetweneNodes(Node start, Node end)

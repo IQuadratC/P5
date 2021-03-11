@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Utility.Variables;
 
 public class Test : MonoBehaviour
 {
@@ -38,6 +39,17 @@ public class Test : MonoBehaviour
         ShowList(path.findPathBetweenInt2(start, end), pointPrefab);
     }
 
+    [SerializeField]private Int2ListVariable path;
+    [SerializeField]private Vec3Variable pos;
+
+    public void setPos()
+    {
+        if (path.Value.Count > 0)
+        {
+            pos.Value.xy = path.Value[path.Value.Count - 1];
+        }
+    }
+    
     [SerializeField]private GameObject parent;
     [SerializeField]private GameObject pointPrefab;
     [SerializeField]private GameObject obsticalsPointPrefab;
