@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Utility.Events;
 using Utility.Variables;
 
-public class SliderControler : MonoBehaviour, IPointerUpHandler
+public class SliderControler : MonoBehaviour,  IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]private Slider mainSlider;
     [SerializeField]private FloatVariable rotation;
