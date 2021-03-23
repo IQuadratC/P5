@@ -401,7 +401,7 @@ MonoBehaviour:
   end:
     x: 0
     y: 0
-  path: {fileID: 0}
+  path: {fileID: 11400000, guid: 3fef45a296df4424a89746731f33604f, type: 2}
   pos: {fileID: 0}
   parent: {fileID: 0}
   pointPrefab: {fileID: 0}

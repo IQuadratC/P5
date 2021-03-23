@@ -198,3 +198,12 @@ Blau
 Rot
 #C81829
 #DB5461
+
+
+Final ToDos:
+
+Tim - HI fertig machen
+Maarten - IP Bug, Bild vom Roboter, 
+Yesenia - Close Button, Play Button , HiAi Schalter
+Niklas - HI ticken
+Niklas Maarten - aufräumen und builden, AI planene
