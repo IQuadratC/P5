@@ -6,7 +6,7 @@ Ansatz:
 - enthält Winkel r und Entferung d
 - in Lidarpoint Objekt speichern
 - Durchschnitt errechen d = d0 + d1 + d2 ... dn / n
-- XY - Kordinate p aus d und r
+- XY - Kordinate p aus d und 
 
 Linen erkennen:
 - loop all p
@@ -207,3 +207,8 @@ Maarten - IP Bug, Bild vom Roboter,
 Yesenia - Close Button, Play Button , HiAi Schalter
 Niklas - HI ticken
 Niklas Maarten - aufräumen und builden, AI planene
+
+Projekt namen:
+Ferngesteuerter Roboter mit Lidar Sensor
+Auf LIDAR basierender SLAM Roboter
+Ferngesteuerter Roboter mit LIDAR Mapping
