@@ -9,7 +9,9 @@ namespace Lidar
         [SerializeField] private Vec2Variable pos;
         void Update()
         {
-            transform.position = new float3(pos.Value.xy, 0);
+            transform.position = new float3(pos.Value.xy, -8
+            
+            );
         }
     }
 }
