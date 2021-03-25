@@ -56,7 +56,7 @@ namespace HI
             }
             else if (!frameDirection.Equals(float2.zero) && Time.time - lastMoveMessage > sendIntervall)
             {
-                SendRotate(frameRotation);
+                SendMove(frameRotation);
                 lastMoveMessage = Time.time;
             }
             

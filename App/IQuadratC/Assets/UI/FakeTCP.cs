@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utility.Variables;
 
-public class FakeTCP : MonoBehaviour
+namespace UI
 {
-    [SerializeField]private StringVariable msg;
-    public void sendMsg()
+    public class FakeTCP : MonoBehaviour
     {
-        Debug.Log(msg.Value);
+        [SerializeField]private StringVariable msg;
+        public void sendMsg()
+        {
+            Debug.Log(msg.Value);
+        }
     }
 }
