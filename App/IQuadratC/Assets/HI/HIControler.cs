@@ -8,7 +8,9 @@ namespace HI
     public class HIControler : MonoBehaviour
     {
         [SerializeField]private float speedDirection;
+        [SerializeField]private float minDirectionChange;
         [SerializeField]private float speedRotation;
+        [SerializeField]private float minRotationChange;
         private float2 lastDirection;
         private float lastRotation;
         [SerializeField]private Vec2Variable direction;
@@ -26,8 +28,11 @@ namespace HI
             float frameRotation = rotation.Value;
             float2 frameDirection = direction.Value;
             // send new message when the rotation or direction Value has changed 
-            
-            if (!lastRotation.Equals(0f) && frameRotation.Equals(0f))
+            if (math.abs(frameRotation - lastRotation) > minRotationChange)
+            {
+                SendRotate(frameRotation);
+            }
+            else if (!lastRotation.Equals(0f) && frameRotation.Equals(0f))
             {
                 sendString.Value = "roboter stop";
                 sendEvent.Raise();
@@ -36,6 +41,10 @@ namespace HI
             {
                 SendRotate(frameRotation);
                 lastRotationMessage = Time.time;
+            }
+            else if (math.abs(math.length(frameDirection - lastDirection)) > minDirectionChange && !frameDirection.Equals(float2.zero))
+            {
+                SendMove(frameDirection);
             }
             else if (!lastDirection.Equals(float2.zero) && frameDirection.Equals(float2.zero))
             {
@@ -47,6 +56,9 @@ namespace HI
                 SendMove(frameDirection);
                 lastMoveMessage = Time.time;
             }
+            
+            lastRotation = frameRotation;
+            lastDirection = frameDirection;
         }
         
         private void SendRotate(float rotate)
