@@ -15,12 +15,21 @@ public class  StringInterpreter : MonoBehaviour
             {
                 PassMove(input.Split(' ')[2]);
             }
+            else if (input.Split(' ')[1] == "rotate")
+            {
+                PassRotation(input.Split(' ')[2]);
+            }
         }
     }
 
     private void PassMove(String input)
     {
-        Vector2 pos = new Vector2(int.Parse(input.Split(' ')[1]),int.Parse(input.Split(' ')[0]));
+        Vector2 pos = new Vector2(int.Parse(input.Split(',')[1]),int.Parse(input.Split(',')[0]));
         script.Move(pos);
+    }
+    private void PassRotation(String input)
+    {
+        float rot = (int.Parse(input.Split(',')[0]));
+        script.Rotate(rot);
     }
 }
