@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class  StringInterpreter : MonoBehaviour
 {
-    [SerializeField]private Movment script;
+    [FormerlySerializedAs("script")] [SerializeField]private Movment movement;
+    [SerializeField]private LIDAR lidar;
     private List<String[]> Actions = new List<string[]>();
-
     private void FixedUpdate()
     {
         if (Actions.Count == 0)
@@ -46,17 +47,21 @@ public class  StringInterpreter : MonoBehaviour
                 PassMulti(input.Split(' ')[2]);
             }
         }
+        else if (input.Split(' ') [0] == "lidar")
+        {
+           lidar.LidarPunkte();
+        }
     }
 
     private void PassMove(String input)
     {
         Vector2 pos = new Vector2(int.Parse(input.Split(',')[1]),int.Parse(input.Split(',')[0]));
-        script.Move(pos);
+        movement.Move(pos);
     }
     private void PassRotation(String input)
     {
         float rot = (int.Parse(input.Split(',')[0]));
-        script.Rotate(rot);
+        movement.Rotate(rot);
     }
     private void PassMulti(String input)
     {

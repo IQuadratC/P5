@@ -52,21 +52,21 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Utility\Threader.cs" />
-     <Compile Include="Assets\Utility\Events\GameEvent.cs" />
+     <Compile Include="Assets\LIDAR.cs" />
      <Compile Include="Assets\Utility\Variables\Vec3Variable.cs" />
+     <Compile Include="Assets\Utility\Csv.cs" />
+     <Compile Include="Assets\Utility\Variables\BoolVariable.cs" />
+     <Compile Include="Assets\StringInterpreter.cs" />
+     <Compile Include="Assets\ButtonMove.cs" />
+     <Compile Include="Assets\Utility\Events\GameEvent.cs" />
+     <Compile Include="Assets\Utility\Variables\Vec2Variable.cs" />
+     <Compile Include="Assets\Utility\Threader.cs" />
+     <Compile Include="Assets\Utility\Events\GameEventListener.cs" />
+     <Compile Include="Assets\Movment.cs" />
+     <Compile Include="Assets\Utility\Variables\IntVariable.cs" />
      <Compile Include="Assets\Utility\Variables\FloatVariable.cs" />
      <Compile Include="Assets\Utility\Variables\Int2ListVariable.cs" />
-     <Compile Include="Assets\Utility\Variables\Vec2Variable.cs" />
-     <Compile Include="Assets\Utility\Csv.cs" />
-     <Compile Include="Assets\Utility\Events\GameEventListener.cs" />
-     <Compile Include="Assets\Utility\Variables\BoolVariable.cs" />
      <Compile Include="Assets\Utility\Variables\StringVariable.cs" />
-     <Compile Include="Assets\Utility\Variables\IntVariable.cs" />
-     <Compile Include="Assets\Movment.cs" />
-     <Compile Include="Assets\ButtonMove.cs" />
-     <Compile Include="Assets\StringInterpreter.cs" />
-     <Compile Include="Assets\LIDAR.cs" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
