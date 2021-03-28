@@ -66,6 +66,7 @@
      <Compile Include="Assets\Movment.cs" />
      <Compile Include="Assets\ButtonMove.cs" />
      <Compile Include="Assets\StringInterpreter.cs" />
+     <Compile Include="Assets\LIDAR.cs" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\Utility\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
