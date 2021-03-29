@@ -6,12 +6,10 @@ namespace Lidar
 {
     public class RobotPos : MonoBehaviour
     {
-        [SerializeField] private Vec2Variable pos;
+        [SerializeField] private Vec3Variable pos;
         void Update()
         {
-            transform.position = new float3(pos.Value.xy, -8
-            
-            );
+            transform.position = new float3(pos.Value.xy, -8);
         }
     }
 }

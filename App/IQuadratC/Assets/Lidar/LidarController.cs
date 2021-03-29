@@ -11,7 +11,7 @@ namespace Lidar
 {
     public class LidarController : MonoBehaviour
     {
-        [SerializeField] private Vec2Variable position;
+        [SerializeField] private Vec3Variable position;
         
         private List<LidarPoint> lidarPointsProcessing;
         private List<LidarPoint> lidarPoints;
@@ -26,7 +26,7 @@ namespace Lidar
             path = Application.dataPath;
             lidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
-            position.Value = new float2();
+            position.Value = new float3();
             points.Value.Clear();
             pointIdcounter = 0;
             
@@ -129,8 +129,8 @@ namespace Lidar
                     case LidarPointState.finished:
                         lidarPointsProcessing.Remove(lidarPoint);
                         lidarPoints.Add(lidarPoint);
-                        
-                        position.Value = new float2(lidarPoint.Overlay.xy);
+
+                        position.Value = lidarPoint.Overlay;
 
                         foreach (float2 worldPoint in lidarPoint.WorldPoints)
                         {

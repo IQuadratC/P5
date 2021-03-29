@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
@@ -10,9 +11,15 @@ namespace Lidar
         public int ChunkBounds { get; set; }
         public int MapScale { get; set; }
 
-        [SerializeField] private MeshFilter meshFilter;
-        [SerializeField] private MeshRenderer meshRenderer;
+        private MeshFilter meshFilter;
+        private MeshRenderer meshRenderer;
         public MeshRenderer MeshRenderer => meshRenderer;
+
+        private void Awake()
+        {
+            meshFilter = GetComponent<MeshFilter>();
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
 
         public void OnNewPoints()
         {

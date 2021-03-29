@@ -10,10 +10,7 @@ namespace UI
     {
         [SerializeField] private GameObject[] pages;
         [SerializeField] private GameObject startPage;
-        
-        [SerializeField] public GameEvent appOpenEvent;
-        [SerializeField] public GameEvent appCloseEvent;
-        
+
         private void Start()
         {
             foreach (GameObject page in pages)
@@ -23,8 +20,6 @@ namespace UI
             
             pages[0].SetActive(true);
             startPage.SetActive(true);
-
-            appOpenEvent.Raise();
         }
 
         private int currentPage;
@@ -43,7 +38,7 @@ namespace UI
 
         public void CloseApp()
         {
-            appCloseEvent.Raise();
+            
             
             if(Application.platform == RuntimePlatform.WebGLPlayer) return;
             
