@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532141c97fa94bb4959066b3523a2cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapScales: 140000000a0000000500000001000000
+  mapScales: 01000000050000000a0000001400000028000000
   reciveString: {fileID: 11400000, guid: 118e3a844776a5f4b8c6eb291fb12180, type: 2}
 --- !u!4 &501595304
 Transform:

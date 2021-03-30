@@ -8,8 +8,9 @@ namespace Lidar.SLAM
     {
         public static float MapAcsess(float2 p, SLAMMap map)
         {
-            int2 p0 = (int2) p;
+            int2 p0 = (int2) p / map.scale;
             int2 p1 = p0 + new int2(1, 1);
+            p = p / map.scale;
             float a = (p.y - p0.y) / (p1.y - p0.y);
             float b = (p1.y - p.y) / (p1.y - p0.y);
             float c = (p.x - p0.x) / (p1.x - p0.x);
@@ -22,8 +23,9 @@ namespace Lidar.SLAM
 
         public static float2 MapAcsessDirtative(float2 p, SLAMMap map)
         {
-            int2 p0 = (int2) p;
+            int2 p0 = (int2) p / map.scale;
             int2 p1 = p0 + new int2(1, 1);
+            p = p / map.scale;
             float a = (p.y - p0.y) / (p1.y - p0.y);
             float b = (p1.y - p.y) / (p1.y - p0.y);
             float c = (p.x - p0.x) / (p1.x - p0.x);
@@ -47,14 +49,15 @@ namespace Lidar.SLAM
             return x;
         }
 
-        public static float3 DeltaT(float3 t, float2[] siList, SLAMMap map)
+        public static float3 DeltaT(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
         {
             float3 deltat = new float3();
-            foreach (float2 si in siList)
+            foreach (float2 si in dataSet.points)
             {
                 deltat += Func12(t, si, map);
             }
 
+            deltat.xy = math.normalize(deltat.xy);
             return deltat;
         }
 
@@ -68,7 +71,7 @@ namespace Lidar.SLAM
             
             float d = MapAcsess(a, map);
 
-            float3 e = h * (c * (1 - d));
+            float3 e = (c * (1 - d));
             return e;
         }
         
@@ -79,7 +82,7 @@ namespace Lidar.SLAM
             float2 a = Si(t, si);
             float2 b = MapAcsessDirtative(a, map);
             float3 c = math.mul(b, mat14);
-            float3 d = c * c;// needs transpose
+            float3 d = c;
             return d;
         }
         
@@ -91,16 +94,19 @@ namespace Lidar.SLAM
             return mat;
         }
         
-        public static float2 Rotate(float2 v, float radian)
+       
+        
+        public static float3 TransformDeltaDir(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
         {
-            float ca = math.cos(radian);
-            float sa = math.sin(radian);
-            return new float2(ca*v.x - sa*v.y, sa*v.x + ca*v.y);
-        }
+            float3 dir = new float3();
+            foreach (float2 point in dataSet.points)
+            {
+                float2 gradiant = MapAcsessDirtative(Si(t, point), map);
+                dir.xy += gradiant;
+            }
 
-        public static float2 ApplayTransform(float2 v, float3 t)
-        {
-            return Rotate(v, t.z) + t.xy;
+            dir.xy = math.normalize(dir.xy);
+            return dir;
         }
     }
 }

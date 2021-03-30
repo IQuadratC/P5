@@ -8,9 +8,9 @@ namespace Lidar.SLAM
     {
         public Dictionary<int2, SLAMMapChunk> chunks;
         public int cellsPerChunk;
-        public float scale;
+        public int scale;
 
-        public SLAMMap(int cellsPerChunk, float scale)
+        public SLAMMap(int cellsPerChunk, int scale)
         {
             this.cellsPerChunk = cellsPerChunk;
             this.scale = scale;
@@ -30,10 +30,18 @@ namespace Lidar.SLAM
 
         public void SetMapScaled(float2 pos, int value)
         {
-            SetMap((int2) (pos / scale), value);
-            SetMap((int2) (pos / scale) + new int2(0, 1), value);
-            SetMap((int2) (pos / scale) + new int2(1, 0), value);
-            SetMap((int2) (pos / scale) + new int2(1, 1), value);
+            float2 unscaledPos = pos / scale;
+            int2 intPos = (int2) unscaledPos;
+            if (unscaledPos.x - intPos.x > 0.5)
+            {
+                intPos.x++;
+            }
+            if (unscaledPos.y - intPos.y > 0.5)
+            {
+                intPos.y++;
+            }
+            
+            SetMap(intPos, value);
         }
         public void SetMap(int2 pos, int value)
         {
@@ -66,7 +74,7 @@ namespace Lidar.SLAM
         {
             foreach (float2 point in dataSet.points)
             {
-                SetMapScaled(SLAMMath.ApplayTransform(point, t), 1);
+                SetMapScaled(SLAMMath.Si(t, point), 1);
             }
         }
     }

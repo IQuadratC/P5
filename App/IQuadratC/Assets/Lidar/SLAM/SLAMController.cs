@@ -86,9 +86,7 @@ namespace Lidar.SLAM
                 PushLidarData();
             }
         }
-
         
-
         private void AddLidarData(int2[] data)
         {
             if (currentDataSet == null)
@@ -103,10 +101,18 @@ namespace Lidar.SLAM
         {
             if (dataSets.Count > 1)
             {
-                foreach (SLAMMap map in maps)
+                for (int i = maps.Length - 1; i >= 0; i--)
                 {
-                    float3 newT = SLAMMath.DeltaT(t, currentDataSet.points, map);
-                    t += newT;
+                    for (int j = 0; j < 100; j++)
+                    {
+                        float3 newT = SLAMMath.TransformDeltaDir(t, currentDataSet, maps[i]);
+                        t += newT;
+                        Debug.Log(t +" " + newT);
+                        if (math.length(newT) < 0.3)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
             foreach (SLAMMap map in maps)
