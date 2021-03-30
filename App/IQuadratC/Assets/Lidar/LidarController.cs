@@ -23,7 +23,6 @@ namespace Lidar
 
         private void OnEnable()
         {
-            path = Application.dataPath;
             lidarPoints = new List<LidarPoint>();
             lidarPointsProcessing = new List<LidarPoint>();
             position.Value = new float3();
@@ -37,7 +36,6 @@ namespace Lidar
         }
         
         [SerializeField] private bool simulateData;
-        private string path;
         private string[] files =
         {
             "Data",
