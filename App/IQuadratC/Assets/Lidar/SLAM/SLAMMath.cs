@@ -54,16 +54,16 @@ namespace Lidar.SLAM
             return x;
         }
         
-        public static float3 TransformDeltaDir(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
+        public static float2 TransformDeltaDir(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
         {
-            float3 dir = new float3();
+            float2 dir = new float2();
             foreach (float2 point in dataSet.points)
             {
                 float2 gradiant = MapAcsessDirtative(Si(t, point), map);
-                dir.xy += gradiant;
+                dir += gradiant;
             }
 
-            dir.xy = math.normalize(dir.xy);
+            dir = math.normalize(dir);
             return dir;
         }
 
@@ -77,6 +77,26 @@ namespace Lidar.SLAM
             }
 
             return error;
+        }
+
+        public static float CalcBestAngle(float3 t, SLAMLidarDataSet dataSet, SLAMMap map, float x)
+        {
+            float bestRad = 0;
+            float bestError = float.MaxValue;
+            for (int i = 0; i < x; i++)
+            {
+                float rad = 2 * math.PI * (i - x / 2) / x; // (360 / x) * (i - (x / 2)) * math.PI / 180;
+
+                float error = CalcError(new float3(t.xy, t.z + rad), dataSet, map);
+
+                if (error < bestError)
+                {
+                    bestError = error;
+                    bestRad = rad;
+                }
+            }
+
+            return bestRad;
         }
         
         /*

@@ -36,8 +36,8 @@ namespace Lidar.SLAM
         {
             "Data",
             "Data_Move_1",
-            //"Data_Move_Rotate_1",
-            //"Data_Rotate_1"
+            "Data_Move_Rotate_1",
+            "Data_Rotate_1"
         };
         
         private void SimulateData()
@@ -97,34 +97,53 @@ namespace Lidar.SLAM
             currentDataSet.AddData(data);
         }
 
-        [SerializeField] private int lastTransformSumSize;
-        [SerializeField] private float lastTransformSumMinLenght;
+        [SerializeField] private float errorSumAmmount = 5;
+        
         private void PushLidarData()
         {
+            t = float3.zero;
             if (dataSets.Count > 1)
             {
                 for (int i = maps.Length - 1; i >= 0; i--)
                 {
-                    List<float3> lastTs = new List<float3>();
-                    
+                    float angle = SLAMMath.CalcBestAngle(t, currentDataSet, maps[i], 1000);
+                    t.z += angle;
+                    List<float> lastErrors = new List<float>();
+
                     for (int j = 0; j < 100; j++)
                     {
-                        float3 newT = SLAMMath.TransformDeltaDir(t, currentDataSet, maps[i]);
-                        t += newT;
+                        float2 newT = SLAMMath.TransformDeltaDir(t, currentDataSet, maps[i]);
 
-                        int lastTransformIndex = lastTs.Count - lastTransformSumSize;
-                        if (lastTransformIndex >= 0 && math.distance(lastTs[lastTransformIndex].xy, t.xy) <
-                            lastTransformSumMinLenght)
+                        float error = SLAMMath.CalcError(new float3(t.xy + newT, t.z), currentDataSet, maps[i]);
+                        
+                        float errorSum = 0;
+                        int k;
+                        for (k = 0; k < errorSumAmmount; k++)
+                        {
+                            int index = lastErrors.Count - k -1;
+                            if (index < 0)
+                            {
+                                break;
+                            }
+                            errorSum += lastErrors[index];
+                        }
+                        errorSum /= k;
+                        
+                        Debug.Log( t+ " " + newT.xy + " "+ error + " " + errorSum);
+                        
+                        if (errorSum < error)
                         {
                             Debug.Log("break");
                             break;
                         }
-                        lastTs.Add(t);
+                        t.xy += newT;
 
-                        float error = SLAMMath.CalcError(t, currentDataSet, maps[i]);
-                        
-                        Debug.Log(t.xy +" " + newT.xy +" "+ error);
+                        lastErrors.Add(error);
                     }
+                    
+                    angle = SLAMMath.CalcBestAngle(t, currentDataSet, maps[i], 1000);
+                    t.z += angle;
+                    Debug.Log(t);
                 }
             }
             foreach (SLAMMap map in maps)
