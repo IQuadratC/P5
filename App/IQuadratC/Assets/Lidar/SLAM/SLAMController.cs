@@ -97,21 +97,33 @@ namespace Lidar.SLAM
             currentDataSet.AddData(data);
         }
 
+        [SerializeField] private int lastTransformSumSize;
+        [SerializeField] private float lastTransformSumMinLenght;
         private void PushLidarData()
         {
             if (dataSets.Count > 1)
             {
                 for (int i = maps.Length - 1; i >= 0; i--)
                 {
+                    List<float3> lastTs = new List<float3>();
+                    
                     for (int j = 0; j < 100; j++)
                     {
                         float3 newT = SLAMMath.TransformDeltaDir(t, currentDataSet, maps[i]);
                         t += newT;
-                        Debug.Log(t +" " + newT);
-                        if (math.length(newT) < 0.3)
+
+                        int lastTransformIndex = lastTs.Count - lastTransformSumSize;
+                        if (lastTransformIndex >= 0 && math.distance(lastTs[lastTransformIndex].xy, t.xy) <
+                            lastTransformSumMinLenght)
                         {
+                            Debug.Log("break");
                             break;
                         }
+                        lastTs.Add(t);
+
+                        float error = SLAMMath.CalcError(t, currentDataSet, maps[i]);
+                        
+                        Debug.Log(t.xy +" " + newT.xy +" "+ error);
                     }
                 }
             }

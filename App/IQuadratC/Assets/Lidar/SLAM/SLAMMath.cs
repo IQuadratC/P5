@@ -11,26 +11,31 @@ namespace Lidar.SLAM
             int2 p0 = (int2) p / map.scale;
             int2 p1 = p0 + new int2(1, 1);
             p = p / map.scale;
-            float a = (p.y - p0.y) / (p1.y - p0.y);
-            float b = (p1.y - p.y) / (p1.y - p0.y);
-            float c = (p.x - p0.x) / (p1.x - p0.x);
-            float d = (p1.x - p.x) / (p1.x - p0.x);
+            float a = p.y - p0.y;
+            float b = p1.y - p.y;
+            float c = p.x - p0.x;
+            float d = p1.x - p.x;
+            
+            float m00 = map.GetMap(p0);
+            float m01 = map.GetMap(new int2(p0.x, p1.y));
+            float m10 = map.GetMap(new int2(p1.x, p0.y));
+            float m11 = map.GetMap(p1);
 
-            float x = a * (c * map.GetMap(p1) + d * map.GetMap(new int2(p0.x, p1.y)))
-                      + b * (c * map.GetMap(new int2(p1.x, p0.y)) + d *  map.GetMap(p0));
+            float x = a * (c * m11 + d * m01)
+                      + b * (c * m10 + d * m00);
             return x;
         }
-
+        
         public static float2 MapAcsessDirtative(float2 p, SLAMMap map)
         {
             int2 p0 = (int2) p / map.scale;
             int2 p1 = p0 + new int2(1, 1);
             p = p / map.scale;
-            float a = (p.y - p0.y) / (p1.y - p0.y);
-            float b = (p1.y - p.y) / (p1.y - p0.y);
-            float c = (p.x - p0.x) / (p1.x - p0.x);
-            float d = (p1.x - p.x) / (p1.x - p0.x);
-
+            float a = p.y - p0.y;
+            float b = p1.y - p.y;
+            float c = p.x - p0.x;
+            float d = p1.x - p.x;
+            
             float m00 = map.GetMap(p0);
             float m01 = map.GetMap(new int2(p0.x, p1.y));
             float m10 = map.GetMap(new int2(p1.x, p0.y));
@@ -48,7 +53,34 @@ namespace Lidar.SLAM
             float2 x = math.mul(a, si) + t.xy;
             return x;
         }
+        
+        public static float3 TransformDeltaDir(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
+        {
+            float3 dir = new float3();
+            foreach (float2 point in dataSet.points)
+            {
+                float2 gradiant = MapAcsessDirtative(Si(t, point), map);
+                dir.xy += gradiant;
+            }
 
+            dir.xy = math.normalize(dir.xy);
+            return dir;
+        }
+
+        public static float CalcError(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
+        {
+            float error = 0;
+            foreach (float2 point in dataSet.points)
+            {
+                float errorForPoint = MapAcsess(Si(t, point), map);
+                error += 1 - errorForPoint;
+            }
+
+            return error;
+        }
+        
+        /*
+        
         public static float3 DeltaT(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
         {
             float3 deltat = new float3();
@@ -93,20 +125,6 @@ namespace Lidar.SLAM
                 0, 1,  math.cos(t.z) * si.x -math.sin(t.z) * si.y);
             return mat;
         }
-        
-       
-        
-        public static float3 TransformDeltaDir(float3 t, SLAMLidarDataSet dataSet, SLAMMap map)
-        {
-            float3 dir = new float3();
-            foreach (float2 point in dataSet.points)
-            {
-                float2 gradiant = MapAcsessDirtative(Si(t, point), map);
-                dir.xy += gradiant;
-            }
-
-            dir.xy = math.normalize(dir.xy);
-            return dir;
-        }
+        */
     }
 }

@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapScales: 01000000050000000a0000001400000028000000
   reciveString: {fileID: 11400000, guid: 118e3a844776a5f4b8c6eb291fb12180, type: 2}
+  lastTransformSumSize: 5
+  lastTransformSumMinLenght: 1
 --- !u!4 &501595304
 Transform:
   m_ObjectHideFlags: 0
