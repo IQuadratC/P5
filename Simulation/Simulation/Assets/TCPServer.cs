@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using UnityEngine;
+using Utility;
 
 public class TCPServer : MonoBehaviour
 {
@@ -12,13 +14,10 @@ public class TCPServer : MonoBehaviour
     private TcpListener server;
     private bool serverStarted;
 
-    private List<ServerClient> clients;
-    private List<ServerClient> disconnected;
+    private ServerClient client;
 
     private void Start()
     {
-        clients = new List<ServerClient>();
-        disconnected = new List<ServerClient>();
 
         try
         {
@@ -36,93 +35,76 @@ public class TCPServer : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (!serverStarted)
-        {
-            return;
-        }
-
-        foreach (ServerClient c in clients)
-        {
-            if (!IsConnected(c.tcp))
-            {
-                c.tcp.Close();
-                disconnected.Add(c);
-                continue;
-            }
-            else
-            {
-                NetworkStream networkStream = c.tcp.GetStream();
-                if (networkStream.DataAvailable)
-                {
-                    StreamReader reader = new StreamReader(networkStream, true);
-                    String data = reader.ReadLine();
-
-                    if (data != null)
-                    {
-                        OnIncomingData(c, data);
-                    }
-                }
-            }
-        }
-    }
-
     private void StartListening()
     {
         server.BeginAcceptTcpClient(AcceptTcpClient , server);
     }
 
-    private bool IsConnected(TcpClient c)
-    {
-        try
-        {
-            if (c != null && c.Client != null && c.Client.Connected)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        catch
-        {
-            return false;
-        } 
-    }
-
     private void AcceptTcpClient(IAsyncResult ar)
     {
         TcpListener listener = (TcpListener)ar.AsyncState;
-        
-        clients.Add(new ServerClient(listener.EndAcceptTcpClient(ar)));
-        StartListening();
-        
-        Broadcast(clients[clients.Count - 1].name + " welcome" , clients );
-        Debug.Log(clients[clients.Count - 1].name + " welcome");
-    }
 
-    private void OnIncomingData(ServerClient c, String data)
-    {
-        Debug.Log(c.name +  ": " + data);
-    }
+        client = new ServerClient(listener.EndAcceptTcpClient(ar));
+        
 
-    private void Broadcast(String data, List<ServerClient> c1)
+        Broadcast(client.name + " welcome");
+        Debug.Log(client.name + " welcome");
+        
+        // Start reading the socket and receive any incoming messages
+        client.tcp.GetStream().BeginRead(client.Bytes,
+            0,
+            client.Bytes.Length,
+            MessageReceived,
+            null);
+    }
+    
+    private void MessageReceived(IAsyncResult ar)
     {
-        foreach (ServerClient c in c1)
+        if (!ar.IsCompleted) return;
+        // End the stream read
+        int bytesIn = client.tcp.GetStream().EndRead(ar);
+        string str = "";
+        if (bytesIn > 0)
         {
-            try
+            // Create a string from the received data. For this server 
+            // our data is in the form of a simple string, but it could be
+            // binary data or a JSON object. Payload is your choice.
+            byte[] tmp = new byte[bytesIn];
+            Array.Copy(client.Bytes, 0, tmp, 0, bytesIn);
+            str = Encoding.ASCII.GetString(tmp);
+        }
+        // Clear the buffer and start listening again
+        Array.Clear(client.Bytes, 0, client.Bytes.Length);
+        client.tcp.GetStream().BeginRead(client.Bytes,
+            0,
+            client.Bytes.Length,
+            MessageReceived,
+            null);
+            
+        void Action()
+        {
+            if (str == "")
             {
-                StreamWriter  writer = new StreamWriter(c.tcp.GetStream());
-                writer.WriteLine(data);
-                writer.Flush();
+                client.tcp.Close();
+                return;
             }
-            catch (Exception e)
-            {
-                Debug.Log("Write error: " + e.Message + "to client " + c.name);
-                throw;
-            } 
+            Debug.Log(str);
+        }
+        Threader.RunOnMainThread(Action);
+    }
+
+    private void Broadcast(String data)
+    {
+        try
+        {
+            StreamWriter  writer = new StreamWriter(client.tcp.GetStream());
+            writer.WriteLine(data);
+            writer.Flush();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Write error: " + e.Message + "to client " + client.name);
+            throw;
         }
     }
 }
@@ -131,6 +113,8 @@ public class ServerClient
 {
     public TcpClient tcp;
     public String name;
+
+    public byte[] Bytes = new byte[4096];
 
     public ServerClient(TcpClient clientSocket)
     {
