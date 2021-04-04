@@ -6,10 +6,12 @@ using UnityEngine.Serialization;
 
 public class  StringInterpreter : MonoBehaviour
 {
-    [FormerlySerializedAs("script")] [SerializeField]private Movment movement;
     [SerializeField]private LIDAR lidar;
 
     private List<String[]> Actions = new List<string[]>();
+
+    [SerializeField] private float speed;
+    private Vector2 move = Vector2.zero;
     private void FixedUpdate()
     {
         if (Actions.Count == 0)
@@ -19,14 +21,26 @@ public class  StringInterpreter : MonoBehaviour
         
         if (Actions[0][0] == "move")
         {
-            PassMove(Actions[0][1]);
+            Vector2 goal = new Vector2(int.Parse(Actions[0][1].Split(',')[1]),int.Parse(Actions[0][1].Split(',')[0]));
+            Vector2 direction = goal.normalized;
+            Vector2 delta = direction * (speed * Time.deltaTime);
+            
+            if ((move + delta).magnitude > goal.magnitude)
+            {
+                Move(goal - move);
+                move = Vector2.zero;
+                Actions.RemoveAt(0);
+                return;
+            }
+            
+            Move(delta);
+            move += delta;
         }
         else if (Actions[0][0] == "rotate")
         {
             PassRotation(Actions[0][1]);
+            Actions.RemoveAt(0);
         }
-        
-        Actions.RemoveAt(0);
     }
 
     public void PassString(String input)
@@ -53,17 +67,13 @@ public class  StringInterpreter : MonoBehaviour
            lidar.LidarPunkte();
         }
     }
-
-    private void PassMove(String input)
-    {
-        Vector2 pos = new Vector2(int.Parse(input.Split(',')[1]),int.Parse(input.Split(',')[0]));
-        movement.Move(pos);
-    }
+    
     private void PassRotation(String input)
     {
         float rot = (int.Parse(input.Split(',')[0]));
-        movement.Rotate(rot);
+        Rotate(rot);
     }
+
     private void PassMulti(String input)
     {
         input = input.Replace(',', ' ');
@@ -75,19 +85,34 @@ public class  StringInterpreter : MonoBehaviour
         {
             if (input.Split(' ')[i] == "move")
             {
-                Actions.Add(new  String[] {"move" , (input.Split(' ')[i + 1])});
+                Actions.Add(new String[] {"move", (input.Split(' ')[i + 1])});
             }
             else if (input.Split(' ')[i] == "rotate")
             {
-                Actions.Add(new  String[] {"rotate" , (input.Split(' ')[i + 1])});
+                Actions.Add(new String[] {"rotate", (input.Split(' ')[i + 1])});
             }
             else if (input.Split(' ')[i] == "multi")
             {
                 PassMulti(input.Split(' ')[i + 1]);
             }
         }
-        
-        
     }
-    
+
+
+    [SerializeField]public Rigidbody rigidbody;
+    Vector3 pos = new Vector3(0, 0.5f ,0);
+
+    private Vector3 rot = new Vector3(0, 0, 0);
+    public void Move(Vector2 move)
+    {
+        pos += rigidbody.rotation * new Vector3(move.x , 0 , move.y);
+        rigidbody.MovePosition(pos);
+    }
+
+    public void Rotate(float rotate)
+    {
+        rot += new Vector3(0 , rotate , 0);
+        rigidbody.MoveRotation(Quaternion.Euler(rot));
+    }
+
 }

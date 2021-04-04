@@ -57,13 +57,11 @@
      <Compile Include="Assets\Utility\Csv.cs" />
      <Compile Include="Assets\Utility\Variables\BoolVariable.cs" />
      <Compile Include="Assets\StringInterpreter.cs" />
-     <Compile Include="Assets\ButtonMove.cs" />
      <Compile Include="Assets\Utility\Events\GameEvent.cs" />
      <Compile Include="Assets\Utility\Variables\Vec2Variable.cs" />
      <Compile Include="Assets\Utility\Threader.cs" />
      <Compile Include="Assets\TCPServer.cs" />
      <Compile Include="Assets\Utility\Events\GameEventListener.cs" />
-     <Compile Include="Assets\Movment.cs" />
      <Compile Include="Assets\Utility\Variables\IntVariable.cs" />
      <Compile Include="Assets\Utility\Variables\FloatVariable.cs" />
      <Compile Include="Assets\Utility\Variables\Int2ListVariable.cs" />
