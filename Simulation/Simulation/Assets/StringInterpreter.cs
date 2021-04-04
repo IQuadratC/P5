@@ -8,6 +8,7 @@ public class  StringInterpreter : MonoBehaviour
 {
     [FormerlySerializedAs("script")] [SerializeField]private Movment movement;
     [SerializeField]private LIDAR lidar;
+
     private List<String[]> Actions = new List<string[]>();
     private void FixedUpdate()
     {

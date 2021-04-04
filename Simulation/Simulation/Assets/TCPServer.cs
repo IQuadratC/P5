@@ -5,11 +5,14 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using Utility;
 
 public class TCPServer : MonoBehaviour
 {
+    [SerializeField] private StringInterpreter stringInterpreter;
+    
     public int port = 6321;
     private TcpListener server;
     private bool serverStarted;
@@ -89,17 +92,18 @@ public class TCPServer : MonoBehaviour
                 return;
             }
             Debug.Log(str);
+            stringInterpreter.PassString(str);
         }
         Threader.RunOnMainThread(Action);
     }
 
-    private void Broadcast(String data)
+    public void Broadcast(String data)
     {
         try
         {
-            StreamWriter  writer = new StreamWriter(client.tcp.GetStream());
-            writer.WriteLine(data);
-            writer.Flush();
+            byte[] msg = Encoding.UTF8.GetBytes(data);
+            client.tcp.GetStream().Write(msg, 0, msg.Length);
+            Thread.Sleep(1);
         }
         catch (Exception e)
         {

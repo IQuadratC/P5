@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class LIDAR : MonoBehaviour
 {
+    [SerializeField]
+    private TCPServer tcpServer;
+    
     [SerializeField] private int messPunkte;
     private List<String[]> lidar;
 
@@ -25,7 +28,7 @@ public class LIDAR : MonoBehaviour
             if (Physics.Raycast(transform.position, transform.TransformDirection(Quaternion.Euler(0,i * 360 / messPunkte,0) * Vector3.forward), out hit, Mathf.Infinity, layerMask))
             {
                 Debug.DrawRay(transform.position, transform.TransformDirection(Quaternion.Euler(0,i * 360 / messPunkte,0) * Vector3.forward) * hit.distance, Color.yellow);
-                lidar.Add(new string[]{hit.distance.ToString("0.00", CultureInfo.InvariantCulture) , (i * 360 / messPunkte).ToString("0.00", CultureInfo.InvariantCulture)});
+                lidar.Add(new string[]{hit.distance.ToString("0", CultureInfo.InvariantCulture) , (i * 360 / messPunkte).ToString("0", CultureInfo.InvariantCulture)});
             }
             else
             {
@@ -41,12 +44,15 @@ public class LIDAR : MonoBehaviour
             if (i > 0 && i % 50 == 0)
             {
                 Debug.Log(message);
+                tcpServer.Broadcast(message);
                 message  = "lidarmap data ";
             }
             message += lidar[i][1] + ";"; 
             message += lidar [i][0] + ",";
         }
         Debug.Log(message);
+        tcpServer.Broadcast(message);
+        tcpServer.Broadcast("lidarmap end");
     }
 
     private void OnDrawGizmos()
