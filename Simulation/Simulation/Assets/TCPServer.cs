@@ -103,7 +103,7 @@ public class TCPServer : MonoBehaviour
         {
             byte[] msg = Encoding.UTF8.GetBytes(data);
             client.tcp.GetStream().Write(msg, 0, msg.Length);
-            Thread.Sleep(1);
+            Thread.Sleep(100);
         }
         catch (Exception e)
         {
