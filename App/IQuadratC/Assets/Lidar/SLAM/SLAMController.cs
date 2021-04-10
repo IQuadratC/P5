@@ -37,7 +37,7 @@ namespace Lidar.SLAM
             "Data",
             "Data_Move_1",
             "Data_Move_Rotate_1",
-            "Data_Rotate_1"
+            //"Data_Rotate_1"
         };
         
         private void SimulateData()
@@ -101,14 +101,17 @@ namespace Lidar.SLAM
         
         private void PushLidarData()
         {
+            float angle = 0;
             t = float3.zero;
             if (dataSets.Count > 1)
             {
                 for (int i = maps.Length - 1; i >= 0; i--)
                 {
-                    float angle = SLAMMath.CalcBestAngle(t, currentDataSet, maps[i], 1000);
-                    t.z += angle;
                     List<float> lastErrors = new List<float>();
+                    
+                    angle = SLAMMath.CalcBestAngle(t, currentDataSet, maps[i], 1000);
+                    t = SLAMMath.TransformAddRoation(t, angle);
+                    Debug.Log(t);
 
                     for (int j = 0; j < 100; j++)
                     {
@@ -140,10 +143,6 @@ namespace Lidar.SLAM
 
                         lastErrors.Add(error);
                     }
-                    
-                    angle = SLAMMath.CalcBestAngle(t, currentDataSet, maps[i], 1000);
-                    t.z += angle;
-                    Debug.Log(t);
                 }
             }
             foreach (SLAMMap map in maps)

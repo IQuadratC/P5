@@ -87,7 +87,7 @@ namespace Lidar.SLAM
             {
                 float rad = 2 * math.PI * (i - x / 2) / x; // (360 / x) * (i - (x / 2)) * math.PI / 180;
 
-                float error = CalcError(new float3(t.xy, t.z + rad), dataSet, map);
+                float error = CalcError(TransformAddRoation(t, rad), dataSet, map);
 
                 if (error < bestError)
                 {
@@ -97,6 +97,15 @@ namespace Lidar.SLAM
             }
 
             return bestRad;
+        }
+
+        public static float3 TransformAddRoation(float3 t, float rad)
+        {
+            float3 newT = float3.zero;
+            float2x2 a = new float2x2(-math.cos(rad), math.sin(rad), -math.sin(rad), -math.cos(rad));
+            newT.xy = math.mul(a, t.xy);
+            newT.z = t.z + rad;
+            return newT;
         }
         
         /*
