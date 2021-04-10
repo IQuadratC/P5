@@ -7,7 +7,7 @@ namespace Lidar
 {
     public class LidarMap : MonoBehaviour
     {
-        [SerializeField] private Vec2Variable position;
+        [SerializeField] private Vec3Variable position;
         [SerializeField] private Int2ListVariable points;
 
         [SerializeField] private GameObject background;
