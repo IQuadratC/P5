@@ -5,6 +5,7 @@ using Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utility.Variables;
 
 public class AIGoalsSetter : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
@@ -17,6 +18,8 @@ public class AIGoalsSetter : MonoBehaviour, IPointerUpHandler, IPointerDownHandl
     private List<GameObject> goals;
     [SerializeField] private float goalClickRadius = 10;
     [SerializeField] private float actionTime = 1;
+
+    [SerializeField] private Int2ListVariable AIGoals;
 
     private void Awake()
     {
@@ -80,7 +83,13 @@ public class AIGoalsSetter : MonoBehaviour, IPointerUpHandler, IPointerDownHandl
                     goals.Add(goal);
                 }
 
-                
+                AIGoals.Value = new List<int2>();
+                foreach (GameObject goal in goals)
+                {
+                    Vector3 vec = goal.transform.position;
+                    int2 pos = new int2((int) vec.x, (int) vec.y);
+                    AIGoals.Value.Add(pos);
+                }
             }
         }
        
