@@ -12,9 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a106c4dbaf47f0b60d272da14575ec, type: 3}
   m_Name: AI Goals
   m_EditorClassIdentifier: 
-  Value:
-  - x: 20
-    y: 20
-  InitialValue:
-  - x: 20
-    y: 20
+  Value: []
+  InitialValue: []

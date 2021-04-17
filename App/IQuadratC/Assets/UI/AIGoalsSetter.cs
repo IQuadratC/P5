@@ -65,13 +65,12 @@ public class AIGoalsSetter : MonoBehaviour, IPointerUpHandler, IPointerDownHandl
             {
                 pressed = false;
                 float3 screenNow = Input.mousePosition;
-                if (math.distance(screenNow, screenPosStart) > goalClickRadius)
-                {
-                    return;
-                }
+                if (math.distance(screenNow, screenPosStart) > goalClickRadius) { return; }
                 
                 if (selectedGoal != null)
                 {
+                    AIGoals.Value.Remove(new int2((int) goals[0].transform.position.x,
+                        (int) goals[0].transform.position.y));
                     goals.Remove(selectedGoal);
                     Destroy(selectedGoal);
                 }
@@ -81,17 +80,28 @@ public class AIGoalsSetter : MonoBehaviour, IPointerUpHandler, IPointerDownHandl
                     goal.transform.SetParent(Map.transform);
                     goal.transform.position = new Vector3(goal.transform.position.x, goal.transform.position.y, 0);
                     goals.Add(goal);
-                }
-
-                AIGoals.Value = new List<int2>();
-                foreach (GameObject goal in goals)
-                {
-                    Vector3 vec = goal.transform.position;
-                    int2 pos = new int2((int) vec.x, (int) vec.y);
-                    AIGoals.Value.Add(pos);
+                    AIGoals.Value.Add(new int2((int) goal.transform.position.x, (int) goal.transform.position.y));
                 }
             }
         }
-       
+
+        if (AIGoals.Value.Count == 0 && goals.Count != 0)
+        {
+            GameObject goal = goals[0];
+            Destroy(goal);
+            goals.Remove(goal);
+        }
+        else if (goals.Count == 0 || !AI.activeSelf)
+        {
+            AIGoals.Value = new List<int2>();
+        }
+        else if (!AIGoals.Value[0].Equals(
+            new int2((int) goals[0].transform.position.x, (int) goals[0].transform.position.y)))
+        {
+            GameObject goal = goals[0];
+            Destroy(goal);
+            goals.Remove(goal);
+        }
+
     }
 }
