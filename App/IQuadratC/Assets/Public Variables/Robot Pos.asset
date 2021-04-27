@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Robot Pos
   m_EditorClassIdentifier: 
   Value:
-    x: 0
-    y: 0
-    z: 0
+    x: 0.55485153
+    y: -3.7386622
+    z: -89.5323
   InitialValue:
     x: 0
-    y: 0
+    y: 150
     z: 0
