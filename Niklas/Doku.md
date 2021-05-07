@@ -9,6 +9,8 @@ Um den Algorithmus weiter zu vereinfachen hatte ich die Idee anstatt mit geraden
 Um unsere App mit dem Roboter zu verbinden brauchten wir ein einfaches protokoll um daten zu übertragen. Da wir Wlan als Übertragungsweg nutzen war das erste Protokoll welches mir eingefallen ist HTTP, dieses wird auch für Internetseiten verwendet und ist weit Verbreitet.
 Nach dem ich einen einfachen HTTP server in Python aufgesetzt hatte wollte ich einen Client für diesen in Unity schreiben. Allerdings wäre es in Unity wesentlich aufwändiger gewesen einen HTTP Client zu schreiben daher habe ich mich für ein einfacheres Protokoll entschieden TCP welches das HTTP zugrunde liegende Protokoll ist.
 
+## Python to C++
+
 ## Bewegung der Kamera
 In unserer App befindet sich eine Repräsentation der daten welche der Roboter mit dem LIDAR sensor misst zusammen mit der Position des Roboters und der Früher gemessenen Daten.
 Da man allerdings nicht immer nur das nahe umfeld des roboters sehen möchte haben wir die möglichkeit eingebaut durch finger bewegungen die Position der Kamera welche das Bild rendert zu bewegen.
