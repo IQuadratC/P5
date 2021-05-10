@@ -36,7 +36,10 @@ multi move,1;1;1,rotate,90;1
 ```
 Da multi an der von dem selben Code interpretiert wird wie move und Rotate könnte man sogar mehrere multi Funktionen ineinander Schreiben auch wen dies keinen sinn erfüllt.
 ### Python zu C++
-
+Ursprünglich hatte ich den gesamten code welcher auf dem Roboter lief in Python geschrieben.
+Allerdings war es nicht möglich den code für den LIDAR sensor in Python zu schreiben da Python zu langsam für diesen Sensor war daher musste der Code um den Sensor auszulesen in C++ geschrieben werden.
+Da wir allerdings schon den TCP server und die Motorsteuerung in Python implementiert hatten wollten wir einfach ein Program schreiben welches den Lidar ausliest und diese Daten zurück an Python überträgt.
+Da Tim welcher den C++ Code geschrieben hatte dies aber nicht zum Laufen bringen konnte haben wir uns entschieden den code in C++ umzuschreiben. Zum glück war das Python Program nur 122 Zeilen lang und so recht einfach umzuschreiben.
 ## Bewegung der Kamera
 In unserer App befindet sich eine Repräsentation der daten welche der Roboter mit dem LIDAR sensor misst zusammen mit der Position des Roboters und der Früher gemessenen Daten.
 Da man allerdings nicht immer nur das nahe umfeld des roboters sehen möchte haben wir die möglichkeit eingebaut durch finger bewegungen die Position der Kamera welche das Bild rendert zu bewegen.
