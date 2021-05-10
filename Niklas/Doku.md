@@ -44,13 +44,15 @@ Da Tim welcher den C++ Code geschrieben hatte dies aber nicht zum Laufen bringen
 In unserer App befindet sich eine Repräsentation der daten welche der Roboter mit dem LIDAR sensor misst zusammen mit der Position des Roboters und der Früher gemessenen Daten.
 Da man allerdings nicht immer nur das nahe umfeld des roboters sehen möchte haben wir die möglichkeit eingebaut durch finger bewegungen die Position der Kamera welche das Bild rendert zu bewegen.
 
-## Joystick Skript
-
-## GameVariables / GameEvents
 
 ## AI
-
-## Simulation
+Da unser Projekt eine Karte und eine Position Erzeugt ist es eine Gute Demonstration wen der Roboter in der Lage ist selbstständig zu angegebenen Zielen zu navigieren.
+### A*
+Ich habe mich für A* entschieden da es ein Weit verbreiteter Patfindig Algorithmus ist und es gute Erklärungen gibt wie dieser Funktioniert.
+Um A* nutzen zu können und weil es algebein das Nutzen unserer Daten einfacher macht habben wir unsere messdaten Rastarisiert, heißt wir speichern mit einer auflösung von einem Zentimeter ob ein Punkt eine wand ist oder nicht.
+Man gibt diesem Algorithmus nun einen Statt und end Punkt zusammen mit einer liste der Wände und er findet einen Weg.
+Ein Problem welches ich zu begin hatte war das A* seine Daten in einer Liste gespeichert hatte was sehr ineffizient ist.
+Daher habe ich einen Sogenannten Heap implementiert.
 
 # Quellen
 ## 26.01.2012
