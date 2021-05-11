@@ -21,7 +21,7 @@ public class  StringInterpreter : MonoBehaviour
         
         if (Actions[0][0] == "move")
         {
-            Vector2 goal = new Vector2(int.Parse(Actions[0][1].Split(',')[1]),int.Parse(Actions[0][1].Split(',')[0]));
+            Vector2 goal = new Vector2(int.Parse(Actions[0][1].Split(',')[1]),int.Parse(Actions[0][1].Split(',')[0])) * 10;
             Vector2 direction = goal.normalized;
             Vector2 delta = direction * (speed * Time.deltaTime);
             
@@ -96,6 +96,7 @@ public class  StringInterpreter : MonoBehaviour
                 PassMulti(input.Split(' ')[i + 1]);
             }
         }
+        Debug.Log(Actions.ToArray().ToString());
     }
 
 

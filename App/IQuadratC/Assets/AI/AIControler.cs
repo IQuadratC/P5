@@ -22,7 +22,7 @@ public class AIControler : MonoBehaviour
     
     // don't change these after start
     [SerializeField]private int distanceToWalls; 
-    [SerializeField]private float speed;
+    [SerializeField]private int speed;
     [SerializeField]private bool useRotation;
     [SerializeField]private bool driveCircle;
     private Dictionary<int2, int> obstacles;
@@ -163,7 +163,7 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move);
+                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
                 msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
                 oldRotation = (path[i]) - old;
             }
@@ -172,7 +172,8 @@ public class AIControler : MonoBehaviour
         move = old - (goals[goals.Count - 1].xy);
         if (!move.Equals(float2.zero))
         {
-            msg += "move," + move.x + ";" + move.y + ",";
+            msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
+            msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
         }
 
         return msg;
@@ -211,7 +212,7 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move," + move.y + ";" + move.x + ";" + speed + ",";
+                msg += "move," + (int)move.y + ";" + (int)move.x + ";" + speed + ",";
             }
             old = (path[i]);
         }
@@ -264,7 +265,7 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move);
+                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
                 msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
                 oldRotation = (path[i]) - old;
             }
@@ -273,8 +274,9 @@ public class AIControler : MonoBehaviour
         move = old - (path[path.Count - 1].xy);
         if (!move.Equals(float2.zero))
         {
-            msg += "move," + move.x + ";" + move.y + ",";
-        }
+            msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
+            msg += "move," + (int)math.length(move) + ";0;" + speed;
+        } 
 
         return msg;
     }

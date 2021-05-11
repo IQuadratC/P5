@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lidar: {fileID: 86290758}
-  speed: 100
+  speed: 1000
   rigidbody: {fileID: 86290752}
 --- !u!1 &1809088423
 GameObject:
