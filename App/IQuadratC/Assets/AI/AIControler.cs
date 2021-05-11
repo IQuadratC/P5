@@ -64,7 +64,7 @@ public class AIControler : MonoBehaviour
     {
         if (Time.realtimeSinceStartup - lastUpdate > updateSpeed)
         {
-            sendString.Value = "roboter stop";
+            sendString.Value = "roboter move 0,0";
             sendEvent.Raise();
             getLidarData.Raise();
             lastUpdate = Time.realtimeSinceStartup;
@@ -83,7 +83,14 @@ public class AIControler : MonoBehaviour
         {
             goalsInput.Value.RemoveAt(0);
         }
-        goals = goalsInput.Value;
+        if (goalsInput.Value.Count != 0)
+        {
+            goal = goalsInput.Value[0];
+        }
+        else
+        {
+            goal = (int2) pos.xy;
+        }
         obstaclesPoints = obstaclesPointsInput.Value;
         path = new List<int2>();
         Threader.RunAsync(ProsesPath); // starts ProsesPath tread
@@ -95,7 +102,7 @@ public class AIControler : MonoBehaviour
      * calculates the path
      */
     private float3 pos;
-    private List<int2> goals;
+    private int2 goal;
     private List<int2> obstaclesPoints;
     private List<int2> path;
     void ProsesPath()
@@ -151,14 +158,9 @@ public class AIControler : MonoBehaviour
         path = new List<int2>();
         FindPath finder = new FindPath(obstacles);
         int2 start = (int2) (pos.xy);
-        foreach (int2 goal in goals) // append each path between the goals to the path
-        {
-            int2 end = goal;
-            path.AddRange(finder.findPathBetweenInt2(start, end));
-            start = end;
-        }
-        
-        // set the msg string to the message to send
+        path.AddRange(finder.findPathBetweenInt2(start, goal));
+
+            // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 oldRotation = mathAdditions.Rotate(new float2(0,1), pos.z);
@@ -187,7 +189,7 @@ public class AIControler : MonoBehaviour
             }
             old = (path[i]);
         }
-        move = old - (goals[goals.Count - 1].xy);
+        move = old - (goal.xy);
         if (!move.Equals(float2.zero))
         {
             msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
@@ -200,15 +202,9 @@ public class AIControler : MonoBehaviour
     {
         path = new List<int2>();
         FindPath finder = new FindPath(obstacles);
-        int2 start = (int2) (pos.xy);
-        foreach (int2 goal in goals) // append each path between the goals to the path
-        {
-            int2 end = (int2) (goal);
-            path.AddRange(finder.findPathBetweenInt2(start, end));
-            start = end;
-        }
-        
-        // set the msg string to the message to send
+        path.AddRange(finder.findPathBetweenInt2((int2) (pos.xy), goal));
+
+            // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 move;
@@ -234,7 +230,7 @@ public class AIControler : MonoBehaviour
             }
             old = (path[i]);
         }
-        move = old - (goals[goals.Count - 1].xy);
+        move = old - (goal.xy);
         if (!move.Equals(float2.zero))
         {
             msg += "move," + move.y + ";" + move.x + ",";
@@ -245,7 +241,7 @@ public class AIControler : MonoBehaviour
     
     public String Circle()
     {
-        float2 goal = goals[0];
+        float2 goal = this.goal[0];
         float2 vec = pos.xy - goal;
         float r = math.distance(goal, pos.xy);
         for (int i = 0; i < 8 * r; i++) // loop the circumference in 1cm parts 
@@ -301,7 +297,7 @@ public class AIControler : MonoBehaviour
 
     private void Explore()
     {
-        goals = new List<int2>();
+        goal = new int2();
         FindPath finder = new FindPath(obstacles);
         int minX = 0;
         int minY = 0;
@@ -336,7 +332,7 @@ public class AIControler : MonoBehaviour
                 pos.x++;
                 if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add((int2)this.pos.xy + pos * gridSize);
+                    goal = (int2)this.pos.xy + pos * gridSize;
                     return;
                 }
             }
@@ -345,7 +341,7 @@ public class AIControler : MonoBehaviour
                 pos.y--;
                 if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add((int2)this.pos.xy + pos * gridSize);
+                    goal = (int2)this.pos.xy + pos * gridSize;
                     return;
                 }
             }
@@ -354,7 +350,7 @@ public class AIControler : MonoBehaviour
                 pos.x--;
                 if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add((int2)this.pos.xy + pos * gridSize);
+                    goal = ((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
@@ -363,7 +359,7 @@ public class AIControler : MonoBehaviour
                 pos.y++;
                 if (CheckPos((int2)this.pos.xy + pos * gridSize))
                 {
-                    goals.Add((int2)this.pos.xy + pos * gridSize);
+                    goal = ((int2)this.pos.xy + pos * gridSize);
                     return;
                 }
             }
