@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class  StringInterpreter : MonoBehaviour
+public class StringInterpreter : MonoBehaviour
 {
     [SerializeField]private LIDAR lidar;
 
-    private List<String[]> Actions = new List<string[]>();
+    private static List<String[]> Actions = new List<string[]>();
 
     [SerializeField] private float speed;
     private Vector2 move = Vector2.zero;
@@ -22,10 +22,15 @@ public class  StringInterpreter : MonoBehaviour
         if (Actions[0][0] == "move")
         {
             Vector2 goal = new Vector2(int.Parse(Actions[0][1].Split(',')[1]),int.Parse(Actions[0][1].Split(',')[0])) * 10;
+            if(goal == Vector2.zero)
+            {
+                Actions.RemoveAt(0);
+                return;
+            }
             Vector2 direction = goal.normalized;
             Vector2 delta = direction * (speed * Time.deltaTime);
             
-            if ((move + delta).magnitude > goal.magnitude)
+            if ((move + delta - goal).magnitude <= 0)
             {
                 Move(goal - move);
                 move = Vector2.zero;
