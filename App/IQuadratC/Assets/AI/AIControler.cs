@@ -19,6 +19,10 @@ public class AIControler : MonoBehaviour
     [SerializeField]private Int2ListVariable obstaclesPointsInput;
     [SerializeField]private Int2ListVariable pathOutput;
     [SerializeField]private float minDistanceToGoal;
+    [SerializeField]private GameEvent getLidarData;
+    [SerializeField]private float updateSpeed;
+    private float lastUpdate;
+    
     
     // don't change these after start
     [SerializeField]private int distanceToWalls; 
@@ -50,6 +54,20 @@ public class AIControler : MonoBehaviour
                     circle.Add(new int2(i, j));
                 }
             }
+        }
+
+        lastUpdate = Time.realtimeSinceStartup;
+
+    }
+
+    private void Update()
+    {
+        if (Time.realtimeSinceStartup - lastUpdate > updateSpeed)
+        {
+            sendString.Value = "roboter stop";
+            sendEvent.Raise();
+            getLidarData.Raise();
+            lastUpdate = Time.realtimeSinceStartup;
         }
     }
 
@@ -386,7 +404,6 @@ public class AIControler : MonoBehaviour
                 }
             }
         }
-
     }
     private void OnDrawGizmos()
     {

@@ -96,7 +96,7 @@ public class  StringInterpreter : MonoBehaviour
                 PassMulti(input.Split(' ')[i + 1]);
             }
         }
-        Debug.Log(Actions.ToArray().ToString());
+        Debug.Log(Actions.Count);
     }
 
 
