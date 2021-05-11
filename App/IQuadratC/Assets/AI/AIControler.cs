@@ -20,8 +20,10 @@ public class AIControler : MonoBehaviour
     [SerializeField]private Int2ListVariable pathOutput;
     [SerializeField]private float minDistanceToGoal;
     [SerializeField]private GameEvent getLidarData;
+    [SerializeField]private bool update;
     [SerializeField]private float updateSpeed;
     private float lastUpdate;
+
     
     
     // don't change these after start
@@ -62,7 +64,7 @@ public class AIControler : MonoBehaviour
 
     private void Update()
     {
-        if (Time.realtimeSinceStartup - lastUpdate > updateSpeed)
+        if (update && Time.realtimeSinceStartup - lastUpdate > updateSpeed)
         {
             sendString.Value = "roboter move 0,0";
             sendEvent.Raise();
@@ -157,10 +159,9 @@ public class AIControler : MonoBehaviour
     {
         path = new List<int2>();
         FindPath finder = new FindPath(obstacles);
-        int2 start = (int2) (pos.xy);
-        path.AddRange(finder.findPathBetweenInt2(start, goal));
+        path.AddRange(finder.findPathBetweenInt2((int2) (pos.xy), goal));
 
-            // set the msg string to the message to send
+        // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 oldRotation = mathAdditions.Rotate(new float2(0,1), pos.z);
@@ -183,7 +184,7 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
+                msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
                 msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
                 oldRotation = (path[i]) - old;
             }
@@ -192,7 +193,7 @@ public class AIControler : MonoBehaviour
         move = old - (goal.xy);
         if (!move.Equals(float2.zero))
         {
-            msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
+            msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
             msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
         }
 
@@ -204,7 +205,7 @@ public class AIControler : MonoBehaviour
         FindPath finder = new FindPath(obstacles);
         path.AddRange(finder.findPathBetweenInt2((int2) (pos.xy), goal));
 
-            // set the msg string to the message to send
+        // set the msg string to the message to send
         String msg = "roboter multi ";
         float2 old = pos.xy;
         float2 move;
