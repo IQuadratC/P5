@@ -254,6 +254,7 @@ namespace Lidar
             
 
             pointIdcounter++;
+            pointIdcounter %= 9; //Todo delet old points
         }
 
         [SerializeField] private GameEvent sendEvent;
