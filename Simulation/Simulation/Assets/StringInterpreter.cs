@@ -16,9 +16,10 @@ public class StringInterpreter : MonoBehaviour
     {
         if (Actions.Count == 0)
         {
+            
             return;
         }
-        
+
         if (Actions[0][0] == "move")
         {
             Vector2 goal = new Vector2(int.Parse(Actions[0][1].Split(',')[1]),int.Parse(Actions[0][1].Split(',')[0])) * 10;
