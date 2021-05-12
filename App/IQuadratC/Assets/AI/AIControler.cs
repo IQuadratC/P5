@@ -232,7 +232,7 @@ public class AIControler : MonoBehaviour
             old = (path[i]);
         }
         move = old - (goal.xy);
-        if (!move.Equals(float2.zero))
+        if (move.Equals(float2.zero))
         {
             msg += "move," + move.y + ";" + move.x + ",";
         }
@@ -242,7 +242,7 @@ public class AIControler : MonoBehaviour
     
     public String Circle()
     {
-        float2 goal = this.goal[0];
+        float2 goal = this.goal;
         float2 vec = pos.xy - goal;
         float r = math.distance(goal, pos.xy);
         for (int i = 0; i < 8 * r; i++) // loop the circumference in 1cm parts 
@@ -251,7 +251,7 @@ public class AIControler : MonoBehaviour
             // add the possition to the path if not alreay there
             if (!path.LastOrDefault().Equals((int2)newPos))
             {
-                path.Add((int2)(newPos + pos.xy));
+                path.Add((int2)(newPos + goal));
                 
                 if (obstacles.ContainsKey((int2)(newPos + pos.xy))) {path = new List<int2>(); throw new NoPathExists();}
             }
@@ -280,18 +280,12 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
+                msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
                 msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
                 oldRotation = (path[i]) - old;
             }
             old = (path[i]);
         }
-        move = old - (path[path.Count - 1].xy);
-        if (!move.Equals(float2.zero))
-        {
-            msg += "rotate," + (int)mathAdditions.Angle(oldRotation, move) + ",";
-            msg += "move," + (int)math.length(move) + ";0;" + speed;
-        } 
 
         return msg;
     }
