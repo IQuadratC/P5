@@ -12,46 +12,47 @@ using Utility.Variables;
 
 public class AIControler : MonoBehaviour
 {
+    // Settings
+    [SerializeField]private FloatVariable minDistanceToGoal;
+    
+    [SerializeField]private BoolVariable update; // automatically request new data
+    [SerializeField]private FloatVariable updateSpeed;
+    
+    [SerializeField]private IntVariable distanceToWalls; 
+    [SerializeField]private IntVariable speed;
+    [SerializeField]private BoolVariable useRotation;
+    
+    [SerializeField]private bool driveCircle;
+    [SerializeField]private BoolVariable explore;
+    [SerializeField]private IntVariable gridSize; // for exploration
+    
+    // GameEvents and variables
     [SerializeField]private GameEvent sendEvent;
     [SerializeField]private StringVariable sendString;
     [SerializeField]private Vec3Variable positionInput;
     [SerializeField]private Int2ListVariable goalsInput;
     [SerializeField]private Int2ListVariable obstaclesPointsInput;
     [SerializeField]private Int2ListVariable pathOutput;
-    [SerializeField]private float minDistanceToGoal;
     [SerializeField]private GameEvent getLidarData;
-    [SerializeField]private bool update;
-    [SerializeField]private float updateSpeed;
-    private float lastUpdate;
-
-    
-    
-    // don't change these after start
-    [SerializeField]private int distanceToWalls; 
-    [SerializeField]private int speed;
-    [SerializeField]private bool useRotation;
-    [SerializeField]private bool driveCircle;
-    private Dictionary<int2, int> obstacles;
-    private List<int2> circle;
     [SerializeField]private StringVariable logMessage;
     [SerializeField]private GameEvent logEvent;
-    
-    // nedded for exploration of the world
-    private List<int2> reachedPoints;
-    [SerializeField]private int gridSize;
-    [SerializeField]private bool explore;
-    
+
+    private Dictionary<int2, int> obstacles; // contains all obstacles with distance to walls
+    private List<int2> circle; // used to test distance to walls
+    private float lastUpdate;
+    private List<int2> reachedPoints; // nedded for exploration of the world
+
     private void Awake()
     {
         // set some variables
         obstacles = new Dictionary<int2, int>();
         reachedPoints = new List<int2>();
         circle = new List<int2>();
-        for (int i = -distanceToWalls; i < distanceToWalls; i++)
+        for (int i = -distanceToWalls.Value; i < distanceToWalls.Value; i++)
         {
-            for (int j = -distanceToWalls; j < distanceToWalls; j++)
+            for (int j = -distanceToWalls.Value; j < distanceToWalls.Value; j++)
             {
-                if (math.sqrt(i * i + j * j) < distanceToWalls)
+                if (math.sqrt(i * i + j * j) < distanceToWalls.Value)
                 {
                     circle.Add(new int2(i, j));
                 }
@@ -64,7 +65,7 @@ public class AIControler : MonoBehaviour
 
     private void Update()
     {
-        if (update && Time.realtimeSinceStartup - lastUpdate > updateSpeed)
+        if (update.Value && (Time.realtimeSinceStartup - lastUpdate) > updateSpeed.Value)
         {
             sendString.Value = "roboter move 0,0";
             sendEvent.Raise();
@@ -80,8 +81,8 @@ public class AIControler : MonoBehaviour
     {
         // set variables needed in ProsesPath thread 
         pos = positionInput.Value;
-        reachedPoints.Add((int2)(pos.xy/gridSize));
-        while (goalsInput.Value.Count > 0 && math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal)
+        reachedPoints.Add((int2)(pos.xy/gridSize.Value));
+        while (goalsInput.Value.Count > 0 && math.distance(goalsInput.Value[0], pos.xy) < minDistanceToGoal.Value)
         {
             goalsInput.Value.RemoveAt(0);
         }
@@ -111,7 +112,7 @@ public class AIControler : MonoBehaviour
     {
         UpdateObsticals();
         
-        if (explore)
+        if (explore.Value)
         {
             Explore();
         }
@@ -122,7 +123,7 @@ public class AIControler : MonoBehaviour
             {
                 msg = Circle();
             }
-            else if (useRotation)
+            else if (useRotation.Value)
             {
                 msg = WithRotation();
             }
@@ -185,7 +186,7 @@ public class AIControler : MonoBehaviour
             if (!move.Equals(float2.zero))
             {
                 msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
-                msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
+                msg += "move," + (int)math.length(move) + ";0;" + speed.Value + ",";
                 oldRotation = (path[i]) - old;
             }
             old = (path[i]);
@@ -194,7 +195,7 @@ public class AIControler : MonoBehaviour
         if (!move.Equals(float2.zero))
         {
             msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
-            msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
+            msg += "move," + (int)math.length(move) + ";0;" + speed.Value + ",";
         }
 
         return msg;
@@ -227,7 +228,7 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move," + (int)move.y + ";" + (int)move.x + ";" + speed + ",";
+                msg += "move," + (int)move.y + ";" + (int)move.x + ";" + speed.Value + ",";
             }
             old = (path[i]);
         }
@@ -281,7 +282,7 @@ public class AIControler : MonoBehaviour
             if (!move.Equals(float2.zero))
             {
                 msg += "rotate," + (int)mathAdditions.Angle(move, oldRotation) + ",";
-                msg += "move," + (int)math.length(move) + ";0;" + speed + ",";
+                msg += "move," + (int)math.length(move) + ";0;" + speed.Value + ",";
                 oldRotation = (path[i]) - old;
             }
             old = (path[i]);
@@ -319,42 +320,42 @@ public class AIControler : MonoBehaviour
         }
 
         int2 pos;
-        for (int r = 0; r < math.max(maxX-minX, maxY-minY) / gridSize + 2; r++)
+        for (int r = 0; r < math.max(maxX-minX, maxY-minY) / gridSize.Value + 2; r++)
         {
             pos = new int2(-r, r);
             while (pos.x <= r)
             {
                 pos.x++;
-                if (CheckPos((int2)this.pos.xy + pos * gridSize))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize.Value))
                 {
-                    goal = (int2)this.pos.xy + pos * gridSize;
+                    goal = (int2)this.pos.xy + pos * gridSize.Value;
                     return;
                 }
             }
             while (pos.y >= -r)
             {
                 pos.y--;
-                if (CheckPos((int2)this.pos.xy + pos * gridSize))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize.Value))
                 {
-                    goal = (int2)this.pos.xy + pos * gridSize;
+                    goal = (int2)this.pos.xy + pos * gridSize.Value;
                     return;
                 }
             }
             while (pos.x >= -r)
             {
                 pos.x--;
-                if (CheckPos((int2)this.pos.xy + pos * gridSize))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize.Value))
                 {
-                    goal = ((int2)this.pos.xy + pos * gridSize);
+                    goal = ((int2)this.pos.xy + pos * gridSize.Value);
                     return;
                 }
             }
             while (pos.y <= r)
             {
                 pos.y++;
-                if (CheckPos((int2)this.pos.xy + pos * gridSize))
+                if (CheckPos((int2)this.pos.xy + pos * gridSize.Value))
                 {
-                    goal = ((int2)this.pos.xy + pos * gridSize);
+                    goal = ((int2)this.pos.xy + pos * gridSize.Value);
                     return;
                 }
             }
@@ -365,7 +366,7 @@ public class AIControler : MonoBehaviour
             bool b = (minX - 1) < pos.x && pos.x < (maxX + 1) &&
                      (minY - 1) < pos.y && pos.y < (maxY + 1) &&
                      !obstacles.ContainsKey(pos) &&
-                     !reachedPoints.Contains(pos/gridSize);
+                     !reachedPoints.Contains(pos/gridSize.Value);
             if (b)
             {
                 try
