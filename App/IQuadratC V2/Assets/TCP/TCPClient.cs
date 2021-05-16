@@ -21,6 +21,8 @@ namespace TCP
         TcpClient client;
         byte[] bytes = new byte[4096];
         
+        [SerializeField] private UI.UI ui;
+        
         public void OnEnable()
         {
             void process()
@@ -84,6 +86,11 @@ namespace TCP
             
             void Action()
             {
+                if (str == "")
+                {
+                    ui.SwitchPage(0);
+                }
+                
                 Debug.Log(str);
                 reciveMessage.Value = str;
                 reciveEvent.Raise();
