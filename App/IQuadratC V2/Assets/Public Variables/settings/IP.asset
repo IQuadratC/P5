@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69329763486c4d8a9433a7f47be1052c, type: 3}
   m_Name: IP
   m_EditorClassIdentifier: 
-  Value: 127.0.0.1
-  InitialValue: 127.0.0.1
+  Value: 95.89.112.5
+  InitialValue: 95.89.112.5
