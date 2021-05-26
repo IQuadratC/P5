@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Button Text
       objectReference: {fileID: 0}
+    - target: {fileID: 2249402331310872325, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4293844384
+      objectReference: {fileID: 0}
     - target: {fileID: 5891984367580793072, guid: dffd1debedcbb7f4f9b3b5837f614387, type: 3}
       propertyPath: m_Name
       value: Text
