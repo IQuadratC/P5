@@ -1,4 +1,4 @@
-﻿# Reflexion
+# Reflexion
 
 ## Algorithmus
 Nachdem wir uns in der Projektmanagement Woche das Ziel unseres Projektes ausformuliert hatten, begonnen wir uns zu überlegen wie wir aus zwei Punktewolken die Verschiebung zu errechnen.
@@ -40,9 +40,6 @@ Ursprünglich hatte ich den gesamten code, welcher auf dem Roboter lief in Pytho
 Allerdings war es nicht möglich den code für den LIDAR Sensor in Python zu schreiben da Python zu langsam für diesen Sensor war daher musste der Code, um den Sensor auszulesen in C++ geschrieben werden.
 Da wir allerdings schon den TCP Server und die Motorsteuerung in Python implementiert hatten wollten wir einfach ein Programm schreiben, welches den Lidar ausliest und diese Daten zurück an Python überträgt.
 Da Tim welcher den C++ Code geschrieben hatte dies aber nicht zum Laufen bringen konnte haben wir uns entschieden den code in C++ umzuschreiben. Zum Glück war das Python Programm nur 122 Zeilen lang und so recht einfach umzuschreiben.
-## Bewegung der Kamera
-In unserer App befindet sich eine Repräsentation der Daten, welche der Roboter mit dem LIDAR Sensor misst, zusammen mit der Position des Roboters und der Früher gemessenen Daten.
-Da man allerdings nicht immer nur das nahe Umfeld des Roboters sehen möchte haben wir die Möglichkeit eingebaut durch Finger Bewegungen die Position der Kamera, welche das Bild rendert zu bewegen.
 
 
 ## AI
