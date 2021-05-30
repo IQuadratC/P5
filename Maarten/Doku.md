@@ -216,16 +216,20 @@ Ferngesteuerter Roboter mit LIDAR Mapping
 # 26.5.2021
 
 Was noch fählt:
-[ ] Fazit von jedem  -> Jeder
-[ ] Reflexion -> Jeder
-bis So
-[ ] Einleitung -> Maarten
-[ ] Schluss / Ausblick -> Maarten ( Ziele erreicht? )
-[ ] Alles zusammen fügen -> Maarten
-[ ] GitHub Aufraümen -> Niklas
-[ ] Formalien -> Niklas
-[ ] Roboter zum laufen kriegen -> Tim / Maarten
-[ ] Rechtschreibung -> Yesenia
-[ ] Protokoll Nr.2 -> Yesenia
-[ ] Anhang -> Niklas, Yesenia
-bis 7.
+- [ ] Fazit von jedem  -> Jeder
+- [ ] Reflexion -> Jeder
+    - bis So
+- [ ] Einleitung -> Maarten
+- [ ] Schluss / Ausblick -> Maarten ( Ziele erreicht? )
+- [ ] Alles zusammen fügen -> Maarten
+- [ ] GitHub Aufraümen -> Niklas
+- [ ] Formalien -> Niklas
+- [ ] Roboter zum laufen kriegen -> Tim / Maarten
+- [ ] Rechtschreibung -> Yesenia
+- [ ] Protokoll Nr.2 -> Yesenia
+- [ ] Anhang -> Niklas, Yesenia
+    - [ ]  Protokoll zur Konsultationssitzung Nr. 1
+    - [ ]  Protokoll zur Konsultationssitzung Nr. 2
+    - [ ]  Eigenständigkeitserklärung
+    - [ ]  Projektanmeldung
+    - bis 7.
