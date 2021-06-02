@@ -95,6 +95,9 @@ Der größte unterschied zu vorherigen projekten war,
 das dieses tatsächlich von anderen Menschen benutzt werden sollte.
 Was bedeutet das wir nicht mit einem „Proof of Concept“ aufgehört haben.
 
+## Was noch zu tun ist
+Ein Ziel welches für mich noch offen geblieben ist, wäre einen Algorithmus zu schreiben welcher autonom einen Raum erkundet und volständig kartiert.
+
 # Quellen
 ## 26.01.2012
 installed software, created Unity project.
