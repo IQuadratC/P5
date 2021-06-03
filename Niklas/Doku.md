@@ -107,8 +107,6 @@ HTTPs://forum.unity.com/threads/how-do-i-detect-when-a-button-is-being-pressed-h
 ## 09.02.2021
 HTTPs://www.youtube.com/watch?v=0G4vcH9N0gc
 HTTPs://pressstart.vip/tutorials/2018/07/12/44/pan--zoom.html
-## 10.02.2021
-HTTPs://arongranberg.com/astar/docs/
 
 ### A*
 HTTPs://www.youtube.com/watch?v=-L-WgKMFuhE
