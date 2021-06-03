@@ -213,6 +213,41 @@ Ferngesteuerter Roboter mit Lidar Sensor
 Auf LIDAR basierender SLAM Roboter
 Ferngesteuerter Roboter mit LIDAR Mapping
 
+Inhalt:
+•	Einleitung (Problemstellung, Anwendungsbereiche)
+•	Grund Idee (Roboterauto und Steuerung über Unity App auf Handy)
+•	Einleitung Roboterauto und Lidar (Grundsätzlicher Aufbau)
+•	Einleitung Unity App (Warum wir Unity genutzt haben)
+
+Arbeits-Segmente:
+•	Roboter: Tim
+o	    Motorsteuerung
+o	    3D Model
+o	    Drucken
+o	    Lidarsteuerung
+o	    Testen
+•	App: Yesenia
+o	    Grafiken Yesenia
+	        Welches Programm 
+o	    Shader warum?
+o	    UI
+•	Simulation: Yesenia
+o	    Logic
+o	    UI
+•	Network: Niklas
+o	    App
+o	    Roboter
+o	    Simulation
+•	SLAM: 
+o	    App Version 1 Maarten
+o	    App Version 2 Maarten
+o	    Roboter Version 3 Tim
+•	AI: Niklas
+o	    Pathfinding
+o	Goal Logic
+Fertig bis 23 Mai.
+
+
 # 26.5.2021
 
 Was noch fählt:
