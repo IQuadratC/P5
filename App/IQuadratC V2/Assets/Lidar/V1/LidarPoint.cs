@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Dieses Scipt enthält alle Funktionen zum umrechnen der LIDAR Daten von V1.
+// Die Funktionen werden von anderen Klassen aufgerufen.
+// Die Klasse Lidarpoint enthält alle Daten zu einer Lidarmessung.
+
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading;
@@ -9,6 +13,8 @@ using Utility;
 
 namespace Lidar
 {
+    // Die enum Flags, die angeben in welchem Schritt die Funktionenen sind. 
+    // Sie werden benötigt, da diese KLasse in einem backround thread läuft.
     public enum LidarPointState
     {
         addingData = 1,
@@ -19,6 +25,7 @@ namespace Lidar
         finished = 6
     }
 
+    // Struct für eine gefundene Linie in dem Datensatz.
     public struct LidarLine
     {
         public List<float2> points;
@@ -30,6 +37,7 @@ namespace Lidar
         public float2 outerPoint2;
     }
 
+    // Struct für eine gefundene Ecke in dem Datensatz.
     public struct LidarCorner
     {
         public float2 centerPoint;
@@ -38,24 +46,36 @@ namespace Lidar
         public float angle;
     }
     
+
     public class LidarPoint
     {
         public LidarPointState State { get; set; }
-        public float[] Distances { get; }
-        public float2[] Points { get; private set; }
+        // Eine Liste der LIDAR Daten. Ein Wert pro Winkelgrad.
+        // Sind in Polar Koordinaten angegeben.
+        public float[] Distances { get; } 
+        // Die Umgrechneten Punkte von Polar- zu Kartenkoordinaten.
+        public float2[] Points { get; private set; } 
         
+        // Absolute Position (Mit Verschiebung)
         public float2[] WorldPoints { get; private set; }
+
+        // Alle gefundenen Linien.
         public LidarLine[] Lines { get; private set; }
         
+        // Alle gefundenen Schnittpunkte von zwei Geraden.
         public float2[] Intersections { get; private set; }
         
+        // Alle gefundenen Ecken.
         public LidarCorner[] Corners { get; private set; }
         
+        // Ist true wenn nicht genug Ecken gefunden worden.
         public bool DropLidarPoint { get; private set; }
 
+        // Die Verschiebung des Roboters. Z = Drehung in Radien.
         private float3 overlay;
         public float3 Overlay => overlay;
 
+        // Einige Max und Min Werte für den Algorithmus.
         private LidarSettings lidarSettings;
         public LidarPoint(LidarSettings lidarSettings)
         {
@@ -65,6 +85,7 @@ namespace Lidar
             this.lidarSettings = lidarSettings;
         }
         
+        // Zum Hinzufügen von LIDAR Daten.
         public void AddData(int2[] data)
         {
             foreach (int2 int2 in data)
@@ -73,6 +94,7 @@ namespace Lidar
             }
         }
         
+        // Wird gecalled wenn alle Daten entfangen sind.
         private LidarPoint otherLidarPoint;
         public void StartCalculate(LidarPoint otherLidarPoint)
         {
@@ -80,12 +102,14 @@ namespace Lidar
             StartCalculate();
         }
         
+        // Wir bein ersten Datensatz gecalled.
         public void StartCalculate()
         {
             State = LidarPointState.processingCalculation;
             Threader.RunAsync(Calculate);
         }
         
+        // Hauptfunktion Sie rechnet die Daten um.
         private void Calculate()
         {
             CalculatePoints();
