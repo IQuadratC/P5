@@ -56,7 +56,7 @@ namespace Lidar.V3
                 if (texts[1] == "position")
                 {
                     String[] xy = texts[2].Split(',');
-                    robotPos.Value = new Vector3(float.Parse(xy[0]), float.Parse(xy[1]), float.Parse(xy[1]));
+                    robotPos.Value = new Vector3(float.Parse(xy[0]), float.Parse(xy[1]), float.Parse(xy[2]));
                 }
             }
             
@@ -64,11 +64,6 @@ namespace Lidar.V3
             {
                 if (texts[1] == "data")
                 {
-                    if (!reciving)
-                    {
-                        lidarPoints.Value.Clear();
-                    }
-
                     String[] points = texts[2].Split(',');
 
                     foreach (var point in points)

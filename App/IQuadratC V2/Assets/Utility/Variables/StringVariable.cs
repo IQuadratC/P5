@@ -6,6 +6,7 @@ namespace Utility.Variables
     [CreateAssetMenu(fileName = "StringVariable", menuName = "Utility/Varibles/String")]
     public class StringVariable : ScriptableObject, ISerializationCallbackReceiver
     {
+        [NonSerialized]
         public string Value;
         public string InitialValue;
         

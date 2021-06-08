@@ -10,6 +10,7 @@ namespace Lidar
         void Update()
         {
             transform.position = new float3(pos.Value.xy, -8);
+            transform.rotation = Quaternion.AngleAxis(pos.Value.z, new Vector3(0,0,1));
         }
     }
 }
