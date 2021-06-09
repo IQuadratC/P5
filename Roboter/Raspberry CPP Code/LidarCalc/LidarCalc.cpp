@@ -24,10 +24,9 @@ void CalculateSinAndCos() {
 
 }
 
-
+//Berechnung des Fehlers für alle Punkte in der referenceData und newData mit dem Drehungfaktor
 int calculateFehler(int w)
 {
-
     int fehler = 0;
     int counter = 0;
 

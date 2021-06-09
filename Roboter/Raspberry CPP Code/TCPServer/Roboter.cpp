@@ -207,7 +207,7 @@ void rotateRobot(int a, int Speedprozent)
 	if (Speedprozent != 0)
 	{
 		int diractions = 0;
-		if (a < 0)
+		if (a > 0)
 		{
 			diractions |= 1 << 1;
 			diractions |= 1 << 3;

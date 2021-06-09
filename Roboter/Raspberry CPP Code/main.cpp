@@ -8,9 +8,13 @@
 
 void signalhandler(int);
 
-int maxSpeed = 8;
+void maxSpeedIn();
+
+int maxSpeed;
 
 int main() {
+
+	maxSpeedIn();
 
 	// Abfangen von ctrl+c damit der Serial Port geschlossen wird
 	signal(SIGINT, signalhandler);
@@ -29,7 +33,7 @@ int main() {
 
 void maxSpeedIn() {
 
-	std::cout << "Bitte eine Zahl zwischen 5 und 8 eingeben. Für die Maxmiale Geschwindigkeit vom Roboter!" << std::endl;
+	std::cout << "Bitte eine Zahl zwischen 5 und 8 eingeben. FÃ¼r die Maxmiale Geschwindigkeit vom Roboter!" << std::endl;
 	maxSpeed = 0;
 	std::cin >> maxSpeed;
 	if (maxSpeed < 5 || maxSpeed > 8) maxSpeedIn();

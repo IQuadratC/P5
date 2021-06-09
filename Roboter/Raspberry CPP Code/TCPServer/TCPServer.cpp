@@ -69,6 +69,7 @@ void multiCommandsFunktion(std::vector<StringData>& multiArgs) {
 	}
 }
 
+//TCP Server Quelle: https://gist.github.com/rajabishek/7102fe2b7b60b4833d72
 void TCPServer(bool& lidarstart)
 {
 
@@ -419,6 +420,8 @@ void TCPServer(bool& lidarstart)
 	{
 		system("clear");
 		system("./test");
+		exit(-2);
+		
 	}
 
 	return;
