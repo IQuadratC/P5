@@ -28,9 +28,11 @@ public class StringInterpreter : MonoBehaviour
                 Actions.RemoveAt(0);
                 return;
             }
+            // errechnet aus Geschwindigkeit und Ziel wieviel sich bewegt werden soll
             Vector2 direction = goal.normalized;
             Vector2 delta = direction * (speed * Time.deltaTime);
             
+            //Entfernt das ZIel aus der Liste sobald es erreicht ist und sorgt dafür das er nicht zu weit fährt
             if ((move + delta - goal).magnitude <= 0)
             {
                 Move(goal - move);
@@ -49,6 +51,7 @@ public class StringInterpreter : MonoBehaviour
         }
     }
 
+    // Teilt den String nach unserem Datenvormat auf
     public void PassString(String input)
     { 
         Actions = new List<string[]>();
@@ -73,15 +76,17 @@ public class StringInterpreter : MonoBehaviour
            lidar.LidarPunkte();
         }
     }
-    
+      
     private void PassRotation(String input)
     {
         float rot = (int.Parse(input.Split(',')[0]));
         Rotate(rot);
     }
-
+    
+    // Teilt die multi funktion nach unserem Datenformat auf
     private void PassMulti(String input)
     {
+        // tauscht die teielnden zeichen mit der der nächst hleren ebene
         input = input.Replace(',', ' ');
         input = input.Replace(';', ',');
         input = input.Replace(':', ';');
@@ -104,8 +109,8 @@ public class StringInterpreter : MonoBehaviour
         }
         Debug.Log(Actions.Count);
     }
-
-
+    
+    
     [SerializeField]public Rigidbody rigidbody;
     Vector3 pos = new Vector3(0, 0.5f ,0);
 
