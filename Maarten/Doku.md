@@ -268,3 +268,65 @@ Was noch fählt:
     - [ ]  Eigenständigkeitserklärung
     - [ ]  Projektanmeldung
     - bis 7.
+
+
+# Präsentation
+
+- Roboter Tim
+- Ipad mit App Tim
+- 1 Laptop mit Simulation Tim, Maarten
+- 1 Laptop mit Viedeo vom Roboter Tim
+- 1 Lapuop mit Unity und Code
+
+- AI ausprobieren Tim, Maarten
+
+- Diagramm digital und in echt auf A2
+
+- Themen
+    - Roboter an
+
+    - Vorführen
+    - Erklären
+
+    - Hadware Tim
+    - SLAM Maarten
+    - AI Niklas
+
+    - Roboter aus
+
+    - Netzwerk Niklas
+    - Desing / Shader Yesenia
+    - Simulation Yesenia
+
+Plalakt
+
+- Roboter () Hadware
+    - Raspi --- Arduino
+
+    - Arduino
+    - RAMPS 1.4 --- Arduino
+    - Motortreiber --- RAMPS 1.4
+
+    - Motoren --- Motortreiber
+    - Akku --- Knopf
+    - Spannungswandler --- Lüfter, RAMPS 1.4 , Strom-USB
+    - Lüfter
+    - Knopf --- Spannungswandler
+    - LIDAR --- LIDAR-USB-Converter
+    - LIDAR-USB-Converter --- Raspi
+    - Strom-USB --- Raspi
+
+App () --- Roboter ()
+    - TCP --- Raspi
+    - UI --- TCP
+    - AI --- TCP, UI
+    - SLAM Map --- TCP, UI
+
+
+Simulation () --- App ()
+    - TCP
+    - String Interpreter --- TCP
+    - Auto --- TCP
+    - Welt --- Auto
+
+A* Grafik
