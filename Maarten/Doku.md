@@ -316,14 +316,14 @@ Plalakt
     - LIDAR-USB-Converter --- Raspi
     - Strom-USB --- Raspi
 
-App () --- Roboter ()
+- App () --- Roboter ()
     - TCP --- Raspi
     - UI --- TCP
     - AI --- TCP, UI
     - SLAM Map --- TCP, UI
 
 
-Simulation () --- App ()
+- Simulation () --- App ()
     - TCP
     - String Interpreter --- TCP
     - Auto --- TCP
