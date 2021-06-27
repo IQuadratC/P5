@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ba6cc57bf2409a8876542ec9b3166f, type: 3}
   m_Name: update
   m_EditorClassIdentifier: 
-  Value: 0
-  InitialValue: 0
+  InitialValue: 1

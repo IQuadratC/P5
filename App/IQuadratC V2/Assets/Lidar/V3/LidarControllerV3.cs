@@ -35,14 +35,17 @@ namespace Lidar.V3
             {
                 lastRequest = time;
 
-                sendString.Value = "roboter position";
-                sendEvent.Raise();
-                
-                sendString.Value = "lidar mapdata";
-                sendEvent.Raise();
-                
                 reqestPointsEvent.Raise();
             }
+        }
+
+        public void requestData()
+        {
+            sendString.Value = "roboter position";
+            sendEvent.Raise();
+                
+            sendString.Value = "lidar mapdata";
+            sendEvent.Raise();
         }
 
         private bool reciving;

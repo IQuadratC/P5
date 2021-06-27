@@ -541,7 +541,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223475212}
-  m_LocalRotation: {x: 0.12719244, y: 0.000000034133265, z: -0.0000000043770436, w: 0.9918781}
+  m_LocalRotation: {x: 0.12719244, y: -0.000000034133265, z: 0.0000000043770436, w: 0.9918781}
   m_LocalPosition: {x: 0, y: 50, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3143,7 +3143,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678388288}
-  m_LocalRotation: {x: 0.12719242, y: 0.000000017066634, z: -0.0000000021885216, w: 0.9918781}
+  m_LocalRotation: {x: 0.12719242, y: -0.000000017066634, z: 0.0000000021885216, w: 0.9918781}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3386,7 +3386,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936177688}
-  m_LocalRotation: {x: 0.10917738, y: -0.000000004275882, z: 4.6963694e-10, w: 0.9940223}
+  m_LocalRotation: {x: 0.10917738, y: 0.000000004275881, z: -4.696369e-10, w: 0.9940223}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3943,7 +3943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDistanceToGoal: {fileID: 11400000, guid: 3f40137b51ae7224a80f9aafe5ae31b6, type: 2}
-  update: {fileID: 0}
+  update: {fileID: 11400000, guid: 5d7c70589ac24cf4cb40a2f7a2ab7628, type: 2}
   updateSpeed: {fileID: 11400000, guid: 654cccde60821ca43a48138668f70073, type: 2}
   distanceToWalls: {fileID: 11400000, guid: f7f915709595f5a45af61888468dc497, type: 2}
   speed: {fileID: 11400000, guid: 5e8abfea859fd7b439bc3b9b663d0c5f, type: 2}
@@ -4723,7 +4723,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4898,6 +4898,7 @@ GameObject:
   - component: {fileID: 1433036298508263067}
   - component: {fileID: 1433036298508263081}
   - component: {fileID: 1433036298508263080}
+  - component: {fileID: 1433036298508263082}
   m_Layer: 0
   m_Name: Lidar
   m_TagString: Untagged
@@ -4953,6 +4954,34 @@ MonoBehaviour:
   robotPos: {fileID: 11400000, guid: c30b9180fa27b754fb96596da7132735, type: 2}
   newPointsEvent: {fileID: 11400000, guid: 86dd5dadd44f0684eb43331227032722, type: 2}
   reqestPointsEvent: {fileID: 11400000, guid: 3d1970d169736584281050bb4625d6d3, type: 2}
+--- !u!114 &1433036298508263082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433036298508263079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceebc78714f93441900d90b33b2fff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 3d1970d169736584281050bb4625d6d3, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1433036298508263081}
+        m_TargetAssemblyTypeName: Lidar.V3.LidarControllerV3, Assembly-CSharp
+        m_MethodName: requestData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1433036298512236386
 GameObject:
   m_ObjectHideFlags: 0
@@ -5201,8 +5230,8 @@ RectTransform:
   m_Father: {fileID: 1433036297901600832}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5686,7 +5715,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1433036299476833193
 MonoBehaviour:
   m_ObjectHideFlags: 0
