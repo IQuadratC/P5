@@ -207,7 +207,7 @@ public class AIControler : MonoBehaviour
         path.AddRange(finder.findPathBetweenInt2((int2) (pos.xy), goal));
 
         // set the msg string to the message to send
-        String msg = "roboter multi ";
+        String msg = "roboter "; // Fix
         float2 old = pos.xy;
         float2 move;
         for (int i = 0; i < path.Count; i++) // append a string to msg for each move in path
@@ -228,7 +228,8 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
-                msg += "move," + (int)move.y + ";" + (int)move.x + ";" + speed.Value + ",";
+                msg += "move " + (int)move.y + "," + (int)move.x + "," + speed.Value;
+                return msg; // Fix
             }
             old = (path[i]);
         }

@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50dee2b0f869c2418e6afc7393d04b4, type: 3}
   m_Name: updateSpeed
   m_EditorClassIdentifier: 
-  Value: 0
-  InitialValue: 0
+  InitialValue: 10

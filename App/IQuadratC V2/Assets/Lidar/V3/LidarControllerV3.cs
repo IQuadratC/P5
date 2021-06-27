@@ -49,7 +49,6 @@ namespace Lidar.V3
         }
 
         private bool reciving;
-
         public void Receive()
         {
             String[] texts = reciveString.Value.Split(' ');

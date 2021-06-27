@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea85755cc6e458dbb8cf448b36c188c, type: 3}
   m_Name: distanceToWalls
   m_EditorClassIdentifier: 
-  Value: 0
-  InitialValue: 0
+  InitialValue: 20
