@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Path Materail
-  m_Shader: {fileID: -6465566751694194690, guid: 6770fd33453933e42ab5e9958c38baad,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6770fd33453933e42ab5e9958c38baad, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -21,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_6af05f3157f44638ab0b164c6e8ecd5c:
-        m_Texture: {fileID: 2800000, guid: fc800c72eadcc1847a58ac864ce2a247, type: 3}
+        m_Texture: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -39,18 +38,16 @@ Material:
     m_Floats:
     - Vector1_d0acecb0abde47c2b1f63ba932737ae3: 1
     m_Colors:
-    - Color_1: {r: 0, g: 0.7254902, b: 0.67058825, a: 0}
-    - Color_1e0f563450b844e6a0b99e5b120d6806: {r: 0, g: 0.7254902, b: 0.67058825,
-        a: 1}
-    - Color_2: {r: 0.284, g: 0.284, b: 0.284, a: 1}
-    - Color_3: {r: 0, g: 0, b: 0, a: 0}
-    - Color_b08a5c45066048748edfb59f09af7272: {r: 0.7169812, g: 0.7135992, b: 0.7135992,
-        a: 0}
-    - Vector4_0427e93d61cc43978767d355a1643a10: {r: 0.03, g: 0.03, b: 0.1, a: 0}
-    - Vector4_1: {r: 1, g: 1, b: 0.3, a: 1}
-    - Vector4_1cc5288e41d2466ebed4e0e81f846ae6: {r: 0, g: 1, b: 0, a: 0}
-    - Vector4_4f9e43c064044ae3aa94ccdbc2e1c191: {r: 0.3, g: 0.3, b: 0, a: 1}
-    - Vector4_5b8b3940cd1648a288e50a6cc179bd50: {r: -1, g: -1, b: 5, a: 0}
-    - Vector4_5c4353b8a7ee4f0f9c7feb1ae360028a: {r: 1, g: 1, b: 0, a: 0}
-    - Vector4_b76f06a5ae7046e8a66cc1dc1ad5e591: {r: 3.14, g: 3.14, b: 1, a: 1}
+    - Color_1: {r: 0, g: 0.7254902, b: 0.67058825, a: 1}
+    - Color_1e0f563450b844e6a0b99e5b120d6806: {r: 0, g: 0.7254902, b: 0.67058825, a: 1}
+    - Color_2: {r: 0, g: 0.7254902, b: 0.67058825, a: 1}
+    - Color_3: {r: 0, g: 0.7254902, b: 0.67058825, a: 1}
+    - Color_b08a5c45066048748edfb59f09af7272: {r: 0.7169812, g: 0.7135992, b: 0.7135992, a: 0}
+    - Vector4_0427e93d61cc43978767d355a1643a10: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
+    - Vector4_1: {r: 0.8, g: 0.8, b: 0.8, a: 0.8}
+    - Vector4_1cc5288e41d2466ebed4e0e81f846ae6: {r: 0, g: 1, b: 0.5, a: 1.5}
+    - Vector4_4f9e43c064044ae3aa94ccdbc2e1c191: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - Vector4_5b8b3940cd1648a288e50a6cc179bd50: {r: -1, g: -1, b: -1, a: -1}
+    - Vector4_5c4353b8a7ee4f0f9c7feb1ae360028a: {r: 1, g: 1, b: 1, a: 1}
+    - Vector4_b76f06a5ae7046e8a66cc1dc1ad5e591: {r: 3.14, g: 3.14, b: 3.14, a: 3.14}
   m_BuildTextureStacks: []

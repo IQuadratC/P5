@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a106c4dbaf47f0b60d272da14575ec, type: 3}
   m_Name: PointsList
   m_EditorClassIdentifier: 
-  InitialValue: []
+  InitialValue:
+  - x: 100
+    y: 100
+  - x: -100
+    y: -100
