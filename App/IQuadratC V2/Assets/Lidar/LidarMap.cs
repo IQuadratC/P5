@@ -121,6 +121,9 @@ namespace Lidar
         private static readonly int positionId = Shader.PropertyToID("Position");
         public void UpdatePosition()
         {
+            backgroundRenderer.material.SetVector(positionId, 
+                new Vector4(position.Value.x, position.Value.y, 0, 0));
+            
             foreach (LidarMapChunk chunk in chunks.Values)
             {
                 chunk.MeshRenderer.material.SetVector(positionId, 
