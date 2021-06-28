@@ -1,3 +1,26 @@
+---
+title:  'Selbstfahrender Roboter mit LIDAR'
+author:
+- Niklas Otten
+- Yesenia Möhring
+
+abstract: |
+  This is the abstract.
+
+  It consists of two paragraphs.
+
+
+
+
+fontsize: 12
+fontfamily: augie
+geometry:
+- top=25mm
+- left=25mm
+- right=25mm
+- bottom=25mm
+...
+
 # Reflexion
 
 ## Algorithmus
