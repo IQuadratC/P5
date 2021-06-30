@@ -3196,7 +3196,7 @@ LineRenderer:
   - {x: 0, y: 10, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -3262,7 +3262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 1607886645}
-  path: {fileID: 11400000, guid: 792b6a10ab80be34c9e7a9f180bd9397, type: 2}
+  path: {fileID: 11400000, guid: 3fef45a296df4424a89746731f33604f, type: 2}
 --- !u!1 &1678388288
 GameObject:
   m_ObjectHideFlags: 3
@@ -4214,7 +4214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1433036297600992391
 Transform:
   m_ObjectHideFlags: 0

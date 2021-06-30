@@ -228,14 +228,16 @@ public class AIControler : MonoBehaviour
             move =  (path[i]) - old;
             if (!move.Equals(float2.zero))
             {
+                move = Utility.mathAdditions.Rotate(move, pos.z);
                 msg += "move " + (int)move.y + "," + (int)move.x + "," + speed.Value;
-                return msg; // Fix
+                return msg; // Fix because multi is not working
             }
             old = (path[i]);
         }
         move = old - (goal.xy);
         if (move.Equals(float2.zero))
         {
+            move = Utility.mathAdditions.Rotate(move, pos.z);
             msg += "move," + move.y + ";" + move.x + ",";
         }
 
